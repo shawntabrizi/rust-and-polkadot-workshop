@@ -18,29 +18,29 @@ One way undefined behavior can happen is by allowing states like `null` to exist
 
 The `BTreeMap` api uses an `Option` when reading values from the map, since it could be that you ask to read the value of some key that you did not set. For example:
 
-	```rust
-	use std::collections::BTreeMap;
+```rust
+use std::collections::BTreeMap;
 
-	let mut map = BTreeMap::new();
-	map.insert("alice", 100);
-	assert_eq!(map.get(&"alice"), Some(&100));
-	assert_eq!(map.get(&"bob"), None);
-	```
+let mut map = BTreeMap::new();
+map.insert("alice", 100);
+assert_eq!(map.get(&"alice"), Some(&100));
+assert_eq!(map.get(&"bob"), None);
+```
 
 Once we have an `Option` type, there are lots of different ways we can interact with it using Rust.
 
 The most verbose way is using a match statement:
 
 ```rust
-	let maybe_value = map.get(&"alice");
-	match maybe_value {
-		Some(value) => {
-			// do something with the `value`
-		},
-		None => {
-			// perhaps return an error since there was no value there
-		}
+let maybe_value = map.get(&"alice");
+match maybe_value {
+	Some(value) => {
+		// do something with the `value`
+	},
+	None => {
+		// perhaps return an error since there was no value there
 	}
+}
 ```
 
 

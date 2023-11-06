@@ -1,58 +1,33 @@
 mod balances;
 mod system;
 
+// These are all the calls which are exposed to the world.
+// Note that it is just an accumulation of the calls exposed by each module.
 enum RuntimeCall {
-	Balances(balances::BalancesCall),
+	Balances(balances::BalancesCall<Runtime>),
 }
 
+// This is an "extrinsic": literally an object from outside of the blockchain.
+// It tells us who is making the call, and which call they are making.
 struct Extrinsic {
 	caller: &'static str,
 	call: RuntimeCall,
 }
 
-fn main() {
-	// Create a new instance of the Runtime.
-	// It will instantiate with it all the modules it uses.
-	let mut runtime = Runtime::new();
-
-	// Initialize the system with some initial balance.
-	runtime.balances.set_balance(&"alice", 100);
-
-	// Here are the extrinsics in our block.
-	// You can add or remove these based on the modules and calls you have set up.
-	let extrinsics = vec![
-		Extrinsic {
-			caller: &"alice",
-			call: RuntimeCall::Balances(balances::BalancesCall::Transfer {
-				to: &"bob",
-				amount: 20,
-			}),
-		},
-		Extrinsic {
-			caller: &"alice",
-			call: RuntimeCall::Balances(balances::BalancesCall::Transfer {
-				to: &"charlie",
-				amount: 20,
-			}),
-		},
-	];
-
-	// Execute the extrinsics which make up our block.
-	// If there are any errors, our system panics, since we should not execute invalid blocks.
-	runtime.execute_block(extrinsics).expect("invalid block");
-
-	// Simply print the debug format of our runtime state.
-	println!("{:#?}", runtime);
-}
+trait RuntimeConfig: balances::Config {}
 
 // This is our main Runtime.
 // It accumulates all of the different modules we want to use,
 // functions implemented on the Runtime allow us to access those modules and execute blocks of
 // transactions.
 #[derive(Debug)]
-struct Runtime {
-	pub system: system::SystemModule,
-	pub balances: balances::BalancesModule,
+pub struct Runtime {
+	system: system::SystemModule,
+	balances: balances::BalancesModule<Self>,
+}
+
+impl balances::Config for Runtime {
+	type Balance = u128;
 }
 
 impl Runtime {
@@ -87,4 +62,40 @@ impl Runtime {
 
 		Ok(())
 	}
+}
+
+// The main entry point for our simple state machine.
+fn main() {
+	// Create a new instance of the Runtime.
+	// It will instantiate with it all the modules it uses.
+	let mut runtime = Runtime::new();
+
+	// Initialize the system with some initial balance.
+	runtime.balances.set_balance(&"alice", 100);
+
+	// Here are the extrinsics in our block.
+	// You can add or remove these based on the modules and calls you have set up.
+	let extrinsics = vec![
+		Extrinsic {
+			caller: &"alice",
+			call: RuntimeCall::Balances(balances::BalancesCall::Transfer {
+				to: &"bob",
+				amount: 20,
+			}),
+		},
+		Extrinsic {
+			caller: &"alice",
+			call: RuntimeCall::Balances(balances::BalancesCall::Transfer {
+				to: &"charlie",
+				amount: 20,
+			}),
+		},
+	];
+
+	// Execute the extrinsics which make up our block.
+	// If there are any errors, our system panics, since we should not execute invalid blocks.
+	runtime.execute_block(extrinsics).expect("invalid block");
+
+	// Simply print the debug format of our runtime state.
+	println!("{:#?}", runtime);
 }

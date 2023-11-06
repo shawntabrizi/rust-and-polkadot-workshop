@@ -74,38 +74,3 @@ impl Runtime {
         Ok(())
     }
 }
-
-#[test]
-fn init_balance() {
-    let mut balances = balances::BalancesModule::new();
-
-    assert_eq!(balances.balance(&"alice"), 0);
-    balances.set_balance(&"alice", 100);
-    assert_eq!(balances.balance(&"alice"), 100);
-    assert_eq!(balances.balance(&"bob"), 0);
-}
-
-#[test]
-fn transfer_balance() {
-    let mut balances = balances::BalancesModule::new();
-
-    assert_eq!(
-        balances.transfer(&"alice", &"bob", 51),
-        Err("Not enough funds.")
-    );
-
-    balances.set_balance(&"alice", 100);
-    assert_eq!(balances.transfer(&"alice", &"bob", 51), Ok(()));
-    assert_eq!(balances.balance(&"alice"), 49);
-    assert_eq!(balances.balance(&"bob"), 51);
-
-    assert_eq!(
-        balances.transfer(&"alice", &"bob", 51),
-        Err("Not enough funds.")
-    );
-}
-
-#[test]
-fn init_system() {
-    let mut system = system::SystemModule::new();
-}

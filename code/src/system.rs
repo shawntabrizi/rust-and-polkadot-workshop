@@ -26,3 +26,8 @@ impl SystemModule {
         self.events.push(new_event);
     }
 }
+
+#[test]
+fn init_system() {
+    let mut system = SystemModule::new();
+}

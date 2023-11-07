@@ -52,12 +52,12 @@ pub enum BalancesCall<T: Config> {
 
 #[cfg(test)]
 mod test {
-	struct TestConfg;
-	impl super::Config for TestConfg {
+	struct TestConfig;
+	impl super::Config for TestConfig {
 		type Balance = u128;
 	}
 
-	impl crate::system::Config for TestConfg {
+	impl crate::system::Config for TestConfig {
 		type AccountId = &'static str;
 		type BlockNumber = u32;
 		type Nonce = u32;
@@ -65,7 +65,7 @@ mod test {
 
 	#[test]
 	fn init_balance() {
-		let mut balances = super::BalancesModule::<TestConfg>::new();
+		let mut balances = super::BalancesModule::<TestConfig>::new();
 
 		assert_eq!(balances.balance(&"alice"), 0);
 		balances.set_balance(&"alice", 100);
@@ -75,7 +75,7 @@ mod test {
 
 	#[test]
 	fn transfer_balance() {
-		let mut balances = super::BalancesModule::<TestConfg>::new();
+		let mut balances = super::BalancesModule::<TestConfig>::new();
 
 		assert_eq!(balances.transfer(&"alice", &"bob", 51), Err("Not enough funds."));
 

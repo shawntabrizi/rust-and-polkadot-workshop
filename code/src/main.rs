@@ -22,8 +22,14 @@ trait RuntimeConfig: balances::Config {}
 // transactions.
 #[derive(Debug)]
 pub struct Runtime {
-	system: system::SystemModule,
+	system: system::SystemModule<Self>,
 	balances: balances::BalancesModule<Self>,
+}
+
+impl system::Config for Runtime {
+	type AccountId = &'static str;
+	type BlockNumber = u32;
+	type Nonce = u32;
 }
 
 impl balances::Config for Runtime {
@@ -52,7 +58,7 @@ impl Runtime {
 	// to determine who we are executing the call on behalf of.
 	fn dispatch(&mut self, extrinsic: Extrinsic) -> Result<(), &'static str> {
 		let Extrinsic { call, caller } = extrinsic;
-		self.system.inc_nonce(caller);
+		self.system.inc_nonce(&caller);
 
 		match call {
 			RuntimeCall::Balances(balances::BalancesCall::Transfer { to, amount }) => {

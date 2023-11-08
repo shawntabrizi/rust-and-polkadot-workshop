@@ -1,6 +1,17 @@
 mod balances;
 mod system;
 
+mod types {
+	pub type AccountId = &'static str;
+	pub type BlockNumber = u32;
+	pub type Nonce = u32;
+	pub type Balance = u128;
+}
+
+trait Dispatch<AccountId, Call> {
+	fn dispatch(&mut self, caller: AccountId, call: Call) -> Result<(), &'static str>;
+}
+
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 enum RuntimeCall {
@@ -10,11 +21,9 @@ enum RuntimeCall {
 // This is an "extrinsic": literally an object from outside of the blockchain.
 // It tells us who is making the call, and which call they are making.
 struct Extrinsic {
-	caller: &'static str,
+	caller: types::AccountId,
 	call: RuntimeCall,
 }
-
-trait RuntimeConfig: balances::Config {}
 
 // This is our main Runtime.
 // It accumulates all of the different modules we want to use,
@@ -27,13 +36,13 @@ pub struct Runtime {
 }
 
 impl system::Config for Runtime {
-	type AccountId = &'static str;
-	type BlockNumber = u32;
-	type Nonce = u32;
+	type AccountId = types::AccountId;
+	type BlockNumber = types::BlockNumber;
+	type Nonce = types::Nonce;
 }
 
 impl balances::Config for Runtime {
-	type Balance = u128;
+	type Balance = types::Balance;
 }
 
 impl Runtime {
@@ -45,27 +54,31 @@ impl Runtime {
 	// Execute a block of extrinsics. Increments the block number.
 	fn execute_block(&mut self, extrinsics: Vec<Extrinsic>) -> Result<(), &'static str> {
 		self.system.inc_block_number();
-		for extrinsic in extrinsics {
-			self.dispatch(extrinsic)?;
+		for Extrinsic { caller, call } in extrinsics {
+			self.dispatch(caller, call)?;
 		}
 		Ok(())
 	}
+}
 
-	// Dispatch a specific extrinsic. Increments the user's nonce.
+impl Dispatch<&'static str, RuntimeCall> for Runtime {
+	// Dispatch a call on behalf of a caller. Increments the caller's nonce.
 	//
 	// Dispatch allows us to identify which underlying module call we want to execute.
 	// Note that we extract the `caller` from the extrinsic, and use that information
 	// to determine who we are executing the call on behalf of.
-	fn dispatch(&mut self, extrinsic: Extrinsic) -> Result<(), &'static str> {
-		let Extrinsic { call, caller } = extrinsic;
+	fn dispatch(
+		&mut self,
+		caller: types::AccountId,
+		runtime_call: RuntimeCall,
+	) -> Result<(), &'static str> {
 		self.system.inc_nonce(&caller);
 
-		match call {
-			RuntimeCall::Balances(balances::BalancesCall::Transfer { to, amount }) => {
-				self.balances.transfer(caller, to, amount)?;
+		match runtime_call {
+			RuntimeCall::Balances(call) => {
+				self.balances.dispatch(caller, call)?;
 			},
 		}
-
 		Ok(())
 	}
 }

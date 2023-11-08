@@ -45,9 +45,26 @@ impl<T: Config> BalancesModule<T> {
 	}
 }
 
-// A public enum which describes the calls we want to expose
+// A public enum which describes the calls we want to expose to the dispatcher.
+// We should expect that the caller of each call will be provided by the dispatcher,
+// and not included as a parameter of the call.
 pub enum BalancesCall<T: Config> {
 	Transfer { to: T::AccountId, amount: T::Balance },
+}
+
+impl<T: Config> crate::Dispatch<T::AccountId, BalancesCall<T>> for BalancesModule<T> {
+	fn dispatch(
+		&mut self,
+		caller: T::AccountId,
+		call: BalancesCall<T>,
+	) -> Result<(), &'static str> {
+		match call {
+			BalancesCall::Transfer { to, amount } => {
+				self.transfer(caller, to, amount)?;
+			},
+		}
+		Ok(())
+	}
 }
 
 #[cfg(test)]

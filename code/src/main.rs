@@ -1,31 +1,19 @@
 mod balances;
+mod support;
 mod system;
 
+use crate::support::Dispatch;
+
+// These are the concrete types we will use in our simple state machine.
+// Modules are configured for these types directly, and they satisfy all of our
+// trait requirements.
 mod types {
 	pub type AccountId = &'static str;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
 	pub type Balance = u128;
-}
-
-trait Dispatch {
-	type Caller;
-	type Call;
-
-	fn dispatch(&mut self, caller: Self::Caller, call: Self::Call) -> Result<(), &'static str>;
-}
-
-// These are all the calls which are exposed to the world.
-// Note that it is just an accumulation of the calls exposed by each module.
-enum RuntimeCall {
-	Balances(balances::BalancesCall<Runtime>),
-}
-
-// This is an "extrinsic": literally an object from outside of the blockchain.
-// It tells us who is making the call, and which call they are making.
-struct Extrinsic {
-	caller: types::AccountId,
-	call: RuntimeCall,
+	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
+	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
 }
 
 // This is our main Runtime.
@@ -55,16 +43,22 @@ impl Runtime {
 	}
 
 	// Execute a block of extrinsics. Increments the block number.
-	fn execute_block(&mut self, extrinsics: Vec<Extrinsic>) -> Result<(), &'static str> {
+	fn execute_block(&mut self, block: types::Block) -> Result<(), &'static str> {
 		self.system.inc_block_number();
-		for Extrinsic { caller, call } in extrinsics {
+		for support::Extrinsic { caller, call } in block.extrinsics {
 			self.dispatch(caller, call)?;
 		}
 		Ok(())
 	}
 }
 
-impl Dispatch for Runtime {
+// These are all the calls which are exposed to the world.
+// Note that it is just an accumulation of the calls exposed by each module.
+pub enum RuntimeCall {
+	Balances(balances::BalancesCall<Runtime>),
+}
+
+impl crate::support::Dispatch for Runtime {
 	type Caller = <Runtime as system::Config>::AccountId;
 	type Call = RuntimeCall;
 	// Dispatch a call on behalf of a caller. Increments the caller's nonce.
@@ -99,26 +93,29 @@ fn main() {
 
 	// Here are the extrinsics in our block.
 	// You can add or remove these based on the modules and calls you have set up.
-	let extrinsics = vec![
-		Extrinsic {
-			caller: &"alice",
-			call: RuntimeCall::Balances(balances::BalancesCall::Transfer {
-				to: &"bob",
-				amount: 20,
-			}),
-		},
-		Extrinsic {
-			caller: &"alice",
-			call: RuntimeCall::Balances(balances::BalancesCall::Transfer {
-				to: &"charlie",
-				amount: 20,
-			}),
-		},
-	];
+	let block_1 = types::Block {
+		header: support::Header { block_number: 1 },
+		extrinsics: vec![
+			support::Extrinsic {
+				caller: &"alice",
+				call: RuntimeCall::Balances(balances::BalancesCall::Transfer {
+					to: &"bob",
+					amount: 20,
+				}),
+			},
+			support::Extrinsic {
+				caller: &"alice",
+				call: RuntimeCall::Balances(balances::BalancesCall::Transfer {
+					to: &"charlie",
+					amount: 20,
+				}),
+			},
+		],
+	};
 
 	// Execute the extrinsics which make up our block.
 	// If there are any errors, our system panics, since we should not execute invalid blocks.
-	runtime.execute_block(extrinsics).expect("invalid block");
+	runtime.execute_block(block_1).expect("invalid block");
 
 	// Simply print the debug format of our runtime state.
 	println!("{:#?}", runtime);

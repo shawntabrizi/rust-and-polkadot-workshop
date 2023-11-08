@@ -52,7 +52,7 @@ pub enum BalancesCall<T: Config> {
 	Transfer { to: T::AccountId, amount: T::Balance },
 }
 
-impl<T: Config> crate::Dispatch for BalancesModule<T> {
+impl<T: Config> crate::support::Dispatch for BalancesModule<T> {
 	type Caller = T::AccountId;
 	type Call = BalancesCall<T>;
 

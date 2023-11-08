@@ -13,7 +13,7 @@ pub trait Config {
 	type AccountId: Debug + Default + Ord + Copy;
 	/// A type which can be used to represent the current block number.
 	/// Usually a basic unsigned integer.
-	type BlockNumber: Debug + Default + One + Zero + AddAssign;
+	type BlockNumber: Debug + Default + One + Zero + AddAssign + Copy;
 	/// A type which can be used to keep track of the number of transactions from each account.
 	/// Usually a basic unsigned integer.
 	type Nonce: Debug + Default + One + Zero + Add + Copy;
@@ -35,6 +35,11 @@ impl<T: Config> SystemModule<T> {
 	/// Create a new instance of the System Module.
 	pub fn new() -> Self {
 		Self { block_number: Default::default(), nonce: Default::default() }
+	}
+
+	/// Get the current block number.
+	pub fn block_number(&self) -> T::BlockNumber {
+		self.block_number
 	}
 
 	/// This function can be used to increment the block number.

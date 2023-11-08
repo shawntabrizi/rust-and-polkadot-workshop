@@ -45,6 +45,9 @@ impl Runtime {
 	// Execute a block of extrinsics. Increments the block number.
 	fn execute_block(&mut self, block: types::Block) -> Result<(), &'static str> {
 		self.system.inc_block_number();
+		if block.header.block_number != self.system.block_number() {
+			return Err(&"block number does not match what is expected")
+		}
 		for support::Extrinsic { caller, call } in block.extrinsics {
 			self.dispatch(caller, call)?;
 		}

@@ -8,8 +8,11 @@ mod types {
 	pub type Balance = u128;
 }
 
-trait Dispatch<AccountId, Call> {
-	fn dispatch(&mut self, caller: AccountId, call: Call) -> Result<(), &'static str>;
+trait Dispatch {
+	type Caller;
+	type Call;
+
+	fn dispatch(&mut self, caller: Self::Caller, call: Self::Call) -> Result<(), &'static str>;
 }
 
 // These are all the calls which are exposed to the world.
@@ -61,7 +64,9 @@ impl Runtime {
 	}
 }
 
-impl Dispatch<&'static str, RuntimeCall> for Runtime {
+impl Dispatch for Runtime {
+	type Caller = <Runtime as system::Config>::AccountId;
+	type Call = RuntimeCall;
 	// Dispatch a call on behalf of a caller. Increments the caller's nonce.
 	//
 	// Dispatch allows us to identify which underlying module call we want to execute.
@@ -69,8 +74,8 @@ impl Dispatch<&'static str, RuntimeCall> for Runtime {
 	// to determine who we are executing the call on behalf of.
 	fn dispatch(
 		&mut self,
-		caller: types::AccountId,
-		runtime_call: RuntimeCall,
+		caller: Self::Caller,
+		runtime_call: Self::Call,
 	) -> Result<(), &'static str> {
 		self.system.inc_nonce(&caller);
 

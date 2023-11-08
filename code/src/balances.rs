@@ -52,12 +52,11 @@ pub enum BalancesCall<T: Config> {
 	Transfer { to: T::AccountId, amount: T::Balance },
 }
 
-impl<T: Config> crate::Dispatch<T::AccountId, BalancesCall<T>> for BalancesModule<T> {
-	fn dispatch(
-		&mut self,
-		caller: T::AccountId,
-		call: BalancesCall<T>,
-	) -> Result<(), &'static str> {
+impl<T: Config> crate::Dispatch for BalancesModule<T> {
+	type Caller = T::AccountId;
+	type Call = BalancesCall<T>;
+
+	fn dispatch(&mut self, caller: Self::Caller, call: Self::Call) -> Result<(), &'static str> {
 		match call {
 			BalancesCall::Transfer { to, amount } => {
 				self.transfer(caller, to, amount)?;

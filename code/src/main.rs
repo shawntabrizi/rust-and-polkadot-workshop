@@ -1,6 +1,7 @@
 mod balances;
 mod support;
 mod system;
+mod voting;
 
 use crate::support::Dispatch;
 

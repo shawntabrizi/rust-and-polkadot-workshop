@@ -1,7 +1,7 @@
 mod balances;
+mod proof_of_existence;
 mod support;
 mod system;
-mod voting;
 
 use crate::support::Dispatch;
 
@@ -15,6 +15,7 @@ mod types {
 	pub type Balance = u128;
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
+	pub type Content = &'static str;
 }
 
 // This is our main Runtime.
@@ -25,6 +26,7 @@ mod types {
 pub struct Runtime {
 	system: system::SystemModule<Self>,
 	balances: balances::BalancesModule<Self>,
+	poe: proof_of_existence::POEModule<Self>,
 }
 
 impl system::Config for Runtime {
@@ -37,10 +39,18 @@ impl balances::Config for Runtime {
 	type Balance = types::Balance;
 }
 
+impl proof_of_existence::Config for Runtime {
+	type Content = types::Content;
+}
+
 impl Runtime {
 	// Create a new instance of the main Runtime, by creating a new instance of each module.
 	fn new() -> Self {
-		Self { system: system::SystemModule::new(), balances: balances::BalancesModule::new() }
+		Self {
+			system: system::SystemModule::new(),
+			balances: balances::BalancesModule::new(),
+			poe: proof_of_existence::POEModule::new(),
+		}
 	}
 
 	// Execute a block of extrinsics. Increments the block number.
@@ -49,8 +59,13 @@ impl Runtime {
 		if block.header.block_number != self.system.block_number() {
 			return Err(&"block number does not match what is expected")
 		}
-		for support::Extrinsic { caller, call } in block.extrinsics {
-			self.dispatch(caller, call)?;
+		for (i, support::Extrinsic { caller, call }) in block.extrinsics.into_iter().enumerate() {
+			let _res = self.dispatch(caller, call).map_err(|e| {
+				eprintln!(
+					"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
+					block.header.block_number, i, e
+				)
+			});
 		}
 		Ok(())
 	}
@@ -60,6 +75,7 @@ impl Runtime {
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
 	Balances(balances::BalancesCall<Runtime>),
+	POE(proof_of_existence::POECall<Runtime>),
 }
 
 impl crate::support::Dispatch for Runtime {
@@ -80,6 +96,9 @@ impl crate::support::Dispatch for Runtime {
 		match runtime_call {
 			RuntimeCall::Balances(call) => {
 				self.balances.dispatch(caller, call)?;
+			},
+			RuntimeCall::POE(call) => {
+				self.poe.dispatch(caller, call)?;
 			},
 		}
 		Ok(())
@@ -117,9 +136,47 @@ fn main() {
 		],
 	};
 
+	let block_2 = types::Block {
+		header: support::Header { block_number: 2 },
+		extrinsics: vec![
+			support::Extrinsic {
+				caller: &"alice",
+				call: RuntimeCall::POE(proof_of_existence::POECall::CreateClaim {
+					claim: &"Hello, world!",
+				}),
+			},
+			support::Extrinsic {
+				caller: &"bob",
+				call: RuntimeCall::POE(proof_of_existence::POECall::CreateClaim {
+					claim: &"Hello, world!",
+				}),
+			},
+		],
+	};
+
+	let block_3 = types::Block {
+		header: support::Header { block_number: 3 },
+		extrinsics: vec![
+			support::Extrinsic {
+				caller: &"alice",
+				call: RuntimeCall::POE(proof_of_existence::POECall::RevokeClaim {
+					claim: &"Hello, world!",
+				}),
+			},
+			support::Extrinsic {
+				caller: &"bob",
+				call: RuntimeCall::POE(proof_of_existence::POECall::CreateClaim {
+					claim: &"Hello, world!",
+				}),
+			},
+		],
+	};
+
 	// Execute the extrinsics which make up our block.
 	// If there are any errors, our system panics, since we should not execute invalid blocks.
 	runtime.execute_block(block_1).expect("invalid block");
+	runtime.execute_block(block_2).expect("invalid block");
+	runtime.execute_block(block_3).expect("invalid block");
 
 	// Simply print the debug format of our runtime state.
 	println!("{:#?}", runtime);

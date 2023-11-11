@@ -4,21 +4,16 @@ use num::traits::{CheckedAdd, One, Zero};
 use std::collections::BTreeMap;
 
 pub trait Config: crate::system::Config {
-	type ProposalIndex: Debug + Default + One + Zero + Add + CheckedAdd + Copy;
+	const VOTES_TO_CLOSE: u16;
+	type ProposalIndex: Debug + Default + One + Zero + Add + CheckedAdd + Copy + Ord;
 	type ProposalInfo: Debug;
-}
-
-#[derive(Debug)]
-struct Vote<T: Config> {
-	who: T::AccountId,
-	aye: bool,
 }
 
 #[derive(Debug)]
 struct Proposal<T: Config> {
 	creator: T::AccountId,
 	info: T::ProposalInfo,
-	votes: Vec<Vote<T>>,
+	votes: BTreeMap<T::AccountId, bool>,
 	outcome: Option<bool>,
 }
 
@@ -47,9 +42,48 @@ impl<T: Config> VotingModule<T> {
 		let index = self.proposal_index;
 		let next_index =
 			index.checked_add(&T::ProposalIndex::one()).ok_or("proposal index overflow")?;
-		let proposal = Proposal { creator, info, votes: Vec::<Vote<T>>::new(), outcome: None };
+		let proposal: Proposal<T> =
+			Proposal { creator, info, votes: BTreeMap::new(), outcome: None };
 
+		self.proposals.insert(index, proposal);
 		self.proposal_index = next_index;
 		Ok(())
+	}
+
+	pub fn vote(
+		&mut self,
+		who: T::AccountId,
+		proposal_id: T::ProposalIndex,
+		aye: bool,
+	) -> DispatchResult {
+		let proposal = self.proposals.get_mut(&proposal_id).ok_or("proposal doesn't exist")?;
+		proposal.votes.insert(who, aye);
+		Ok(())
+	}
+}
+
+#[cfg(test)]
+mod test {
+	#[test]
+	fn test_vote() {
+		#[derive(Debug)]
+		struct TestConfig;
+		impl crate::system::Config for TestConfig {
+			type AccountId = &'static str;
+			type BlockNumber = u32;
+			type Nonce = u32;
+		}
+		impl super::Config for TestConfig {
+			const VOTES_TO_CLOSE: u16 = 10u16;
+			type ProposalIndex = u64;
+			type ProposalInfo = &'static str;
+		}
+
+		let mut voting = super::VotingModule::<TestConfig>::new();
+
+		assert_eq!(voting.vote(&"alice", 0, true), Err("proposal doesn't exist"));
+		assert_eq!(voting.create_proposal(&"alice", &"Let's save the world."), Ok(()));
+		assert_eq!(voting.vote(&"alice", 0, true), Ok(()));
+		assert_eq!(voting.proposals.get(&0).unwrap().votes.len(), 1);
 	}
 }

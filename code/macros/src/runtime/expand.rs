@@ -43,6 +43,7 @@ pub fn expand_call(def: RuntimeDef) -> proc_macro2::TokenStream {
 
 		// These are all the calls which are exposed to the world.
 		// Note that it is just an accumulation of the calls exposed by each module.
+		#[allow(non_camel_case_types)]
 		pub enum RuntimeCall {
 			#( #module_names(#module_names::Call<#runtime_struct>) ),*
 		}

@@ -9,10 +9,7 @@ pub fn runtime(
 	let item_mod = syn::parse_macro_input!(item as syn::Item);
 
 	let generated: proc_macro::TokenStream = match parse::RuntimeDef::try_from(item_mod.clone()) {
-		Ok(def) => {
-			eprintln!("{:?}", def);
-			expand::expand_call(def).into()
-		},
+		Ok(def) => expand::expand_call(def).into(),
 		Err(e) => e.to_compile_error().into(),
 	};
 

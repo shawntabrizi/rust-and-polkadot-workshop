@@ -10,6 +10,7 @@ mod keyword {
 
 #[derive(Debug)]
 pub struct CallDef {
+	pub module_struct: syn::Ident,
 	pub methods: Vec<CallVariantDef>,
 }
 
@@ -27,6 +28,11 @@ impl CallDef {
 			item
 		} else {
 			return Err(syn::Error::new(item.span(), "Invalid pallet::call, expected item impl"))
+		};
+
+		let module_struct = match &*item_impl.self_ty {
+			syn::Type::Path(tp) => tp.path.segments.first().unwrap().ident.clone(),
+			_ => panic!("not supported tokens"),
 		};
 
 		let mut methods = vec![];
@@ -76,11 +82,11 @@ impl CallDef {
 			}
 		}
 
-		Ok(Self { methods })
+		Ok(Self { module_struct, methods })
 	}
 }
 
-/// Check type is `T::AccountId`
+/// Check caller arg is exactly: `caller: T::AccountId`
 pub fn check_caller_arg(arg: &syn::PatType) -> syn::Result<()> {
 	pub struct CheckDispatchableFirstArg;
 	impl syn::parse::Parse for CheckDispatchableFirstArg {

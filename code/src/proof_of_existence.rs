@@ -20,48 +20,24 @@ impl<T: Config> POEModule<T> {
 	pub fn get_claim(&self, claim: &T::Content) -> Option<&T::AccountId> {
 		self.claims.get(&claim)
 	}
+}
 
-	pub fn create_claim(&mut self, claimer: T::AccountId, claim: T::Content) -> DispatchResult {
+#[macros::call]
+impl<T: Config> POEModule<T> {
+	pub fn create_claim(&mut self, caller: T::AccountId, claim: T::Content) -> DispatchResult {
 		if self.claims.contains_key(&claim) {
 			return Err(&"this content is already claimed");
 		}
-		self.claims.insert(claim, claimer);
+		self.claims.insert(claim, caller);
 		Ok(())
 	}
 
-	pub fn revoke_claim(&mut self, claimer: T::AccountId, claim: T::Content) -> DispatchResult {
+	pub fn revoke_claim(&mut self, caller: T::AccountId, claim: T::Content) -> DispatchResult {
 		let owner = self.get_claim(&claim).ok_or("claim does not exist")?;
-		if claimer != *owner {
+		if caller != *owner {
 			return Err(&"this content is owned by someone else");
 		}
 		self.claims.remove(&claim);
-		Ok(())
-	}
-}
-
-// A public enum which describes the calls we want to expose to the dispatcher.
-// We should expect that the caller of each call will be provided by the dispatcher,
-// and not included as a parameter of the call.
-pub enum POECall<T: Config> {
-	CreateClaim { claim: T::Content },
-	RevokeClaim { claim: T::Content },
-}
-
-/// Implementation of the dispatch logic, mapping from `POECall` to the appropriate underlying
-/// function we want to execute.
-impl<T: Config> crate::support::Dispatch for POEModule<T> {
-	type Caller = T::AccountId;
-	type Call = POECall<T>;
-
-	fn dispatch(&mut self, caller: Self::Caller, call: Self::Call) -> Result<(), &'static str> {
-		match call {
-			POECall::CreateClaim { claim } => {
-				self.create_claim(caller, claim)?;
-			},
-			POECall::RevokeClaim { claim } => {
-				self.revoke_claim(caller, claim)?;
-			},
-		}
 		Ok(())
 	}
 }

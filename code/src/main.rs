@@ -75,7 +75,7 @@ impl Runtime {
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
 	Balances(balances::Call<Runtime>),
-	POE(proof_of_existence::POECall<Runtime>),
+	POE(proof_of_existence::Call<Runtime>),
 }
 
 impl crate::support::Dispatch for Runtime {
@@ -138,13 +138,13 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: &"alice",
-				call: RuntimeCall::POE(proof_of_existence::POECall::CreateClaim {
+				call: RuntimeCall::POE(proof_of_existence::Call::create_claim {
 					claim: &"Hello, world!",
 				}),
 			},
 			support::Extrinsic {
 				caller: &"bob",
-				call: RuntimeCall::POE(proof_of_existence::POECall::CreateClaim {
+				call: RuntimeCall::POE(proof_of_existence::Call::create_claim {
 					claim: &"Hello, world!",
 				}),
 			},
@@ -156,13 +156,13 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: &"alice",
-				call: RuntimeCall::POE(proof_of_existence::POECall::RevokeClaim {
+				call: RuntimeCall::POE(proof_of_existence::Call::revoke_claim {
 					claim: &"Hello, world!",
 				}),
 			},
 			support::Extrinsic {
 				caller: &"bob",
-				call: RuntimeCall::POE(proof_of_existence::POECall::CreateClaim {
+				call: RuntimeCall::POE(proof_of_existence::Call::create_claim {
 					claim: &"Hello, world!",
 				}),
 			},

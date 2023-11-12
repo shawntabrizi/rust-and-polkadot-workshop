@@ -23,10 +23,11 @@ mod types {
 // functions implemented on the Runtime allow us to access those modules and execute blocks of
 // transactions.
 #[derive(Debug)]
+#[macros::runtime]
 pub struct Runtime {
 	system: system::SystemModule<Self>,
 	balances: balances::BalancesModule<Self>,
-	poe: proof_of_existence::POEModule<Self>,
+	proof_of_existence: proof_of_existence::POEModule<Self>,
 }
 
 impl system::Config for Runtime {
@@ -49,7 +50,7 @@ impl Runtime {
 		Self {
 			system: system::SystemModule::new(),
 			balances: balances::BalancesModule::new(),
-			poe: proof_of_existence::POEModule::new(),
+			proof_of_existence: proof_of_existence::POEModule::new(),
 		}
 	}
 
@@ -71,40 +72,6 @@ impl Runtime {
 	}
 }
 
-// These are all the calls which are exposed to the world.
-// Note that it is just an accumulation of the calls exposed by each module.
-pub enum RuntimeCall {
-	Balances(balances::Call<Runtime>),
-	POE(proof_of_existence::Call<Runtime>),
-}
-
-impl crate::support::Dispatch for Runtime {
-	type Caller = <Runtime as system::Config>::AccountId;
-	type Call = RuntimeCall;
-	// Dispatch a call on behalf of a caller. Increments the caller's nonce.
-	//
-	// Dispatch allows us to identify which underlying module call we want to execute.
-	// Note that we extract the `caller` from the extrinsic, and use that information
-	// to determine who we are executing the call on behalf of.
-	fn dispatch(
-		&mut self,
-		caller: Self::Caller,
-		runtime_call: Self::Call,
-	) -> Result<(), &'static str> {
-		self.system.inc_nonce(&caller);
-
-		match runtime_call {
-			RuntimeCall::Balances(call) => {
-				self.balances.dispatch(caller, call)?;
-			},
-			RuntimeCall::POE(call) => {
-				self.poe.dispatch(caller, call)?;
-			},
-		}
-		Ok(())
-	}
-}
-
 // The main entry point for our simple state machine.
 fn main() {
 	// Create a new instance of the Runtime.
@@ -121,11 +88,11 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: &"alice",
-				call: RuntimeCall::Balances(balances::Call::transfer { to: &"bob", amount: 20 }),
+				call: RuntimeCall::balances(balances::Call::transfer { to: &"bob", amount: 20 }),
 			},
 			support::Extrinsic {
 				caller: &"alice",
-				call: RuntimeCall::Balances(balances::Call::transfer {
+				call: RuntimeCall::balances(balances::Call::transfer {
 					to: &"charlie",
 					amount: 20,
 				}),
@@ -138,13 +105,13 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: &"alice",
-				call: RuntimeCall::POE(proof_of_existence::Call::create_claim {
+				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::create_claim {
 					claim: &"Hello, world!",
 				}),
 			},
 			support::Extrinsic {
 				caller: &"bob",
-				call: RuntimeCall::POE(proof_of_existence::Call::create_claim {
+				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::create_claim {
 					claim: &"Hello, world!",
 				}),
 			},
@@ -156,13 +123,13 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: &"alice",
-				call: RuntimeCall::POE(proof_of_existence::Call::revoke_claim {
+				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::revoke_claim {
 					claim: &"Hello, world!",
 				}),
 			},
 			support::Extrinsic {
 				caller: &"bob",
-				call: RuntimeCall::POE(proof_of_existence::Call::create_claim {
+				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::create_claim {
 					claim: &"Hello, world!",
 				}),
 			},

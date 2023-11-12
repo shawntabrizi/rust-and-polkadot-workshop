@@ -2,8 +2,6 @@ use quote::ToTokens;
 use syn::spanned::Spanned;
 
 mod keyword {
-	syn::custom_keyword!(pallet);
-	syn::custom_keyword!(call);
 	syn::custom_keyword!(T);
 	syn::custom_keyword!(AccountId);
 }

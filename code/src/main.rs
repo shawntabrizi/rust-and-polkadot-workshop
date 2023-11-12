@@ -44,34 +44,6 @@ impl proof_of_existence::Config for Runtime {
 	type Content = types::Content;
 }
 
-impl Runtime {
-	// Create a new instance of the main Runtime, by creating a new instance of each module.
-	fn new() -> Self {
-		Self {
-			system: system::SystemModule::new(),
-			balances: balances::BalancesModule::new(),
-			proof_of_existence: proof_of_existence::POEModule::new(),
-		}
-	}
-
-	// Execute a block of extrinsics. Increments the block number.
-	fn execute_block(&mut self, block: types::Block) -> Result<(), &'static str> {
-		self.system.inc_block_number();
-		if block.header.block_number != self.system.block_number() {
-			return Err(&"block number does not match what is expected")
-		}
-		for (i, support::Extrinsic { caller, call }) in block.extrinsics.into_iter().enumerate() {
-			let _res = self.dispatch(caller, call).map_err(|e| {
-				eprintln!(
-					"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
-					block.header.block_number, i, e
-				)
-			});
-		}
-		Ok(())
-	}
-}
-
 // The main entry point for our simple state machine.
 fn main() {
 	// Create a new instance of the Runtime.

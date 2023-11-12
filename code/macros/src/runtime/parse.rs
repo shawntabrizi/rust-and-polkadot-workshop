@@ -3,7 +3,7 @@ use syn::spanned::Spanned;
 #[derive(Debug)]
 pub struct RuntimeDef {
 	pub runtime_struct: syn::Ident,
-	pub modules: Vec<syn::Ident>,
+	pub modules: Vec<(syn::Ident, syn::Type)>,
 }
 
 impl RuntimeDef {
@@ -18,13 +18,13 @@ impl RuntimeDef {
 
 		let runtime_struct = item_struct.ident;
 
+		let mut modules = vec![];
 		// skip system
-		let modules = item_struct
-			.fields
-			.into_iter()
-			.skip(1)
-			.filter_map(|field| field.ident)
-			.collect::<Vec<_>>();
+		for field in item_struct.fields.into_iter().skip(1) {
+			if let Some(ident) = field.ident {
+				modules.push((ident, field.ty))
+			}
+		}
 
 		Ok(Self { runtime_struct, modules })
 	}

@@ -1,10 +1,11 @@
+use crate::support::DispatchResult;
 use core::fmt::Debug;
 use num::traits::{CheckedAdd, CheckedSub, Zero};
 use std::collections::BTreeMap;
 
 /// The configuration trait for the Balances Module.
 /// Contains the basic types needed for handling balances.
-pub trait Config: super::system::Config {
+pub trait Config: crate::system::Config {
 	/// A type which can represent the balance of an account.
 	/// Usually this is a large unsigned integer.
 	type Balance: Zero + CheckedAdd + CheckedSub + Copy + Debug;
@@ -35,48 +36,32 @@ impl<T: Config> BalancesModule<T> {
 	pub fn balance(&self, who: T::AccountId) -> T::Balance {
 		*self.balances.get(&who).unwrap_or(&T::Balance::zero())
 	}
+}
 
+#[macros::call]
+impl<T: Config> BalancesModule<T> {
 	/// Transfer `amount` from one another to another.
 	/// This function verifies that `from` has at least `amount` balance to transfer,
 	/// and that no mathematical overflows occur.
 	pub fn transfer(
 		&mut self,
-		from: T::AccountId,
+		caller: T::AccountId,
 		to: T::AccountId,
 		amount: T::Balance,
-	) -> Result<(), &'static str> {
-		let from_balance = self.balance(from);
+	) -> DispatchResult {
+		let caller_balance = self.balance(caller);
 		let to_balance = self.balance(to);
 
-		let new_from_balance = from_balance.checked_sub(&amount).ok_or("Not enough funds.")?;
+		let new_caller_balance = caller_balance.checked_sub(&amount).ok_or("Not enough funds.")?;
 		let new_to_balance = to_balance.checked_add(&amount).ok_or("Overflow")?;
 
-		self.balances.insert(from, new_from_balance);
+		self.balances.insert(caller, new_caller_balance);
 		self.balances.insert(to, new_to_balance);
 
 		Ok(())
 	}
-}
 
-// A public enum which describes the calls we want to expose to the dispatcher.
-// We should expect that the caller of each call will be provided by the dispatcher,
-// and not included as a parameter of the call.
-pub enum BalancesCall<T: Config> {
-	Transfer { to: T::AccountId, amount: T::Balance },
-}
-
-/// Implementation of the dispatch logic, mapping from `BalancesCall` to the appropriate underlying
-/// function we want to execute.
-impl<T: Config> crate::support::Dispatch for BalancesModule<T> {
-	type Caller = T::AccountId;
-	type Call = BalancesCall<T>;
-
-	fn dispatch(&mut self, caller: Self::Caller, call: Self::Call) -> Result<(), &'static str> {
-		match call {
-			BalancesCall::Transfer { to, amount } => {
-				self.transfer(caller, to, amount)?;
-			},
-		}
+	pub fn lala(&mut self, _caller: T::AccountId) -> DispatchResult {
 		Ok(())
 	}
 }

@@ -74,7 +74,7 @@ impl Runtime {
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
-	Balances(balances::BalancesCall<Runtime>),
+	Balances(balances::Call<Runtime>),
 	POE(proof_of_existence::POECall<Runtime>),
 }
 
@@ -121,14 +121,11 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: &"alice",
-				call: RuntimeCall::Balances(balances::BalancesCall::Transfer {
-					to: &"bob",
-					amount: 20,
-				}),
+				call: RuntimeCall::Balances(balances::Call::transfer { to: &"bob", amount: 20 }),
 			},
 			support::Extrinsic {
 				caller: &"alice",
-				call: RuntimeCall::Balances(balances::BalancesCall::Transfer {
+				call: RuntimeCall::Balances(balances::Call::transfer {
 					to: &"charlie",
 					amount: 20,
 				}),

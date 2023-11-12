@@ -1,4 +1,4 @@
-use crate::parse::CallDef;
+use super::parse::CallDef;
 use quote::quote;
 
 /// Expand definition, in particular:

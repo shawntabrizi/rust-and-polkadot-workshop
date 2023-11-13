@@ -6,6 +6,7 @@ use std::collections::BTreeMap;
 pub trait Config: crate::system::Config {
 	/// A type which can represent the balance of an account.
 	/// Usually this is a large unsigned integer.
+	type Balance: Zero + CheckedSub + CheckedAdd + Copy;
 }
 
 /// This is the Balances Module.
@@ -17,6 +18,7 @@ pub struct Pallet<T: Config> {
 	balances: BTreeMap<T::AccountId, T::Balance>,
 }
 
+impl<T: Config> Pallet<T> {
 	/// Create a new instance of the balances module.
 	pub fn new() -> Self {
 		Self { balances: BTreeMap::new() }

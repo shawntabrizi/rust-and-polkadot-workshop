@@ -108,7 +108,7 @@ fn main() {
 		],
 	};
 
-	// Execute the extrinsics which make up our block.
+	// Execute the extrinsics which make up our blocks.
 	// If there are any errors, our system panics, since we should not execute invalid blocks.
 	runtime.execute_block(block_1).expect("invalid block");
 	runtime.execute_block(block_2).expect("invalid block");

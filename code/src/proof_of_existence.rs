@@ -7,11 +7,11 @@ pub trait Config: crate::system::Config {
 }
 
 #[derive(Debug)]
-pub struct POEModule<T: Config> {
+pub struct Pallet<T: Config> {
 	claims: BTreeMap<T::Content, T::AccountId>,
 }
 
-impl<T: Config> POEModule<T> {
+impl<T: Config> Pallet<T> {
 	/// Create a new instance of the POE Module.
 	pub fn new() -> Self {
 		Self { claims: BTreeMap::new() }
@@ -23,7 +23,7 @@ impl<T: Config> POEModule<T> {
 }
 
 #[macros::call]
-impl<T: Config> POEModule<T> {
+impl<T: Config> Pallet<T> {
 	pub fn create_claim(&mut self, caller: T::AccountId, claim: T::Content) -> DispatchResult {
 		if self.claims.contains_key(&claim) {
 			return Err(&"this content is already claimed");
@@ -57,7 +57,7 @@ mod test {
 
 	#[test]
 	fn basic_proof_of_existence() {
-		let mut poe = super::POEModule::<TestConfig>::new();
+		let mut poe = super::Pallet::<TestConfig>::new();
 		assert_eq!(poe.get_claim(&"Hello, world!"), None);
 		assert_eq!(poe.create_claim(&"alice", &"Hello, world!"), Ok(()));
 		assert_eq!(poe.get_claim(&"Hello, world!"), Some(&"alice"));

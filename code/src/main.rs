@@ -19,8 +19,8 @@ mod types {
 }
 
 // This is our main Runtime.
-// It accumulates all of the different modules we want to use,
-// functions implemented on the Runtime allow us to access those modules and execute blocks of
+// It accumulates all of the different pallets we want to use,
+// functions implemented on the Runtime allow us to access those pallets and execute blocks of
 // transactions.
 #[derive(Debug)]
 #[macros::runtime]

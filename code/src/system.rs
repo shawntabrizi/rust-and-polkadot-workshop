@@ -2,7 +2,7 @@ use core::ops::AddAssign;
 use num::traits::{One, Zero};
 use std::collections::BTreeMap;
 
-/// The configuration trait for the System Module.
+/// The configuration trait for the System Pallet.
 /// This controls the common types used throughout our state machine.
 pub trait Config {
 	/// A type which can identify an account in our state machine.
@@ -16,7 +16,7 @@ pub trait Config {
 	type Nonce: Zero + One + Copy;
 }
 
-/// This is the System Module.
+/// This is the System Pallet.
 /// It handles low level state needed for your blockchain.
 #[derive(Debug)]
 pub struct Pallet<T: Config> {
@@ -26,10 +26,10 @@ pub struct Pallet<T: Config> {
 	nonce: BTreeMap<T::AccountId, T::Nonce>,
 }
 
-/// The System Module is a low level system which is not really meant to be exposed to the outside
+/// The System Pallet is a low level system which is not really meant to be exposed to the outside
 /// world. Instead, these functions are used by your low level blockchain systems.
 impl<T: Config> Pallet<T> {
-	/// Create a new instance of the System Module.
+	/// Create a new instance of the System Pallet.
 	pub fn new() -> Self {
 		Self { block_number: T::BlockNumber::zero(), nonce: BTreeMap::new() }
 	}

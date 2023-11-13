@@ -38,7 +38,7 @@ impl<T: Config> Pallet<T> {
 
 #[macros::call]
 impl<T: Config> Pallet<T> {
-	/// Transfer `amount` from one another to another.
+	/// Transfer `amount` from one account to another.
 	/// This function verifies that `from` has at least `amount` balance to transfer,
 	/// and that no mathematical overflows occur.
 	pub fn transfer(

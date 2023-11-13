@@ -25,8 +25,8 @@ mod types {
 #[derive(Debug)]
 #[macros::runtime]
 pub struct Runtime {
-	system: system::SystemModule<Self>,
-	balances: balances::BalancesModule<Self>,
+	system: system::Pallet<Self>,
+	balances: balances::Pallet<Self>,
 	proof_of_existence: proof_of_existence::POEModule<Self>,
 }
 

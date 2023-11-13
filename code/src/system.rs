@@ -1,7 +1,4 @@
-use core::{
-	fmt::Debug,
-	ops::{Add, AddAssign},
-};
+use core::ops::AddAssign;
 use num::traits::{One, Zero};
 use std::collections::BTreeMap;
 
@@ -10,19 +7,19 @@ use std::collections::BTreeMap;
 pub trait Config {
 	/// A type which can identify an account in our state machine.
 	/// On a real blockchain, you would want this to be a cryptographic public key.
-	type AccountId: Debug + Default + Ord + Copy;
+	type AccountId: Ord;
 	/// A type which can be used to represent the current block number.
 	/// Usually a basic unsigned integer.
-	type BlockNumber: Debug + Default + One + Zero + AddAssign + Copy;
+	type BlockNumber: Zero + One + AddAssign + Copy;
 	/// A type which can be used to keep track of the number of transactions from each account.
 	/// Usually a basic unsigned integer.
-	type Nonce: Debug + Default + One + Zero + Add + Copy;
+	type Nonce: Zero + One + Copy;
 }
 
 /// This is the System Module.
 /// It handles low level state needed for your blockchain.
-#[derive(Default, Debug)]
-pub struct SystemModule<T: Config> {
+#[derive(Debug)]
+pub struct Pallet<T: Config> {
 	/// The current block number.
 	block_number: T::BlockNumber,
 	/// A map from an account to their nonce.
@@ -31,10 +28,10 @@ pub struct SystemModule<T: Config> {
 
 /// The System Module is a low level system which is not really meant to be exposed to the outside
 /// world. Instead, these functions are used by your low level blockchain systems.
-impl<T: Config> SystemModule<T> {
+impl<T: Config> Pallet<T> {
 	/// Create a new instance of the System Module.
 	pub fn new() -> Self {
-		Self { block_number: Default::default(), nonce: Default::default() }
+		Self { block_number: T::BlockNumber::zero(), nonce: BTreeMap::new() }
 	}
 
 	/// Get the current block number.
@@ -50,16 +47,15 @@ impl<T: Config> SystemModule<T> {
 
 	/// Increment the nonce of an account. This helps us keep track of how many transactions each
 	/// account has made.
-	pub fn inc_nonce(&mut self, who: &T::AccountId) {
-		let nonce = *self.nonce.get(who).unwrap_or(&T::Nonce::zero());
+	pub fn inc_nonce(&mut self, who: T::AccountId) {
+		let nonce = *self.nonce.get(&who).unwrap_or(&T::Nonce::zero());
 		let new_nonce = nonce + T::Nonce::one();
-		self.nonce.insert(*who, new_nonce);
+		self.nonce.insert(who, new_nonce);
 	}
 }
 
 #[cfg(test)]
 mod test {
-
 	struct TestConfig;
 	impl super::Config for TestConfig {
 		type AccountId = &'static str;
@@ -69,13 +65,11 @@ mod test {
 
 	#[test]
 	fn init_system() {
-		let mut system = super::SystemModule::<TestConfig>::new();
-		assert_eq!(system.block_number, 0);
-
+		let mut system = super::Pallet::<TestConfig>::new();
 		system.inc_block_number();
 		system.inc_nonce(&"alice");
 
-		assert_eq!(system.block_number, 1);
+		assert_eq!(system.block_number(), 1);
 		assert_eq!(system.nonce.get(&"alice"), Some(&1));
 		assert_eq!(system.nonce.get(&"bob"), None);
 	}

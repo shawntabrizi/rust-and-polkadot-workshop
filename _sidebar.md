@@ -7,3 +7,5 @@
     - [Initialize Your Balances Module](rust/initialize-balances.md)
     - [Interact With Your Balances Module](rust/interact-balances.md)
     - [Enable Balance Transfers](rust/transfer.md)
+
+- [**Learning Polkadot**](polkadot/0/)

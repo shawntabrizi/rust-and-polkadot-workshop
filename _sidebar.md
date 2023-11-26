@@ -1,6 +1,6 @@
 - [Welcome](/README.md)
 
-- [**Rust State Machine**](rust/README.md)
+- Rust State Machine
 
     - [1](rust/1/README.md)
     - [2](rust/2/README.md)

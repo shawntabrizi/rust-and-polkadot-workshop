@@ -8,12 +8,16 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css" />
+	<link rel="stylesheet" href="./custom/style.css" />
 </head>
 
 <body>
 	<div id="app"></div>
 	<script>
 		window.$docsify = {
+			requestHeaders: {
+				'cache-control': 'no-cache'
+			},
 			loadSidebar: true,
 			auto2top: true,
 			pagination: {
@@ -25,6 +29,7 @@
 	<script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
 	<script src="//unpkg.com/docsify-copy-code@2"></script>
 	<script src="https://cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+	<script src="//unpkg.com/docsify-slides/dist/docsify-slides.min.js"></script>
 	<script src="//unpkg.com/prismjs/components/prism-rust.min.js"></script>
 	<script src="//unpkg.com/prismjs/components/prism-bash.min.js"></script>
 	<script src="//unpkg.com/prismjs/components/prism-toml.min.js"></script>

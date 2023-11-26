@@ -1,6 +1,9 @@
 - [Welcome](/README.md)
 
 - Pre-Rust Content
+    - [Why Rust?](./pre-rust/why-rust.md)
+    - [Crypto Basics](./pre-rust/crypto-basics.md)
+    - [Blockchain Basics](./pre-rust/blockchain-basics.md)
 
 - Rust State Machine
 
@@ -72,6 +75,9 @@
     - [66](rust/66/README.md)
 
 - Pre-Polkadot
+    - [Polkadot Basics](./pre-polkadot/polkadot-basics.md)
+    - [Substrate Basics](./pre-polkadot/substrate-basics.md)
+    - [FRAME Basics](./pre-polkadot/frame-basics.md)
 
 - Polkadot
 

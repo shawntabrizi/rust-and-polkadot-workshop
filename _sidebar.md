@@ -1,5 +1,7 @@
 - [Welcome](/README.md)
 
+- Pre-Rust Content
+
 - Rust State Machine
 
     - [1](rust/1/README.md)
@@ -69,4 +71,8 @@
     - [65](rust/65/README.md)
     - [66](rust/66/README.md)
 
-- [**Learning Polkadot**](polkadot/0/)
+- Pre-Polkadot
+
+- Polkadot
+
+    - [0](polkadot/0/README.md)

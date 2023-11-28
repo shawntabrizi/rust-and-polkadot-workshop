@@ -19,7 +19,7 @@ console.log(`Cloning repository: ${repoUrl}`);
 simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 	if (err) {
 		console.error(`Error cloning repository: ${err}`);
-		process.exit(1);
+		process.exit();
 	}
 
 	// Get the list of commits
@@ -29,9 +29,17 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 	let stepCounter = 1;
 	let templateFound = false;
 	let solutionFound = false;
+	let templateFiles = [];
+	let solutionFiles = [];
+	let sourceFiles = [];
 
 	// Create a folder for each commit
-	commitHashes.reverse().forEach((commitInfo, index) => {
+	// Reverse to make the oldest commit first
+	// Slice to remove the very initial commit
+	commitHashes.reverse().slice(1).forEach((commitInfo, index) => {
+		if (stepCounter > 10) {
+			process.exit();
+		}
 		const [commitHash, commitMessage] = commitInfo.split('::');
 		const isTemplate = commitMessage.toLowerCase().startsWith('template: ');
 		const isSolution = commitMessage.toLowerCase().startsWith('solution: ');
@@ -41,8 +49,12 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 			fs.mkdirSync(stepFolder);
 		}
 
+		let sourceFolder = path.join(stepFolder, "source");
+		let templateFolder = path.join(stepFolder, "template");
+		let solutionFolder = path.join(stepFolder, "solution");
+
 		// Default assumption is output is not a template or solution
-		let outputFolder = path.join(stepFolder, "source")
+		let outputFolder = sourceFolder;
 
 		if (isTemplate) {
 			// Check there isn't a template already in queue
@@ -54,7 +66,7 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 			templateFound = true;
 
 			// make step folder
-			outputFolder = path.join(stepFolder, "template")
+			outputFolder = templateFolder;
 		}
 
 		if (isSolution) {
@@ -71,7 +83,7 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 			}
 
 			solutionFound = true;
-			outputFolder = path.join(stepFolder, "solution")
+			outputFolder = solutionFolder;
 		}
 
 		fs.mkdirSync(outputFolder);
@@ -84,15 +96,45 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 		execSync(`cp -r ${sourcePath}/* ${outputFolder}`);
 		console.log(`Contents of commit ${index + 1} copied to ${outputFolder}`);
 
+		// Get the list of modified or created files in the commit
+		const diffOutput = execSync(`git -C ${sourcePath} diff --name-status HEAD~1 HEAD`, { encoding: 'utf-8' }).trim().split('\n');
+
+		// Create a JSON file in the commit folder
+		const jsonFilePath = path.join(outputFolder, 'commit_info.json');
+		const commitInfoObject = {
+			commitHash,
+			commitMessage,
+			files: diffOutput.map(line => {
+				const [status, file] = line.split('\t');
+				return { status, file };
+			})
+		};
+
+		if (isTemplate) {
+			templateFiles = commitInfoObject.files;
+		} else if (isSolution) {
+			solutionFiles = commitInfoObject.files;
+		} else {
+			sourceFiles = commitInfoObject.files;
+		}
+
+		fs.writeFileSync(jsonFilePath, JSON.stringify(commitInfoObject, null, 2));
+
 		// Reset sanity check and increment step
 		// Handle when both template and solution is found,
 		// or when there is a step that is neither a template or solution
 		if ((templateFound && solutionFound) || (!templateFound && !solutionFound)) {
-			let markdownContent = "";
+
 			if (templateFound) {
 				markdownContent = templateMarkdown;
+				let templateFileText = generateFileMarkdown("template", templateFiles);
+				let solutionFileText = generateFileMarkdown("solution", solutionFiles);
+				markdownContent = markdownContent.replace("<!-- insert_template_files -->", templateFileText);
+				markdownContent = markdownContent.replace("<!-- insert_solution_files -->", solutionFileText);
 			} else {
 				markdownContent = sourceMarkdown;
+				let sourceFileText = generateFileMarkdown("source", sourceFiles);
+				markdownContent = markdownContent.replace("<!-- insert_source_files -->", sourceFileText);
 			}
 			// Create a Markdown file in the commit folder
 			const markdownFilePath = path.join(stepFolder, 'README.md');
@@ -109,14 +151,44 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 	console.log('Process completed.');
 });
 
+// Generate the markdown text for files.
+function generateFileMarkdown(type, files) {
+	// type is expected to be one of "source", "solution", or "template"
+	if (type != "solution" && type != "source" && type != "template") {
+		process.exit(1);
+	}
+
+	let output = "";
+	for (file of files) {
+		// Skip README
+		if (file.file.includes("README.md")) {
+			continue;
+		}
+		let filepath = `./${type}/${file.file}`;
+		let classStyle = `file-${type}`;
+		if (file.status == "M") {
+			classStyle += " file-modified";
+		} else if (file.status == "A") {
+			classStyle += " file-added";
+		} else if (file.status == "D") {
+			classStyle += " file-deleted";
+		}
+		let filename = path.parse(filepath).base;
+		output += `#### **<span style="${classStyle}">${filename}</span>**\n\n`
+		output += `[${filepath}](${filepath} ':include :type=code rust')\n\n`
+	}
+
+	return output
+}
+
 let templateMarkdown = `
 <!-- tabs:start -->
 
-#### **before**
+#### **template**
 
 [filename](./template/README.md ':include')
 
-#### **after**
+#### **solution**
 
 [filename](./solution/README.md ':include')
 
@@ -126,31 +198,19 @@ let templateMarkdown = `
 
 <!-- tabs:start -->
 
-#### **before**
+#### **template**
 
 <!-- tabs:start -->
 
-#### **balances.rs**
-
-[filename](./template/src/balances.rs ':include :type=code rust')
-
-#### **main.rs**
-
-[filename](./template/src/main.rs ':include :type=code rust')
+<!-- insert_template_files -->
 
 <!-- tabs:end -->
 
-#### **after**
+#### **solution**
 
 <!-- tabs:start -->
 
-#### **balances.rs**
-
-[filename](./solution/src/balances.rs ':include :type=code rust')
-
-#### **main.rs**
-
-[filename](./solution/src/main.rs ':include :type=code rust')
+<!-- insert_solution_files -->
 
 <!-- tabs:end -->
 
@@ -164,13 +224,7 @@ let sourceMarkdown = `
 
 <!-- tabs:start -->
 
-#### **balances.rs**
-
-[filename](./source/src/balances.rs ':include :type=code rust')
-
-#### **main.rs**
-
-[filename](./source/src/main.rs ':include :type=code rust')
+<!-- insert_source_files -->
 
 <!-- tabs:end -->
 `;

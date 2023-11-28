@@ -1,0 +1,10 @@
+{
+  "commitHash": "9779f6587963339ff1b0a74d665b930c9e26873b",
+  "commitMessage": "solution: introduce module level dispatch to balances",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/balances.rs"
+    }
+  ]
+}

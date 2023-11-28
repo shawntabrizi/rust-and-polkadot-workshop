@@ -1,0 +1,10 @@
+{
+  "commitHash": "b2ab8c2e9c550e0cd74599973f2138ea32f2eb7f",
+  "commitMessage": "solution: create execute block and template for dispatch",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

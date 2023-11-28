@@ -1,0 +1,26 @@
+{
+  "commitHash": "b43578540d52bdb1663b4c73a576f883d1b7f5ca",
+  "commitMessage": "cargo init",
+  "files": [
+    {
+      "status": "A",
+      "file": ".gitignore"
+    },
+    {
+      "status": "A",
+      "file": "Cargo.lock"
+    },
+    {
+      "status": "A",
+      "file": "Cargo.toml"
+    },
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "A",
+      "file": "src/main.rs"
+    }
+  ]
+}

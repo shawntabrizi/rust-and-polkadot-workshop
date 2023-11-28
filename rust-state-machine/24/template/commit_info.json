@@ -1,0 +1,10 @@
+{
+  "commitHash": "3db305ea1990d23ba26109305fa7e8aab398d357",
+  "commitMessage": "template: implement basic dispatch for transfer",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

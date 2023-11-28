@@ -1,0 +1,10 @@
+{
+  "commitHash": "4d93bf83c1b9404add028ce2a21b9ade187425ab",
+  "commitMessage": "template: add proof of existence dispatch logic",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/proof_of_existence.rs"
+    }
+  ]
+}

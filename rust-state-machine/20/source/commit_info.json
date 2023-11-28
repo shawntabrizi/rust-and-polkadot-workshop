@@ -1,0 +1,10 @@
+{
+  "commitHash": "4c6b19b2833445b4bda15a5e84dc42ff735f04c0",
+  "commitMessage": "put all type definitions together",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "commitHash": "00662a513c25d0ef0d7bf13a5c2a7a6ca20f1e84",
+  "commitMessage": "template: introduce the runtime to main",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "commitHash": "b7714bb8afd1d8d2f90f2d35919abac28b263b82",
+  "commitMessage": "template: add proof of existence functions with tests",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/proof_of_existence.rs"
+    }
+  ]
+}

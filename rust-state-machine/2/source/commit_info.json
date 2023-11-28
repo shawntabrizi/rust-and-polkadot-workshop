@@ -1,0 +1,18 @@
+{
+  "commitHash": "41bf15c9904ff083e7e8e0fa573c470d4de35301",
+  "commitMessage": "rustfmt config + fmt",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "A",
+      "file": "rustfmt.toml"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

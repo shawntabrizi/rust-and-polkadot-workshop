@@ -1,0 +1,14 @@
+{
+  "commitHash": "aa5cf2b0da37ff61fe91e4115515f47f1502f0d4",
+  "commitMessage": "cargo add num",
+  "files": [
+    {
+      "status": "M",
+      "file": "Cargo.lock"
+    },
+    {
+      "status": "M",
+      "file": "Cargo.toml"
+    }
+  ]
+}

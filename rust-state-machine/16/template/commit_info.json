@@ -1,0 +1,14 @@
+{
+  "commitHash": "e41583691ccb66f48df9e2338c971e595b97290a",
+  "commitMessage": "template: make system module generic",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/system.rs"
+    }
+  ]
+}

@@ -37,9 +37,6 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 	// Reverse to make the oldest commit first
 	// Slice to remove the very initial commit
 	commitHashes.reverse().slice(1).forEach((commitInfo, index) => {
-		if (stepCounter > 10) {
-			process.exit();
-		}
 		const [commitHash, commitMessage] = commitInfo.split('::');
 		const isTemplate = commitMessage.toLowerCase().startsWith('template: ');
 		const isSolution = commitMessage.toLowerCase().startsWith('solution: ');
@@ -124,7 +121,6 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 		// Handle when both template and solution is found,
 		// or when there is a step that is neither a template or solution
 		if ((templateFound && solutionFound) || (!templateFound && !solutionFound)) {
-
 			if (templateFound) {
 				markdownContent = templateMarkdown;
 				let templateFileText = generateFileMarkdown("template", templateFiles);
@@ -165,6 +161,7 @@ function generateFileMarkdown(type, files) {
 			continue;
 		}
 		let filepath = `./${type}/${file.file}`;
+
 		let classStyle = `file-${type}`;
 		if (file.status == "M") {
 			classStyle += " file-modified";
@@ -173,26 +170,25 @@ function generateFileMarkdown(type, files) {
 		} else if (file.status == "D") {
 			classStyle += " file-deleted";
 		}
+
+		let codeStyle = "text";
+		let extname = path.extname(filepath);
+		if (extname == ".rs") {
+			codeStyle = "rust"
+		} else if (extname == ".toml") {
+			codeStyle = "toml"
+		}
+
 		let filename = path.parse(filepath).base;
-		output += `#### **<span style="${classStyle}">${filename}</span>**\n\n`
-		output += `[${filepath}](${filepath} ':include :type=code rust')\n\n`
+		output += `#### **<span class="${classStyle}">${filename}</span>**\n\n`
+		output += `[${filepath}](${filepath} ':include :type=code ${codeStyle}')\n\n`
 	}
 
 	return output
 }
 
 let templateMarkdown = `
-<!-- tabs:start -->
-
-#### **template**
-
 [filename](./template/README.md ':include')
-
-#### **solution**
-
-[filename](./solution/README.md ':include')
-
-<!-- tabs:end -->
 
 <!-- slide:break -->
 

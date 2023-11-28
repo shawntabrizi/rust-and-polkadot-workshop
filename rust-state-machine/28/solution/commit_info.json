@@ -1,0 +1,14 @@
+{
+  "commitHash": "44710186478847a073f99432a1ce36a3ec685b8f",
+  "commitMessage": "solution: introduce proof of existence module",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/proof_of_existence.rs"
+    }
+  ]
+}

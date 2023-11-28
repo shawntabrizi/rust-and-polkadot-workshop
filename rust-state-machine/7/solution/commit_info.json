@@ -1,0 +1,14 @@
+{
+  "commitHash": "8caaaafa667c06c45162e201109470ac24935048",
+  "commitMessage": "solution: add transfer and test",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
+    }
+  ]
+}

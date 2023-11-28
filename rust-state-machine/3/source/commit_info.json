@@ -1,0 +1,18 @@
+{
+  "commitHash": "c5c4504537d7a37622d652fa803909007cd52c42",
+  "commitMessage": "introduce balances module",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "A",
+      "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "commitHash": "5e61fc20435a972b8673df71c3945c03ea7fd989",
+  "commitMessage": "solution: implement nested dispatch",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

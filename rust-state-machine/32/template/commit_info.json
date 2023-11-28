@@ -1,0 +1,10 @@
+{
+  "commitHash": "b15e4ee13f4c9404441daf07932b9f389ad754bc",
+  "commitMessage": "template: add blocks which execute proof of existence",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

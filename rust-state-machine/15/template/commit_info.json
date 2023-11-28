@@ -1,0 +1,14 @@
+{
+  "commitHash": "eea9e1c6bb771abea010f3726bf2999ae89200ad",
+  "commitMessage": "template: make balances module generic",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

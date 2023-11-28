@@ -1,0 +1,10 @@
+{
+  "commitHash": "b6a46382b12dbb4f42090f89699772b5570d63df",
+  "commitMessage": "solution: use runtime macro in main",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

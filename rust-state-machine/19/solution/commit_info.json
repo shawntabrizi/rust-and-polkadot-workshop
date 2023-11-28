@@ -1,0 +1,14 @@
+{
+  "commitHash": "ff511a4aa7e5cee2981b11a74e9b7a47dd216f0d",
+  "commitMessage": "solution: tightly couple balances to system",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

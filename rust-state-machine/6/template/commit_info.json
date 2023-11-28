@@ -1,0 +1,14 @@
+{
+  "commitHash": "d66e408b59a13f76a4a418522dadfc0c5c2eea65",
+  "commitMessage": "template: add basic balances test",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "commitHash": "1c2319b2a8256b455e5a6b061cdb0ccb362297da",
+  "commitMessage": "solution: implement basic dispatch for transfer",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "commitHash": "dbac3dbd17677444822855d0ccd5f2d11e10ac1e",
+  "commitMessage": "template: add debug and print the runtime state",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/system.rs"
+    }
+  ]
+}

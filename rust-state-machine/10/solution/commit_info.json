@@ -1,0 +1,10 @@
+{
+  "commitHash": "611b7169cef7d33bd0b79254636cfbbdf8e50ab1",
+  "commitMessage": "solution: introduce the runtime to main",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

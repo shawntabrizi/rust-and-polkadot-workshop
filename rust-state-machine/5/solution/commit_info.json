@@ -1,0 +1,14 @@
+{
+  "commitHash": "b026c31820d810eafcad6e5ff00c35cd155d5f2c",
+  "commitMessage": "solution: add set and get balances",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
+    }
+  ]
+}

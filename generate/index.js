@@ -95,6 +95,11 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 
 		// Get the list of modified or created files in the commit
 		const diffOutput = execSync(`git -C ${sourcePath} diff --name-status HEAD~1 HEAD`, { encoding: 'utf-8' }).trim().split('\n');
+		const diffRaw = execSync(`git -C ${sourcePath} diff -U10000 HEAD~1 HEAD ':(exclude)README.md'`, { encoding: 'utf-8' });
+
+		// Create a raw output
+		const diffFilePath = path.join(outputFolder, 'changes.diff');
+		fs.writeFileSync(diffFilePath, diffRaw);
 
 		// Create a JSON file in the commit folder
 		const jsonFilePath = path.join(outputFolder, 'commit_info.json');

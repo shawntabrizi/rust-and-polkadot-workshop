@@ -172,6 +172,10 @@ function generateFileMarkdown(type, files) {
 		if (filename.startsWith(".")) {
 			continue;
 		}
+		// Skip Cargo.lock
+		if (filename == "Cargo.lock") {
+			continue;
+		}
 
 		let classStyle = `file-${type}`;
 		if (file.status == "M") {

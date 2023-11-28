@@ -1,22 +1,22 @@
-# Interacting With Balances
+# Basic Balance Test
 
-Now that we have the basics of our `BalancesModule` set up, let's actually interact with it.
+Now that we have the basics of our `Pallet` set up, let's actually interact with it.
 
 For that, we will go back to the `main.rs` file, and create our first `#[test]` which will play with the code we have written so far.
 
-1. In your `src/main.rs` file, add a new test named `fn init_balances()`:
+1. In your `src/balances.rs` file, add a new `#[test]` named `fn init_balances()`:
 
 	```rust
 	#[test]
 	fn init_balances() { }
 	```
 
-2. To begin our test, we need to initialize a new instance of our `BalancesModule`:
+2. To begin our test, we need to initialize a new instance of our `Pallet`:
 
 	```rust
 	#[test]
 	fn init_balances() {
-		let mut balances = balances::BalancesModule::new();
+		let mut balances = balances::Pallet::new();
 	}
 	```
 
@@ -27,7 +27,7 @@ For that, we will go back to the `main.rs` file, and create our first `#[test]` 
 	```rust
 	#[test]
 	fn init_balances() {
-		let mut balances = balances::BalancesModule::new();
+		let mut balances = balances::Pallet::new();
 
 		assert_eq!(balances.balance(&"alice"), 0);
 		balances.set_balance(&"alice", 100);
@@ -36,10 +36,9 @@ For that, we will go back to the `main.rs` file, and create our first `#[test]` 
 	}
 	```
 
-4. We can run this specific test using `cargo test init_balances`, where hopefully you should see that it passes.
+4. We can run our tests using `cargo test`, where hopefully you should see that it passes.
 
 I hope at this point you can start to see the beginnings of your simple blockchain state machine.
-
 
 <!-- slide:break -->
 
@@ -49,7 +48,7 @@ I hope at this point you can start to see the beginnings of your simple blockcha
 
 <!-- tabs:start -->
 
-#### **balances.rs**
+#### **<span class="code-todo">balances.rs</span>**
 
 [filename](./src/balances.rs ':include :type=code rust')
 
@@ -63,7 +62,7 @@ I hope at this point you can start to see the beginnings of your simple blockcha
 
 <!-- tabs:start -->
 
-#### **balances.rs**
+#### **<span class="code-complete">balances.rs</span>**
 
 [filename](./src/balances.rs ':include :type=code rust')
 

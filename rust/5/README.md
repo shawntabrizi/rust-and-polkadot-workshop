@@ -45,6 +45,16 @@ You can confirm at this point that everything should still be compiling, and tha
 
 Next we will actually start to **use** this module.
 
+## Notes
+
+It is important to note that this is NOT how Pallet storage works with the Polkadot SDK, but just a simple emulation of the behaviors.
+
+In the Polkadot SDK, there is a separate storage layer which manages a proper key-value database which holds all the information (past and present) of our blockchain system. There are abstractions which look and behave just like a `BTreeMap` in the Polkadot SDK, but the underlying logic which maintains that data is much more complex.
+
+Using simple fields in a struct keeps this project simple, and illustrates that each Pallet really is meant to manage it's own storage. However, this simplification also leads to issues if you design more complex systems where multiple pallets interact with one another.
+
+We won't have any cross pallet interactions in this workshop, however, this is definitely doable with the Polkadot SDK and a proper database.
+
 <!-- slide:break -->
 
 <!-- tabs:start -->

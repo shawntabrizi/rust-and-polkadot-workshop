@@ -156,11 +156,17 @@ function generateFileMarkdown(type, files) {
 
 	let output = "";
 	for (file of files) {
+		let filepath = `./${type}/${file.file}`;
+		let filename = path.parse(filepath).base;
+
 		// Skip README
-		if (file.file.includes("README.md")) {
+		if (filename == "README.md") {
 			continue;
 		}
-		let filepath = `./${type}/${file.file}`;
+		// Skip hidden files
+		if (filename.startsWith(".")) {
+			continue;
+		}
 
 		let classStyle = `file-${type}`;
 		if (file.status == "M") {
@@ -179,7 +185,6 @@ function generateFileMarkdown(type, files) {
 			codeStyle = "toml"
 		}
 
-		let filename = path.parse(filepath).base;
 		output += `#### **<span class="${classStyle}">${filename}</span>**\n\n`
 		output += `[${filepath}](${filepath} ':include :type=code ${codeStyle}')\n\n`
 	}

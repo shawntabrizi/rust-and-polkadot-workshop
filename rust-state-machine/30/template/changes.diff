@@ -1,8 +1,8 @@
 diff --git a/src/main.rs b/src/main.rs
-index c177b41..69a1bca 100644
+index cb1a72b..9fbd215 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,129 +1,139 @@
+@@ -1,130 +1,140 @@
  mod balances;
  mod proof_of_existence;
  mod support;
@@ -19,7 +19,8 @@ index c177b41..69a1bca 100644
  	pub type BlockNumber = u32;
  	pub type Nonce = u32;
  	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
- 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
+ 	pub type Header = crate::support::Header<BlockNumber>;
+ 	pub type Block = crate::support::Block<Header, Extrinsic>;
 +	/* TODO: Add the concrete `Content` type for your runtime. */
  }
  

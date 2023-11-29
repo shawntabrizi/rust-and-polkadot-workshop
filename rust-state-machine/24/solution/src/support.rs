@@ -1,7 +1,7 @@
 /// The most primitive representation of a Blockchain block.
-pub struct Block<BlockNumber, Extrinsic> {
+pub struct Block<Header, Extrinsic> {
 	/// The block header contains metadata about the block.
-	pub header: Header<BlockNumber>,
+	pub header: Header,
 	/// The extrinsics represent the state transitions to be executed in this block.
 	pub extrinsics: Vec<Extrinsic>,
 }

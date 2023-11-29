@@ -14,7 +14,8 @@ mod types {
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
-	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
+	pub type Header = crate::support::Header<BlockNumber>;
+	pub type Block = crate::support::Block<Header, Extrinsic>;
 	/* TODO: Add the concrete `Content` type for your runtime. */
 }
 

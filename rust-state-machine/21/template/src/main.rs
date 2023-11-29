@@ -11,7 +11,8 @@ mod types {
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
 	/* TODO: Define a concrete `Extrinsic` type using `AccountId` and `RuntimeCall`. */
-	/* TODO: Define a concrete `Block` type using `BlockNumber` and `Extrinsic`. */
+	/* TODO: Define a concrete `Header` type using `BlockNumber`. */
+	/* TODO: Define a concrete `Block` type using `Header` and `Extrinsic`. */
 }
 
 // These are all the calls which are exposed to the world.

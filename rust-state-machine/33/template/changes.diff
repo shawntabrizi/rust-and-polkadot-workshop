@@ -133,10 +133,10 @@ index 34debc2..b0b3191 100644
  	}
  }
 diff --git a/src/main.rs b/src/main.rs
-index ea955bc..7683b88 100644
+index 75288c5..e02b372 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,181 +1,183 @@
+@@ -1,182 +1,184 @@
  mod balances;
  mod proof_of_existence;
  mod support;
@@ -153,7 +153,8 @@ index ea955bc..7683b88 100644
  	pub type BlockNumber = u32;
  	pub type Nonce = u32;
  	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
- 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
+ 	pub type Header = crate::support::Header<BlockNumber>;
+ 	pub type Block = crate::support::Block<Header, Extrinsic>;
  	pub type Content = &'static str;
  }
  

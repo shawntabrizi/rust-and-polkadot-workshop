@@ -1,8 +1,8 @@
 diff --git a/src/main.rs b/src/main.rs
-index e40f194..9a47239 100644
+index e40f194..d263480 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,60 +1,68 @@
+@@ -1,60 +1,69 @@
  mod balances;
  mod support;
  mod system;
@@ -16,7 +16,8 @@ index e40f194..9a47239 100644
  	pub type BlockNumber = u32;
  	pub type Nonce = u32;
 +	/* TODO: Define a concrete `Extrinsic` type using `AccountId` and `RuntimeCall`. */
-+	/* TODO: Define a concrete `Block` type using `BlockNumber` and `Extrinsic`. */
++	/* TODO: Define a concrete `Header` type using `BlockNumber`. */
++	/* TODO: Define a concrete `Block` type using `Header` and `Extrinsic`. */
 +}
 +
 +// These are all the calls which are exposed to the world.

@@ -1,8 +1,8 @@
 diff --git a/src/main.rs b/src/main.rs
-index 9a47239..08d4306 100644
+index d263480..1a4e55f 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,68 +1,68 @@
+@@ -1,69 +1,69 @@
  mod balances;
  mod support;
  mod system;
@@ -16,9 +16,11 @@ index 9a47239..08d4306 100644
  	pub type BlockNumber = u32;
  	pub type Nonce = u32;
 -	/* TODO: Define a concrete `Extrinsic` type using `AccountId` and `RuntimeCall`. */
--	/* TODO: Define a concrete `Block` type using `BlockNumber` and `Extrinsic`. */
+-	/* TODO: Define a concrete `Header` type using `BlockNumber`. */
+-	/* TODO: Define a concrete `Block` type using `Header` and `Extrinsic`. */
 +	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
-+	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
++	pub type Header = crate::support::Header<BlockNumber>;
++	pub type Block = crate::support::Block<Header, Extrinsic>;
  }
  
  // These are all the calls which are exposed to the world.

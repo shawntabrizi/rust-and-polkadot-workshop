@@ -1,8 +1,8 @@
 diff --git a/src/main.rs b/src/main.rs
-index a192630..f88f0c1 100644
+index 45c76fb..74a9252 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,132 +1,128 @@
+@@ -1,133 +1,129 @@
  mod balances;
  mod support;
  mod system;
@@ -18,7 +18,8 @@ index a192630..f88f0c1 100644
  	pub type BlockNumber = u32;
  	pub type Nonce = u32;
  	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
- 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
+ 	pub type Header = crate::support::Header<BlockNumber>;
+ 	pub type Block = crate::support::Block<Header, Extrinsic>;
  }
  
  // These are all the calls which are exposed to the world.

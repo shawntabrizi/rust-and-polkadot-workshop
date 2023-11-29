@@ -1,5 +1,5 @@
 {
-  "commitHash": "0b6cc27206c27e7b96b44ecd7662374a913c9082",
+  "commitHash": "21a71cb71f6a0f86137c33ce1f3273c753933138",
   "commitMessage": "template: use call macro in balances",
   "files": [
     {

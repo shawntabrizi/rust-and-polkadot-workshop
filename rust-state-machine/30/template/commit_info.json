@@ -1,5 +1,5 @@
 {
-  "commitHash": "7b418c8f2378f9b844c45be1c995666840fcd60e",
+  "commitHash": "85b9ba64a19f85796012d034d35ba704628a6e9e",
   "commitMessage": "template: integrate proof of existence into the runtime",
   "files": [
     {

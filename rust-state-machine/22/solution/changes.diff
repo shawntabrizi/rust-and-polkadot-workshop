@@ -1,8 +1,8 @@
 diff --git a/src/main.rs b/src/main.rs
-index 4f09a5a..96baee0 100644
+index ce7c210..a621e55 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,104 +1,107 @@
+@@ -1,105 +1,108 @@
  mod balances;
  mod support;
  mod system;
@@ -59,10 +59,11 @@ index 4f09a5a..96baee0 100644
 -			- Increment the system's block number.
 -			- Check that the block number of the incoming block matches the current block number,
 -			  or return an error.
--			- Iterate over the extrinsics in the block, and dispatch them using the `caller` and the
--			  `call` contained in the extrinsic.
--			- Handle errors from `dispatch` same as we did for individual calls: printing any
--			  error and capturing the result.
+-			- Iterate over the extrinsics in the block...
+-				- Increment the nonce of the caller.
+-				- Dispatch the extrinsic using the `caller` and the `call` contained in the extrinsic.
+-				- Handle errors from `dispatch` same as we did for individual calls: printing any
+-				  error and capturing the result.
 -				- You can extend the error message to include information like the block number and
 -				  extrinsic number.
 -		*/
@@ -73,6 +74,7 @@ index 4f09a5a..96baee0 100644
 +		// An extrinsic error is not enough to trigger the block to be invalid. We capture the
 +		// result, and emit an error message if one is emitted.
 +		for (i, support::Extrinsic { caller, call }) in block.extrinsics.into_iter().enumerate() {
++			self.system.inc_nonce(&caller);
 +			let _res = self.dispatch(caller, call).map_err(|e| {
 +				eprintln!(
 +					"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",

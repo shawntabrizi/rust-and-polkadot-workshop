@@ -1,8 +1,8 @@
 diff --git a/src/main.rs b/src/main.rs
-index 2ab0015..6641202 100644
+index 3822e51..d5b7e9a 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,123 +1,116 @@
+@@ -1,122 +1,115 @@
  mod balances;
  mod support;
  mod system;
@@ -65,6 +65,7 @@ index 2ab0015..6641202 100644
  		// An extrinsic error is not enough to trigger the block to be invalid. We capture the
  		// result, and emit an error message if one is emitted.
  		for (i, support::Extrinsic { caller, call }) in block.extrinsics.into_iter().enumerate() {
+ 			self.system.inc_nonce(&caller);
  			let _res = self.dispatch(caller, call).map_err(|e| {
  				eprintln!(
  					"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
@@ -89,8 +90,6 @@ index 2ab0015..6641202 100644
  		caller: Self::Caller,
  		runtime_call: Self::Call,
  	) -> support::DispatchResult {
--		/* TODO: Increment the nonce of the caller. */
--
 -		/*
 -			TODO:
 -			Use a match statement to route the `runtime_call` to call the appropriate function in
@@ -102,8 +101,6 @@ index 2ab0015..6641202 100644
 -
 -			You should propagate any errors from the call back up this function.
 -		*/
-+		self.system.inc_nonce(&caller);
-+
 +		// This match statement will allow us to correctly route `RuntimeCall`s
 +		// to the appropriate pallet level function.
 +		match runtime_call {

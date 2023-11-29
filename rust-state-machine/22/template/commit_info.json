@@ -1,7 +1,11 @@
 {
-  "commitHash": "76ef9b4224c586dc5b9869e441a8a27c4a54f96e",
+  "commitHash": "768bc78a15f8940c41ea829d2f40b1e23a36afb5",
   "commitMessage": "template: create execute block and template for dispatch",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/main.rs"

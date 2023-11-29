@@ -1,7 +1,11 @@
 {
-  "commitHash": "5624534ef3a82abb74bd5bb7e48415d77a68f13a",
+  "commitHash": "5f112437b49ee6ba489d6769165b590fa4351dd2",
   "commitMessage": "solution: implement basic dispatch for transfer",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/main.rs"

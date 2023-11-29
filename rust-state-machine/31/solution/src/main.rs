@@ -68,6 +68,7 @@ impl Runtime {
 		// An extrinsic error is not enough to trigger the block to be invalid. We capture the
 		// result, and emit an error message if one is emitted.
 		for (i, support::Extrinsic { caller, call }) in block.extrinsics.into_iter().enumerate() {
+			self.system.inc_nonce(&caller);
 			let _res = self.dispatch(caller, call).map_err(|e| {
 				eprintln!(
 					"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
@@ -92,8 +93,6 @@ impl crate::support::Dispatch for Runtime {
 		caller: Self::Caller,
 		runtime_call: Self::Call,
 	) -> support::DispatchResult {
-		self.system.inc_nonce(&caller);
-
 		// This match statement will allow us to correctly route `RuntimeCall`s
 		// to the appropriate pallet level function.
 		match runtime_call {

@@ -1,8 +1,8 @@
 diff --git a/src/main.rs b/src/main.rs
-index 1a4e55f..4f09a5a 100644
+index 1a4e55f..ce7c210 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,69 +1,104 @@
+@@ -1,69 +1,105 @@
  mod balances;
  mod support;
  mod system;
@@ -58,10 +58,11 @@ index 1a4e55f..4f09a5a 100644
 +			- Increment the system's block number.
 +			- Check that the block number of the incoming block matches the current block number,
 +			  or return an error.
-+			- Iterate over the extrinsics in the block, and dispatch them using the `caller` and the
-+			  `call` contained in the extrinsic.
-+			- Handle errors from `dispatch` same as we did for individual calls: printing any
-+			  error and capturing the result.
++			- Iterate over the extrinsics in the block...
++				- Increment the nonce of the caller.
++				- Dispatch the extrinsic using the `caller` and the `call` contained in the extrinsic.
++				- Handle errors from `dispatch` same as we did for individual calls: printing any
++				  error and capturing the result.
 +				- You can extend the error message to include information like the block number and
 +				  extrinsic number.
 +		*/

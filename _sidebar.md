@@ -7,41 +7,7 @@
 
 - Rust State Machine
 
-    - [1. Initialize your Rust Project](rust-state-machine/1/README.md)
-    - [2. Rust Tooling](rust-state-machine/2/README.md)
-    - [3. Creating a Balances Pallet](rust-state-machine/3/README.md)
-    - [4. Adding State to Our Pallet](rust-state-machine/4/README.md)
-    - [5. Interacting with Balances](rust-state-machine/5/README.md)
-    - [6. Basic Balance Test](rust-state-machine/6/README.md)
-    - [7. Enable Balance Transfers](rust-state-machine/7/README.md)
-    - [8. Introduce the System Pallet](rust-state-machine/8/README.md)
-    - [9. Making Your System Functional](rust-state-machine/9/README.md)
-    - [10. Creating Our Runtime](rust-state-machine/10/README.md)
-    - [11. Using Our Runtime](rust-state-machine/11/README.md)
-    - [12. Derive Debug](rust-state-machine/12/README.md)
-    - [13. Using Named Types](rust-state-machine/13/README.md)
-    - [14. Import the Num Crate](rust-state-machine/14/README.md)
-    - [15. Make Balances Pallet Generic](rust-state-machine/15/README.md)
-    - [16. Make System Pallet Generic](rust-state-machine/16/README.md)
-    - [17. Make System Configurable](rust-state-machine/17/README.md)
-    - [18. Make Balances Configurable](rust-state-machine/18/README.md)
-    - [19. Tight Coupling](rust-state-machine/19/README.md)
-    - [20. Tight Coupling](rust-state-machine/20/README.md)
-    - [21. Tight Coupling](rust-state-machine/21/README.md)
-    - [22. Tight Coupling](rust-state-machine/22/README.md)
-    - [23. Tight Coupling](rust-state-machine/23/README.md)
-    - [24. Tight Coupling](rust-state-machine/24/README.md)
-    - [25. Tight Coupling](rust-state-machine/25/README.md)
-    - [26. Tight Coupling](rust-state-machine/26/README.md)
-    - [27. Tight Coupling](rust-state-machine/27/README.md)
-    - [28. Tight Coupling](rust-state-machine/28/README.md)
-    - [29. Tight Coupling](rust-state-machine/29/README.md)
-    - [30. Tight Coupling](rust-state-machine/30/README.md)
-    - [31. Tight Coupling](rust-state-machine/31/README.md)
-    - [32. Tight Coupling](rust-state-machine/32/README.md)
-    - [33. Tight Coupling](rust-state-machine/33/README.md)
-    - [34. Tight Coupling](rust-state-machine/34/README.md)
-    - [35. Tight Coupling](rust-state-machine/35/README.md)
+    - [Start](rust-state-machine/1/README.md)
 
 - Pre-Polkadot
     - [Polkadot Basics](./pre-polkadot/polkadot-basics.md)
@@ -50,4 +16,4 @@
 
 - Polkadot
 
-    - [0](polkadot/0/README.md)
+    - [Start](polkadot/0/README.md)

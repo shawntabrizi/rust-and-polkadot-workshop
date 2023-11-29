@@ -464,10 +464,10 @@ index 0000000..56a1bcf
 +}
 diff --git a/macros/src/runtime/expand.rs b/macros/src/runtime/expand.rs
 new file mode 100644
-index 0000000..ae49e90
+index 0000000..71ab305
 --- /dev/null
 +++ b/macros/src/runtime/expand.rs
-@@ -0,0 +1,92 @@
+@@ -0,0 +1,91 @@
 +use super::parse::RuntimeDef;
 +use quote::quote;
 +
@@ -501,6 +501,7 @@ index 0000000..ae49e90
 +					return Err(&"block number does not match what is expected")
 +				}
 +				for (i, support::Extrinsic { caller, call }) in block.extrinsics.into_iter().enumerate() {
++					self.system.inc_nonce(&caller);
 +					let _res = self.dispatch(caller, call).map_err(|e| {
 +						eprintln!(
 +							"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
@@ -537,8 +538,6 @@ index 0000000..ae49e90
 +				caller: Self::Caller,
 +				runtime_call: Self::Call,
 +			) -> crate::support::DispatchResult {
-+				self.system.inc_nonce(&caller);
-+
 +				// This match statement will allow us to correctly route `RuntimeCall`s
 +				// to the appropriate pallet level call.
 +				match runtime_call {

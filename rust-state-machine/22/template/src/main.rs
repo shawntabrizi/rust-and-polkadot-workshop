@@ -53,10 +53,11 @@ impl Runtime {
 			- Increment the system's block number.
 			- Check that the block number of the incoming block matches the current block number,
 			  or return an error.
-			- Iterate over the extrinsics in the block, and dispatch them using the `caller` and the
-			  `call` contained in the extrinsic.
-			- Handle errors from `dispatch` same as we did for individual calls: printing any
-			  error and capturing the result.
+			- Iterate over the extrinsics in the block...
+				- Increment the nonce of the caller.
+				- Dispatch the extrinsic using the `caller` and the `call` contained in the extrinsic.
+				- Handle errors from `dispatch` same as we did for individual calls: printing any
+				  error and capturing the result.
 				- You can extend the error message to include information like the block number and
 				  extrinsic number.
 		*/

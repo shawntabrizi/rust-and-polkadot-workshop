@@ -31,6 +31,7 @@ pub fn expand_runtime(def: RuntimeDef) -> proc_macro2::TokenStream {
 					return Err(&"block number does not match what is expected")
 				}
 				for (i, support::Extrinsic { caller, call }) in block.extrinsics.into_iter().enumerate() {
+					self.system.inc_nonce(&caller);
 					let _res = self.dispatch(caller, call).map_err(|e| {
 						eprintln!(
 							"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
@@ -67,8 +68,6 @@ pub fn expand_runtime(def: RuntimeDef) -> proc_macro2::TokenStream {
 				caller: Self::Caller,
 				runtime_call: Self::Call,
 			) -> crate::support::DispatchResult {
-				self.system.inc_nonce(&caller);
-
 				// This match statement will allow us to correctly route `RuntimeCall`s
 				// to the appropriate pallet level call.
 				match runtime_call {

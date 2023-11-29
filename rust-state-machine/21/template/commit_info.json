@@ -1,0 +1,10 @@
+{
+  "commitHash": "c7ef27685e475cf1d98923046226e38db1e9c35f",
+  "commitMessage": "template: construct concrete support types",
+  "files": [
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

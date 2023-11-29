@@ -9,9 +9,9 @@ use crate::support::Dispatch;
 // trait requirements.
 mod types {
 	pub type AccountId = &'static str;
+	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
-	pub type Balance = u128;
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
 }
@@ -19,10 +19,7 @@ mod types {
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
-	/* TODO: Create an enum variant `BalancesTransfer` which contains named fields:
-		- `to`: an `AccountId`
-		- `amount`: a `Balance`
-	*/
+	BalancesTransfer { to: types::AccountId, amount: types::Balance },
 }
 
 // This is our main Runtime.
@@ -82,25 +79,25 @@ impl crate::support::Dispatch for Runtime {
 		caller: Self::Caller,
 		runtime_call: Self::Call,
 	) -> support::DispatchResult {
-		/* TODO: Increment the nonce of the caller. */
+		self.system.inc_nonce(&caller);
 
-		/*
-			TODO:
-			Use a match statement to route the `runtime_call` to call the appropriate function in
-			our pallet. In this case, there is only `self.balances.transfer`.
-
-			Your `runtime_call` won't contain the caller information which is needed to make the
-			`transfer` call, but you have that information from the arguments to the `dispatch`
-			function.
-
-			You should propagate any errors from the call back up this function.
-		*/
+		// This match statement will allow us to correctly route `RuntimeCall`s
+		// to the appropriate pallet level function.
+		match runtime_call {
+			RuntimeCall::BalancesTransfer { to, amount } => {
+				self.balances.transfer(caller, to, amount)?;
+			},
+		}
 		Ok(())
 	}
 }
 
 fn main() {
+	// Create a new instance of the Runtime.
+	// It will instantiate with it all the modules it uses.
 	let mut runtime = Runtime::new();
+
+	// Initialize the system with some initial balance.
 	runtime.balances.set_balance(&"alice", 100);
 
 	// start emulating a block
@@ -118,5 +115,20 @@ fn main() {
 		.transfer(&"alice", &"charlie", 20)
 		.map_err(|e| eprintln!("{}", e));
 
+	/*
+		TODO: Replace the logic above with a new `Block`.
+			- Set the block number to 1 in the `Header`.
+			- Move your existing transactions into extrinsic format, using the
+			  `Extrinsic` and `RuntimeCall`.
+	*/
+
+	/*
+		TODO:
+		Use your `runtime` to call the `execute_block` function with your new block.
+		If the `execute_block` function returns an error, you should panic!
+		We `expect` that all the blocks being executed must be valid.
+	*/
+
+	// Simply print the debug format of our runtime state.
 	println!("{:#?}", runtime);
 }

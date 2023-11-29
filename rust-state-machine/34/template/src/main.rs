@@ -10,9 +10,9 @@ use crate::support::Dispatch;
 // trait requirements.
 mod types {
 	pub type AccountId = &'static str;
+	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
-	pub type Balance = u128;
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
 	pub type Content = &'static str;
@@ -122,13 +122,11 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: &"alice",
-				/* TODO: Update the enum name to match what is generated with the macro. */
-				call: RuntimeCall::Balances(balances::Call::Transfer { to: &"bob", amount: 20 }),
+				call: RuntimeCall::Balances(balances::Call::transfer { to: &"bob", amount: 20 }),
 			},
 			support::Extrinsic {
 				caller: &"alice",
-				/* TODO: Update the enum name to match what is generated with the macro. */
-				call: RuntimeCall::Balances(balances::Call::Transfer {
+				call: RuntimeCall::Balances(balances::Call::transfer {
 					to: &"charlie",
 					amount: 20,
 				}),
@@ -136,6 +134,7 @@ fn main() {
 		],
 	};
 
+	/* TODO: Update the extrinsics below for the updated format after the macros. */
 	let block_2 = types::Block {
 		header: support::Header { block_number: 2 },
 		extrinsics: vec![

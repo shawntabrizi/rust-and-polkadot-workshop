@@ -1,10 +1,10 @@
 {
-  "commitHash": "02b125b5cc36d90b6b8c4e0a7f5a05ee165341d2",
-  "commitMessage": "template: introduce module level dispatch to balances",
+  "commitHash": "90393f78c5009ea92787d3294cbd8ccc9429c1a6",
+  "commitMessage": "template: implement nested dispatch",
   "files": [
     {
       "status": "M",
-      "file": "src/balances.rs"
+      "file": "src/main.rs"
     }
   ]
 }

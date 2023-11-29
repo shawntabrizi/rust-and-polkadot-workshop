@@ -1,32 +1,14 @@
 
-[filename](./template/README.md ':include')
+[filename](./source/README.md ':include')
 
 <!-- slide:break -->
 
 <!-- tabs:start -->
 
-#### **template**
+#### **<span class="file-source file-added">export_tutorial.sh</span>**
 
-<!-- tabs:start -->
-
-#### **<span class="file-template file-modified">main.rs</span>**
-
-[./template/src/main.rs](./template/src/main.rs ':include :type=code rust')
+[./source/export_tutorial.sh](./source/export_tutorial.sh ':include :type=code text')
 
 
-
-<!-- tabs:end -->
-
-#### **solution**
-
-<!-- tabs:start -->
-
-#### **<span class="file-solution file-modified">main.rs</span>**
-
-[./solution/src/main.rs](./solution/src/main.rs ':include :type=code rust')
-
-
-
-<!-- tabs:end -->
 
 <!-- tabs:end -->

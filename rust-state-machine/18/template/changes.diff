@@ -99,28 +99,35 @@ index 4519171..eacb2ef 100644
  	}
  }
 diff --git a/src/main.rs b/src/main.rs
-index acd3ed7..bc74cb6 100644
+index 4eb1f16..4605a58 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,48 +1,54 @@
+@@ -1,55 +1,61 @@
  mod balances;
  mod system;
  
- type AccountId = &'static str;
- type Balance = u128;
+ // These are the concrete types we will use in our simple state machine.
+ // Modules are configured for these types directly, and they satisfy all of our
+ // trait requirements.
+ mod types {
+ 	pub type AccountId = &'static str;
+ 	pub type Balance = u128;
+ 	pub type BlockNumber = u32;
+ 	pub type Nonce = u32;
+ }
  
  // This is our main Runtime.
  // It accumulates all of the different pallets we want to use.
  #[derive(Debug)]
  pub struct Runtime {
  	system: system::Pallet<Self>,
- 	balances: balances::Pallet<AccountId, Balance>,
+ 	balances: balances::Pallet<types::AccountId, types::Balance>,
  }
  
  impl system::Config for Runtime {
- 	type AccountId = &'static str;
- 	type BlockNumber = u32;
- 	type Nonce = u32;
+ 	type AccountId = types::AccountId;
+ 	type BlockNumber = types::BlockNumber;
+ 	type Nonce = types::Nonce;
  }
  
 +/*

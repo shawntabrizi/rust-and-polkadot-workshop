@@ -42,7 +42,6 @@
     - [33. Tight Coupling](rust-state-machine/33/README.md)
     - [34. Tight Coupling](rust-state-machine/34/README.md)
     - [35. Tight Coupling](rust-state-machine/35/README.md)
-    - [36. Tight Coupling](rust-state-machine/36/README.md)
 
 - Pre-Polkadot
     - [Polkadot Basics](./pre-polkadot/polkadot-basics.md)

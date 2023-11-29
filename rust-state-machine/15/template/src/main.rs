@@ -1,9 +1,14 @@
 mod balances;
 mod system;
 
-/*
-	TODO: Move your type definitions for `AccountId` and `Balance` here.
-*/
+// These are the concrete types we will use in our simple state machine.
+// Modules are configured for these types directly, and they satisfy all of our
+// trait requirements.
+mod types {
+	/*
+		TODO: Move your type definitions for `AccountId` and `Balance` here.
+	*/
+}
 
 // This is our main Runtime.
 // It accumulates all of the different pallets we want to use.

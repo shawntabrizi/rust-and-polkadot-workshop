@@ -1,10 +1,15 @@
 mod balances;
 mod system;
 
-type AccountId = &'static str;
-type Balance = u128;
-type BlockNumber = u32;
-type Nonce = u32;
+// These are the concrete types we will use in our simple state machine.
+// Modules are configured for these types directly, and they satisfy all of our
+// trait requirements.
+mod types {
+	pub type AccountId = &'static str;
+	pub type Balance = u128;
+	pub type BlockNumber = u32;
+	pub type Nonce = u32;
+}
 
 /*
 	TODO:
@@ -16,8 +21,8 @@ type Nonce = u32;
 // It accumulates all of the different pallets we want to use.
 #[derive(Debug)]
 pub struct Runtime {
-	system: system::Pallet<AccountId, BlockNumber, Nonce>,
-	balances: balances::Pallet<AccountId, Balance>,
+	system: system::Pallet<types::AccountId, types::BlockNumber, types::Nonce>,
+	balances: balances::Pallet<types::AccountId, types::Balance>,
 }
 
 impl Runtime {

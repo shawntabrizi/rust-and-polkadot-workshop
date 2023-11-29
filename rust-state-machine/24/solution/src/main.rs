@@ -9,9 +9,9 @@ use crate::support::Dispatch;
 // trait requirements.
 mod types {
 	pub type AccountId = &'static str;
+	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
-	pub type Balance = u128;
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
 }
@@ -93,23 +93,33 @@ impl crate::support::Dispatch for Runtime {
 }
 
 fn main() {
+	// Create a new instance of the Runtime.
+	// It will instantiate with it all the modules it uses.
 	let mut runtime = Runtime::new();
+
+	// Initialize the system with some initial balance.
 	runtime.balances.set_balance(&"alice", 100);
 
-	// start emulating a block
-	runtime.system.inc_block_number();
-	assert_eq!(runtime.system.block_number(), 1);
+	// Here are the extrinsics in our block.
+	// You can add or remove these based on the modules and calls you have set up.
+	let block_1 = types::Block {
+		header: support::Header { block_number: 1 },
+		extrinsics: vec![
+			support::Extrinsic {
+				caller: &"alice",
+				call: RuntimeCall::BalancesTransfer { to: &"bob", amount: 20 },
+			},
+			support::Extrinsic {
+				caller: &"alice",
+				call: RuntimeCall::BalancesTransfer { to: &"charlie", amount: 20 },
+			},
+		],
+	};
 
-	// first transaction
-	runtime.system.inc_nonce(&"alice");
-	let _res = runtime.balances.transfer(&"alice", &"bob", 30).map_err(|e| eprintln!("{}", e));
+	// Execute the extrinsics which make up our block.
+	// If there are any errors, our system panics, since we should not execute invalid blocks.
+	runtime.execute_block(block_1).expect("invalid block");
 
-	// second transaction
-	runtime.system.inc_nonce(&"alice");
-	let _res = runtime
-		.balances
-		.transfer(&"alice", &"charlie", 20)
-		.map_err(|e| eprintln!("{}", e));
-
+	// Simply print the debug format of our runtime state.
 	println!("{:#?}", runtime);
 }

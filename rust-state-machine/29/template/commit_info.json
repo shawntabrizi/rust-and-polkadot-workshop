@@ -1,6 +1,6 @@
 {
-  "commitHash": "424056d90e3a5628ab0a408e7d571ec46d058c71",
-  "commitMessage": "template: add proof of existence functions with tests",
+  "commitHash": "ff4fe13a72bf1d2ce0c6d3f7ea35b86ca8a2d44e",
+  "commitMessage": "template: add proof of existence dispatch logic",
   "files": [
     {
       "status": "M",

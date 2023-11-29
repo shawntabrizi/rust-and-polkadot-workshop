@@ -124,18 +124,23 @@ index 0725fe2..4519171 100644
  	}
  }
 diff --git a/src/main.rs b/src/main.rs
-index 43d29d4..c845440 100644
+index 2554ff8..8a1c379 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,44 +1,42 @@
+@@ -1,49 +1,47 @@
  mod balances;
  mod system;
  
--/*
--	TODO: Move your type definitions for `AccountId` and `Balance` here.
--*/
-+type AccountId = &'static str;
-+type Balance = u128;
+ // These are the concrete types we will use in our simple state machine.
+ // Modules are configured for these types directly, and they satisfy all of our
+ // trait requirements.
+ mod types {
+-	/*
+-		TODO: Move your type definitions for `AccountId` and `Balance` here.
+-	*/
++	pub type AccountId = &'static str;
++	pub type Balance = u128;
+ }
  
  // This is our main Runtime.
  // It accumulates all of the different pallets we want to use.
@@ -144,7 +149,7 @@ index 43d29d4..c845440 100644
  	system: system::Pallet,
 -	/* TODO: Use your type definitions for your new generic `balances::Pallet`. */
 -	balances: balances::Pallet,
-+	balances: balances::Pallet<AccountId, Balance>,
++	balances: balances::Pallet<types::AccountId, types::Balance>,
  }
  
  impl Runtime {

@@ -1,157 +1,134 @@
-diff --git a/src/main.rs b/src/main.rs
-index 0d4943e..ede5593 100644
---- a/src/main.rs
-+++ b/src/main.rs
-@@ -1,134 +1,125 @@
- mod balances;
- mod support;
- mod system;
+diff --git a/src/balances.rs b/src/balances.rs
+index add132a..34debc2 100644
+--- a/src/balances.rs
++++ b/src/balances.rs
+@@ -1,123 +1,124 @@
+ use num::traits::{CheckedAdd, CheckedSub, Zero};
+ use std::collections::BTreeMap;
  
- use crate::support::Dispatch;
- 
- // These are the concrete types we will use in our simple state machine.
- // Modules are configured for these types directly, and they satisfy all of our
- // trait requirements.
- mod types {
- 	pub type AccountId = &'static str;
- 	pub type BlockNumber = u32;
- 	pub type Nonce = u32;
- 	pub type Balance = u128;
- 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
- 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
+ /// The configuration trait for the Balances Module.
+ /// Contains the basic types needed for handling balances.
+ pub trait Config: crate::system::Config {
+ 	/// A type which can represent the balance of an account.
+ 	/// Usually this is a large unsigned integer.
+ 	type Balance: Zero + CheckedSub + CheckedAdd + Copy;
  }
  
- // These are all the calls which are exposed to the world.
- // Note that it is just an accumulation of the calls exposed by each module.
- pub enum RuntimeCall {
- 	BalancesTransfer { to: types::AccountId, amount: types::Balance },
- }
- 
- // This is our main Runtime.
- // It accumulates all of the different pallets we want to use.
+ /// This is the Balances Module.
+ /// It is a simple module which keeps track of how much balance each account has in this state
+ /// machine.
  #[derive(Debug)]
- pub struct Runtime {
- 	system: system::Pallet<Self>,
- 	balances: balances::Pallet<Self>,
+ pub struct Pallet<T: Config> {
+ 	// A simple storage mapping from accounts to their balances.
+ 	balances: BTreeMap<T::AccountId, T::Balance>,
  }
  
- impl system::Config for Runtime {
- 	type AccountId = types::AccountId;
- 	type BlockNumber = types::BlockNumber;
- 	type Nonce = types::Nonce;
- }
- 
- impl balances::Config for Runtime {
- 	type Balance = types::Balance;
- }
- 
- impl Runtime {
- 	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
- 	fn new() -> Self {
- 		Self { system: system::Pallet::new(), balances: balances::Pallet::new() }
+ impl<T: Config> Pallet<T> {
+ 	// Create a new instance of the balances module.
+ 	pub fn new() -> Self {
+ 		Self { balances: BTreeMap::new() }
  	}
  
- 	// Execute a block of extrinsics. Increments the block number.
- 	fn execute_block(&mut self, block: types::Block) -> support::DispatchResult {
- 		self.system.inc_block_number();
- 		if block.header.block_number != self.system.block_number() {
- 			return Err(&"block number does not match what is expected")
- 		}
- 		// An extrinsic error is not enough to trigger the block to be invalid. We capture the
- 		// result, and emit an error message if one is emitted.
- 		for (i, support::Extrinsic { caller, call }) in block.extrinsics.into_iter().enumerate() {
- 			let _res = self.dispatch(caller, call).map_err(|e| {
- 				eprintln!(
- 					"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
- 					block.header.block_number, i, e
- 				)
- 			});
- 		}
+ 	/// Set the balance of an account `who` to some `amount`.
+ 	pub fn set_balance(&mut self, who: T::AccountId, amount: T::Balance) {
+ 		self.balances.insert(who, amount);
+ 	}
+ 
+ 	/// Get the balance of an account `who`.
+ 	/// If the account has no stored balance, we return zero.
+ 	pub fn balance(&self, who: &T::AccountId) -> T::Balance {
+ 		*self.balances.get(who).unwrap_or(&T::Balance::zero())
+ 	}
+ 
+ 	/// Transfer `amount` from one account to another.
+ 	/// This function verifies that `from` has at least `amount` balance to transfer,
+ 	/// and that no mathematical overflows occur.
+ 	pub fn transfer(
+ 		&mut self,
+ 		caller: T::AccountId,
+ 		to: T::AccountId,
+ 		amount: T::Balance,
+ 	) -> crate::support::DispatchResult {
+ 		let caller_balance = self.balance(&caller);
+ 		let to_balance = self.balance(&to);
+ 
+ 		let new_caller_balance = caller_balance.checked_sub(&amount).ok_or("Not enough funds.")?;
+ 		let new_to_balance = to_balance.checked_add(&amount).ok_or("Overflow")?;
+ 
+ 		self.balances.insert(caller, new_caller_balance);
+ 		self.balances.insert(to, new_to_balance);
+ 
  		Ok(())
  	}
  }
  
- impl crate::support::Dispatch for Runtime {
- 	type Caller = <Runtime as system::Config>::AccountId;
- 	type Call = RuntimeCall;
- 	// Dispatch a call on behalf of a caller. Increments the caller's nonce.
- 	//
- 	// Dispatch allows us to identify which underlying module call we want to execute.
- 	// Note that we extract the `caller` from the extrinsic, and use that information
- 	// to determine who we are executing the call on behalf of.
+ // A public enum which describes the calls we want to expose to the dispatcher.
+ // We should expect that the caller of each call will be provided by the dispatcher,
+ // and not included as a parameter of the call.
+ pub enum Call<T: Config> {
+-	/* TODO: Create an enum variant `Transfer` which contains named fields:
+-		- `to`: a `T::AccountId`
+-		- `amount`: a `T::Balance`
+-	*/
++	Transfer { to: T::AccountId, amount: T::Balance },
+ }
+ 
+ /// Implementation of the dispatch logic, mapping from `BalancesCall` to the appropriate underlying
+ /// function we want to execute.
+ impl<T: Config> crate::support::Dispatch for Pallet<T> {
+ 	type Caller = T::AccountId;
+ 	type Call = Call<T>;
+ 
  	fn dispatch(
  		&mut self,
  		caller: Self::Caller,
- 		runtime_call: Self::Call,
- 	) -> support::DispatchResult {
- 		self.system.inc_nonce(&caller);
- 
- 		// This match statement will allow us to correctly route `RuntimeCall`s
- 		// to the appropriate pallet level function.
- 		match runtime_call {
- 			RuntimeCall::BalancesTransfer { to, amount } => {
- 				self.balances.transfer(caller, to, amount)?;
- 			},
- 		}
+ 		call: Self::Call,
+ 	) -> crate::support::DispatchResult {
+-		/* TODO: use a `match` statement to route the `Call` to the appropriate pallet function. */
++		match call {
++			Call::Transfer { to, amount } => {
++				self.transfer(caller, to, amount)?;
++			},
++		}
  		Ok(())
  	}
  }
  
- fn main() {
- 	// Create a new instance of the Runtime.
- 	// It will instantiate with it all the modules it uses.
- 	let mut runtime = Runtime::new();
+ #[cfg(test)]
+ mod tests {
+ 	struct TestConfig;
  
- 	// Initialize the system with some initial balance.
- 	runtime.balances.set_balance(&"alice", 100);
+ 	impl crate::system::Config for TestConfig {
+ 		type AccountId = &'static str;
+ 		type BlockNumber = u32;
+ 		type Nonce = u32;
+ 	}
  
--	// start emulating a block
--	runtime.system.inc_block_number();
--	assert_eq!(runtime.system.block_number(), 1);
--
--	// first transaction
--	runtime.system.inc_nonce(&"alice");
--	let _res = runtime.balances.transfer(&"alice", &"bob", 30).map_err(|e| eprintln!("{}", e));
--
--	// second transaction
--	runtime.system.inc_nonce(&"alice");
--	let _res = runtime
--		.balances
--		.transfer(&"alice", &"charlie", 20)
--		.map_err(|e| eprintln!("{}", e));
--
--	/*
--		TODO: Replace the logic above with a new `Block`.
--			- Set the block number to 1 in the `Header`.
--			- Move your existing transactions into extrinsic format, using the
--			  `Extrinsic` and `RuntimeCall`.
--	*/
-+	// Here are the extrinsics in our block.
-+	// You can add or remove these based on the modules and calls you have set up.
-+	let block_1 = types::Block {
-+		header: support::Header { block_number: 1 },
-+		extrinsics: vec![
-+			support::Extrinsic {
-+				caller: &"alice",
-+				call: RuntimeCall::BalancesTransfer { to: &"bob", amount: 20 },
-+			},
-+			support::Extrinsic {
-+				caller: &"alice",
-+				call: RuntimeCall::BalancesTransfer { to: &"charlie", amount: 20 },
-+			},
-+		],
-+	};
+ 	impl super::Config for TestConfig {
+ 		type Balance = u128;
+ 	}
  
--	/*
--		TODO:
--		Use your `runtime` to call the `execute_block` function with your new block.
--		If the `execute_block` function returns an error, you should panic!
--		We `expect` that all the blocks being executed must be valid.
--	*/
-+	// Execute the extrinsics which make up our block.
-+	// If there are any errors, our system panics, since we should not execute invalid blocks.
-+	runtime.execute_block(block_1).expect("invalid block");
+ 	#[test]
+ 	fn init_balances() {
+ 		let mut balances = super::Pallet::<TestConfig>::new();
  
- 	// Simply print the debug format of our runtime state.
- 	println!("{:#?}", runtime);
+ 		assert_eq!(balances.balance(&"alice"), 0);
+ 		balances.set_balance(&"alice", 100);
+ 		assert_eq!(balances.balance(&"alice"), 100);
+ 		assert_eq!(balances.balance(&"bob"), 0);
+ 	}
+ 
+ 	#[test]
+ 	fn transfer_balance() {
+ 		let mut balances = super::Pallet::<TestConfig>::new();
+ 
+ 		assert_eq!(balances.transfer(&"alice", &"bob", 51), Err("Not enough funds."));
+ 
+ 		balances.set_balance(&"alice", 100);
+ 		assert_eq!(balances.transfer(&"alice", &"bob", 51), Ok(()));
+ 		assert_eq!(balances.balance(&"alice"), 49);
+ 		assert_eq!(balances.balance(&"bob"), 51);
+ 
+ 		assert_eq!(balances.transfer(&"alice", &"bob", 51), Err("Not enough funds."));
+ 	}
  }

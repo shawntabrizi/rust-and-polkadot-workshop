@@ -1,4 +1,5 @@
 mod balances;
+mod support;
 mod system;
 
 // These are the concrete types we will use in our simple state machine.
@@ -6,9 +7,9 @@ mod system;
 // trait requirements.
 mod types {
 	pub type AccountId = &'static str;
+	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
-	pub type Balance = u128;
 }
 
 // This is our main Runtime.

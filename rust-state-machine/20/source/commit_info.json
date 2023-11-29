@@ -1,10 +1,18 @@
 {
-  "commitHash": "cd80ecba3ad45a7eb4ae323e88fd150ac6b7a1e2",
-  "commitMessage": "put all type definitions together",
+  "commitHash": "ccd938579183c298aa8a7e1a714086f53381a240",
+  "commitMessage": "introduce support traits and types",
   "files": [
     {
       "status": "M",
+      "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
       "file": "src/main.rs"
+    },
+    {
+      "status": "A",
+      "file": "src/support.rs"
     }
   ]
 }

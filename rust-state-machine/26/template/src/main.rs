@@ -9,9 +9,9 @@ use crate::support::Dispatch;
 // trait requirements.
 mod types {
 	pub type AccountId = &'static str;
+	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
-	pub type Balance = u128;
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
 }
@@ -19,6 +19,7 @@ mod types {
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
+	/* TODO: Turn this into a nested enum where variant `Balances` contains a `balances::Call`. */
 	BalancesTransfer { to: types::AccountId, amount: types::Balance },
 }
 
@@ -84,6 +85,11 @@ impl crate::support::Dispatch for Runtime {
 		// This match statement will allow us to correctly route `RuntimeCall`s
 		// to the appropriate pallet level function.
 		match runtime_call {
+			/*
+				TODO:
+				Adjust this logic to handle the nested enums, and simply call the `dispatch` logic
+				on the balances call, rather than the function directly.
+			*/
 			RuntimeCall::BalancesTransfer { to, amount } => {
 				self.balances.transfer(caller, to, amount)?;
 			},
@@ -105,6 +111,7 @@ fn main() {
 	let block_1 = types::Block {
 		header: support::Header { block_number: 1 },
 		extrinsics: vec![
+			/* TODO: Update your extrinsics to use the nested enum. */
 			support::Extrinsic {
 				caller: &"alice",
 				call: RuntimeCall::BalancesTransfer { to: &"bob", amount: 20 },

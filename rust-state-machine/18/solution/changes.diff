@@ -126,29 +126,36 @@ index eacb2ef..d3d23b5 100644
  	}
  }
 diff --git a/src/main.rs b/src/main.rs
-index bc74cb6..0310a21 100644
+index 4605a58..79422fe 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,54 +1,50 @@
+@@ -1,61 +1,60 @@
  mod balances;
  mod system;
  
--type AccountId = &'static str;
--type Balance = u128;
--
+ // These are the concrete types we will use in our simple state machine.
+ // Modules are configured for these types directly, and they satisfy all of our
+ // trait requirements.
+ mod types {
+ 	pub type AccountId = &'static str;
+ 	pub type Balance = u128;
+ 	pub type BlockNumber = u32;
+ 	pub type Nonce = u32;
+ }
+ 
  // This is our main Runtime.
  // It accumulates all of the different pallets we want to use.
  #[derive(Debug)]
  pub struct Runtime {
  	system: system::Pallet<Self>,
--	balances: balances::Pallet<AccountId, Balance>,
+-	balances: balances::Pallet<types::AccountId, types::Balance>,
 +	balances: balances::Pallet<Self>,
  }
  
  impl system::Config for Runtime {
- 	type AccountId = &'static str;
- 	type BlockNumber = u32;
- 	type Nonce = u32;
+ 	type AccountId = types::AccountId;
+ 	type BlockNumber = types::BlockNumber;
+ 	type Nonce = types::Nonce;
  }
  
 -/*
@@ -157,8 +164,8 @@ index bc74cb6..0310a21 100644
 -	Use `Self` to satisfy the generic parameter required for `balances::Pallet`.
 -*/
 +impl balances::Config for Runtime {
-+	type AccountId = &'static str;
-+	type Balance = u128;
++	type AccountId = types::AccountId;
++	type Balance = types::Balance;
 +}
  
  impl Runtime {

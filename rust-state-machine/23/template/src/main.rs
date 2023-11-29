@@ -2,16 +2,16 @@ mod balances;
 mod support;
 mod system;
 
-/* TODO: Import `crate::support::Dispatch` so that you can access the `dispatch` function. */
+use crate::support::Dispatch;
 
 // These are the concrete types we will use in our simple state machine.
 // Modules are configured for these types directly, and they satisfy all of our
 // trait requirements.
 mod types {
 	pub type AccountId = &'static str;
+	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
-	pub type Balance = u128;
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
 }
@@ -19,7 +19,10 @@ mod types {
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
-	// TODO: Not implemented yet.
+	/* TODO: Create an enum variant `BalancesTransfer` which contains named fields:
+		- `to`: an `AccountId`
+		- `amount`: a `Balance`
+	*/
 }
 
 // This is our main Runtime.
@@ -48,17 +51,20 @@ impl Runtime {
 
 	// Execute a block of extrinsics. Increments the block number.
 	fn execute_block(&mut self, block: types::Block) -> support::DispatchResult {
-		/* TODO:
-			- Increment the system's block number.
-			- Check that the block number of the incoming block matches the current block number,
-			  or return an error.
-			- Iterate over the extrinsics in the block, and dispatch them using the `caller` and the
-			  `call` contained in the extrinsic.
-			- Handle errors from `dispatch` same as we did for individual calls: printing any
-			  error and capturing the result.
-				- You can extend the error message to include information like the block number and
-				  extrinsic number.
-		*/
+		self.system.inc_block_number();
+		if block.header.block_number != self.system.block_number() {
+			return Err(&"block number does not match what is expected")
+		}
+		// An extrinsic error is not enough to trigger the block to be invalid. We capture the
+		// result, and emit an error message if one is emitted.
+		for (i, support::Extrinsic { caller, call }) in block.extrinsics.into_iter().enumerate() {
+			let _res = self.dispatch(caller, call).map_err(|e| {
+				eprintln!(
+					"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
+					block.header.block_number, i, e
+				)
+			});
+		}
 		Ok(())
 	}
 }
@@ -76,7 +82,20 @@ impl crate::support::Dispatch for Runtime {
 		caller: Self::Caller,
 		runtime_call: Self::Call,
 	) -> support::DispatchResult {
-		unimplemented!();
+		/* TODO: Increment the nonce of the caller. */
+
+		/*
+			TODO:
+			Use a match statement to route the `runtime_call` to call the appropriate function in
+			our pallet. In this case, there is only `self.balances.transfer`.
+
+			Your `runtime_call` won't contain the caller information which is needed to make the
+			`transfer` call, but you have that information from the arguments to the `dispatch`
+			function.
+
+			You should propagate any errors from the call back up this function.
+		*/
+		Ok(())
 	}
 }
 

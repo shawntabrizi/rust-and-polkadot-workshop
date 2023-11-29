@@ -9,9 +9,9 @@ use crate::support::Dispatch;
 // trait requirements.
 mod types {
 	pub type AccountId = &'static str;
+	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
-	pub type Balance = u128;
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
 	pub type Block = crate::support::Block<BlockNumber, Extrinsic>;
 }
@@ -19,7 +19,7 @@ mod types {
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
-	BalancesTransfer { to: types::AccountId, amount: types::Balance },
+	Balances(balances::Call<Runtime>),
 }
 
 // This is our main Runtime.
@@ -84,8 +84,8 @@ impl crate::support::Dispatch for Runtime {
 		// This match statement will allow us to correctly route `RuntimeCall`s
 		// to the appropriate pallet level function.
 		match runtime_call {
-			RuntimeCall::BalancesTransfer { to, amount } => {
-				self.balances.transfer(caller, to, amount)?;
+			RuntimeCall::Balances(call) => {
+				self.balances.dispatch(caller, call)?;
 			},
 		}
 		Ok(())
@@ -107,11 +107,14 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: &"alice",
-				call: RuntimeCall::BalancesTransfer { to: &"bob", amount: 20 },
+				call: RuntimeCall::Balances(balances::Call::Transfer { to: &"bob", amount: 20 }),
 			},
 			support::Extrinsic {
 				caller: &"alice",
-				call: RuntimeCall::BalancesTransfer { to: &"charlie", amount: 20 },
+				call: RuntimeCall::Balances(balances::Call::Transfer {
+					to: &"charlie",
+					amount: 20,
+				}),
 			},
 		],
 	};

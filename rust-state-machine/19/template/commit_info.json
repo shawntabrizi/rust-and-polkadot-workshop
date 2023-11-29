@@ -1,5 +1,5 @@
 {
-  "commitHash": "c09dc267827094d5a96ab5869cacaa5184055f61",
+  "commitHash": "e03f537a524b95e111838ae47196d5d309895630",
   "commitMessage": "template: tightly couple balances to system",
   "files": [
     {

@@ -1,57 +1,53 @@
-# Add Our Support Module
+# Dispatching Calls
 
-In this step, we will introduce a `support` module to help bring in various types and traits that we will use to enhance our simple state machine.
+We have built our `execute_block` logic depending on the `dispatch` logic we have not implemented yet.
 
-## Constructing a Block
+Let's do that.
 
-The first set of primitives provided by the `support` module are a set of structs that we need to construct a simple `Block`.
+## Adding Our Calls
 
-### The Block
+Dispatch logic is all about routing a user's extrinsic to the proper Pallet function. So far, the only user callable function we have created is the `transfer` function in the Balances Pallet.
 
-A block is basically broken up into two parts: the header and a vector of extrinsics.
+So let's add that call to our `RuntimeCall` enum.
 
-You can see that we keep the `Block` completely generic over the `Header` and `Extrinsic` type. The exact contents and definitions of these sub-types may change, but the generic `Block` struct can always be used.
+Our `transfer` function expects 3 inputs:
 
-#### The Header
+- `caller`: The account calling the transfer function, and whose balance will be reduced.
+- `to`: The account where the funds will be sent.
+- `amount`: The amount of funds to transfer.
 
-The block header contains metadata about the block which is used to verify that the block is valid. In our simple state machine, we only store the blocknumber in the header, but real blockchains like Polkadot have:
+However, remember that our `dispatch` logic already has information about the `caller` which is coming from the `Extrinsic` in the `Block`. So we do not need this data again in the `RuntimeCall`.
 
-- Parent Hash
-- Block Number
-- State Root
-- Extrinsics Root
-- Consensus Digests / Logs
+In fact, every `Call` in our runtime should omit the `caller`, and know that it is being provided by our `dispatch` logic.
 
-#### The Extrinsic
+So when adding a new variant to `RuntimeCall`, it should look something like:
 
-In our simple state machine, an extrinsics is synonymous with user transactions.
+```rust
+pub enum RuntimeCall {
+	BalancesTransfer { to: types::AccountId, amount: types;:Balance },
+}
+```
 
-Thus our extrinsic type is composed of a `Call` (the function we will execute) and a `Caller` (the account that wants to execute that function).
+A user submitting an extrinsic to our state machine can use this enum variant to specify which function they want to call (`transfer`), and the parameters needed for that call.
 
-The Polkadot SDK supports other kinds of extrinsics beyond a user transactions, which is why it is called an `Extrinsic`, but that is beyond the scope of this tutorial.
+## Dispatch Logic
 
-## Dispatching Calls
+The core logic in the `dispatch` function is a simple `match` statement.
 
-The next key change we are going to make to our simple state machine is to handle function dispatching. Basically, you can imagine that there could be multiple different pallets in your system, each with different calls they want to expose.
+Basically, given some `RuntimeCall`, we need to match on the variant being provided to us, and then pass the appropriate parameters to the correct Pallet function. As mentioned before, `dispatch` already has access to the `caller` information, so the final logic is as simple as:
 
-Your runtime, acting as a single entrypoint for your whole state transition function needs to be able to route incoming calls to the appropriate functions. For this, we need the `Dispatchable` trait.
+```rust
+match runtime_call {
+	RuntimeCall::BalancesTransfer { to, amount } => {
+		self.balances.transfer(caller, to, amount)?;
+	}
+}
+```
 
-You will see how this is used near the end of this tutorial.
+Dispatch logic really is that simple!
 
-### Dispatch Result
+Note that we propagate up any errors returned by our function call with the `?` operator. This is important if you want to see the error messages that we set up in the `execute_block` logic.
 
-One last thing we added to the support module was a simple definition of the `Result` type that we want all dispatchable calls to return. This is exactly the type we already used for the `fn transfer` function, and allows us to return `Ok(())` if everything went well, or `Err("some error message")` if something went wrong.
+## Write Your Dispatch Logic
 
-## Create the Support Module
-
-Now that you understand what is in the support module, add it to your project.
-
-1. Create the `support.rs` file:
-
-	```bash
-	touch src/support.rs
-	```
-
-2. Copy and paste the content provided into your file.
-3. Import the support module at the top of your `main.rs` file.
-4. Finally, replace your `Result<(), &'static str>` with `crate::support::DispatchResult` in the `fn transfer` function in your Balances Pallet.
+Follow the `TODO`s provided in the template to build your `RuntimeCall` and complete your `dispatch` logic.

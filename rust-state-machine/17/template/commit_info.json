@@ -1,5 +1,5 @@
 {
-  "commitHash": "c7cfbf5b00c241acdff50d6f98dc71bd785ccf98",
+  "commitHash": "393c924ce8c75dde8d848918106f978511f16b35",
   "commitMessage": "template: make system module configurable",
   "files": [
     {

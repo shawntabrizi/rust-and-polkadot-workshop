@@ -1,7 +1,11 @@
 {
-  "commitHash": "74f53e318babaaac68a4f68f3020bd70c1fede00",
+  "commitHash": "5f005071314841f46e6877b8c7a522721a41dddc",
   "commitMessage": "template: introduce increment block number and nonce with test",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/system.rs"

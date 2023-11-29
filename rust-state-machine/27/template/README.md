@@ -1,3 +1,3 @@
-# Introduce System Pallet
+# Make Balances Module Generic
 
 TODO

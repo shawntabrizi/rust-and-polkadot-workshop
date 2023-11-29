@@ -1,4 +1,4 @@
-# Derive Macros
+# Derive Debug
 
 In Rust, `derive` macros provide a convenient way to automatically implement trait functionality for custom data structures.
 

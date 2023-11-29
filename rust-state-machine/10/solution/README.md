@@ -1,3 +1,3 @@
-# Introduce System Pallet
+# Creating Our Runtime
 
-TODO
+You can find the solution to the previous step here.

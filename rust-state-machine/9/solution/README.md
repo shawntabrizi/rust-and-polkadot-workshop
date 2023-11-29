@@ -1,3 +1,3 @@
-# Introduce System Pallet
+# Making Your System Functional
 
-TODO
+You can find the solution for the previous step here.

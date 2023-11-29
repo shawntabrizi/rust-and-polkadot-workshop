@@ -1,7 +1,11 @@
 {
-  "commitHash": "bbb646fbcd50871ee78b7975126ccd4958296092",
+  "commitHash": "affd196ed62ebb3c33e54364c06af8f3cefb4a5c",
   "commitMessage": "template: define common types within modules",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/balances.rs"

@@ -5,10 +5,6 @@
 
 <!-- tabs:start -->
 
-#### **<span class="file-source file-added">Cargo.lock</span>**
-
-[./source/Cargo.lock](./source/Cargo.lock ':include :type=code text')
-
 #### **<span class="file-source file-added">Cargo.toml</span>**
 
 [./source/Cargo.toml](./source/Cargo.toml ':include :type=code toml')

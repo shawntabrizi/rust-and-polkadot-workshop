@@ -1,7 +1,11 @@
 {
-  "commitHash": "829d0773f61e2a4e7daea10284f0e2695e2b8690",
+  "commitHash": "f42cc97e88ba4446149c4d94ae2bd0054484e71b",
   "commitMessage": "template: introduce basic runtime execution in main",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/main.rs"

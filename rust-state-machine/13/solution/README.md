@@ -1,3 +1,3 @@
-# Introduce System Pallet
+# Using Named Types
 
-TODO
+You can find the solution to the previous step here.

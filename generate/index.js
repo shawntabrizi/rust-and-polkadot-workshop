@@ -201,7 +201,7 @@ function generateFileMarkdown(type, files) {
 			codeStyle = "toml"
 		}
 
-		output += `#### **<span class="${classStyle}">${filename}</span>**\n\n`
+		output += `#### **<span class="${classStyle}">${file.file}</span>**\n\n`
 		output += `[${filepath}](${filepath} ':include :type=code ${codeStyle}')\n\n`
 	}
 

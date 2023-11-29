@@ -1,7 +1,11 @@
 {
-  "commitHash": "a0aa1f73bd2f9813295443fd844a1c39f227969b",
+  "commitHash": "ea0bf273ff21b7a1ab5bc5052c42576648d3acae",
   "commitMessage": "solution: add proof of existence dispatch logic",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/proof_of_existence.rs"

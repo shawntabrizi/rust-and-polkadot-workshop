@@ -1,7 +1,11 @@
 {
-  "commitHash": "c12b1cbaa4d82db066642700a37b3cfdf9f79eae",
+  "commitHash": "fd90905dfc20ec27e2a986ee089b5104f90bf825",
   "commitMessage": "template: use execute_block for main logic",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/main.rs"

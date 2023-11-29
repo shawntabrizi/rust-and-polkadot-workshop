@@ -9,7 +9,7 @@
 
 [./source/Cargo.toml](./source/Cargo.toml ':include :type=code toml')
 
-#### **<span class="file-source file-added">main.rs</span>**
+#### **<span class="file-source file-added">src/main.rs</span>**
 
 [./source/src/main.rs](./source/src/main.rs ':include :type=code rust')
 

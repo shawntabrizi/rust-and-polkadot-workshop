@@ -1,7 +1,11 @@
 {
-  "commitHash": "78dfcfeaf881fc5d44c105a03babd8587b2b94da",
+  "commitHash": "82d7a6545ba948cbbe27b7efec135d7c4eae6e9e",
   "commitMessage": "template: add proof of existence functions with tests",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/proof_of_existence.rs"

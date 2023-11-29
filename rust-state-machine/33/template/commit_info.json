@@ -1,7 +1,11 @@
 {
-  "commitHash": "21a71cb71f6a0f86137c33ce1f3273c753933138",
+  "commitHash": "c5b93c8e7d09212523de3a2d5ff7cc2cbd806191",
   "commitMessage": "template: use call macro in balances",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/balances.rs"

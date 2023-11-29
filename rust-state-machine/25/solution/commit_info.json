@@ -1,7 +1,11 @@
 {
-  "commitHash": "bcd3c688738c1d2f55412cc7be7bdc3b3138ff2a",
+  "commitHash": "2b41c2bc44711cb3081cacf87b681c5133ca23b4",
   "commitMessage": "solution: introduce module level dispatch to balances",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/balances.rs"

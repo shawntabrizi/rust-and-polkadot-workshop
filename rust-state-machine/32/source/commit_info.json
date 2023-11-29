@@ -1,5 +1,5 @@
 {
-  "commitHash": "6911e067951a62302875f955f900ae19d64832bc",
+  "commitHash": "1681d30f6fc0be067419163a9646207e50f5100e",
   "commitMessage": "introduce macros",
   "files": [
     {
@@ -9,6 +9,10 @@
     {
       "status": "M",
       "file": "Cargo.toml"
+    },
+    {
+      "status": "M",
+      "file": "README.md"
     },
     {
       "status": "A",

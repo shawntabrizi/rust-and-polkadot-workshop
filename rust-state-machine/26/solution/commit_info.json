@@ -1,7 +1,11 @@
 {
-  "commitHash": "b1bd68dfb1e2700064da29129bd46c62faf95451",
+  "commitHash": "8a6d614471c6382262f1cff9a7da444a40b5857f",
   "commitMessage": "solution: implement nested dispatch",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/main.rs"

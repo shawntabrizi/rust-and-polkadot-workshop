@@ -9,7 +9,7 @@
 
 [./source/rustfmt.toml](./source/rustfmt.toml ':include :type=code toml')
 
-#### **<span class="file-source file-modified">main.rs</span>**
+#### **<span class="file-source file-modified">src/main.rs</span>**
 
 [./source/src/main.rs](./source/src/main.rs ':include :type=code rust')
 

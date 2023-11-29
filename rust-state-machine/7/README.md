@@ -9,7 +9,7 @@
 
 <!-- tabs:start -->
 
-#### **<span class="file-template file-modified">balances.rs</span>**
+#### **<span class="file-template file-modified">src/balances.rs</span>**
 
 [./template/src/balances.rs](./template/src/balances.rs ':include :type=code rust')
 
@@ -21,7 +21,7 @@
 
 <!-- tabs:start -->
 
-#### **<span class="file-solution file-modified">balances.rs</span>**
+#### **<span class="file-solution file-modified">src/balances.rs</span>**
 
 [./solution/src/balances.rs](./solution/src/balances.rs ':include :type=code rust')
 

@@ -32,6 +32,7 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 	let templateFiles = [];
 	let solutionFiles = [];
 	let sourceFiles = [];
+	let stepNames = [];
 
 	// Create a folder for each commit
 	// Reverse to make the oldest commit first
@@ -132,10 +133,14 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 				let solutionFileText = generateFileMarkdown("solution", solutionFiles);
 				markdownContent = markdownContent.replace("<!-- insert_template_files -->", templateFileText);
 				markdownContent = markdownContent.replace("<!-- insert_solution_files -->", solutionFileText);
+
+				stepNames.push(getStepName(templateFolder))
 			} else {
 				markdownContent = sourceMarkdown;
 				let sourceFileText = generateFileMarkdown("source", sourceFiles);
 				markdownContent = markdownContent.replace("<!-- insert_source_files -->", sourceFileText);
+
+				stepNames.push(getStepName(sourceFolder))
 			}
 			// Create a Markdown file in the commit folder
 			const markdownFilePath = path.join(stepFolder, 'README.md');
@@ -145,6 +150,8 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 			solutionFound = false;
 		}
 	});
+
+	generateSidebar(stepNames);
 
 	// Clean up source folder
 	fs.rmSync(sourcePath, { recursive: true, force: true });
@@ -238,3 +245,24 @@ let sourceMarkdown = `
 
 <!-- tabs:end -->
 `;
+
+function getStepName(folder) {
+	const filePath = path.join(folder, 'README.md');
+	const markdownContent = fs.readFileSync(filePath, 'utf8');
+	const titleMatch = markdownContent.match(/^#\s+(.*)/m);
+	if (titleMatch) {
+		return titleMatch[1];
+	} else {
+		console.error(`Error getting markdown title.`)
+		process.exit(1);
+	}
+}
+
+function generateSidebar(steps) {
+	const sidebarFilePath = path.join(repoPath, '_sidebar.md');
+	let output = "";
+	steps.forEach((step, index) => {
+		output += `- [${index + 1}. ${step}](./${index + 1}/README.md)\n`
+	});
+	fs.writeFileSync(sidebarFilePath, output);
+}

@@ -1,7 +1,11 @@
 {
-  "commitHash": "0f6c9ed987f22dd63a69cde21d4521bad3a40bca",
+  "commitHash": "b720b5ba699cdc9583358b2dbc0424797476f3aa",
   "commitMessage": "solution: make balances module configurable",
   "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
     {
       "status": "M",
       "file": "src/balances.rs"

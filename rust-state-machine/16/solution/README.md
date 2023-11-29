@@ -1,3 +1,3 @@
-# Make Balances Module Generic
+# Make System Pallet Generic
 
-TODO
+You can find the solution to the previous step here.

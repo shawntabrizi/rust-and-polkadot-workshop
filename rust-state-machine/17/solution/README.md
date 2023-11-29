@@ -1,3 +1,3 @@
-# Make Balances Module Generic
+# Make System Configurable
 
-TODO
+You can find the solution to the previous step here.

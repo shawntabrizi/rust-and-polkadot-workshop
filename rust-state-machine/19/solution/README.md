@@ -1,3 +1,3 @@
-# Make Balances Module Generic
+# Tight Coupling
 
-TODO
+You can find the solution to the previous step here.

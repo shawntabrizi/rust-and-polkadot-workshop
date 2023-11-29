@@ -1,5 +1,5 @@
 {
-  "commitHash": "ae4642e12baac6ca74ebefb51e635f0efad3bdac",
+  "commitHash": "ec36d61b2bffec03a3867bcfd4b4b69f468193eb",
   "commitMessage": "template: use runtime macro in main",
   "files": [
     {

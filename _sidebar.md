@@ -16,4 +16,5 @@
 
 - Polkadot
 
-    - [Start](polkadot/0/README.md)
+    - [Proof of Existence](polkadot/proof-of-existence/)
+    - [Collectables](polkadot/collectables/README.md)

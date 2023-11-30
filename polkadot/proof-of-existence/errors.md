@@ -17,16 +17,16 @@ To implement the errors for the proof-of-existence pallet:
 
 1. Replace the `#[pallet::error]` line with the following code block:
 
-    ```rust
-    #[pallet::error]
-    pub enum Error<T> {
-      /// The claim already exists.
-      AlreadyClaimed,
-      /// The claim does not exist, so it cannot be revoked.
-      NoSuchClaim,
-      /// The claim is owned by another account, so caller can't revoke it.
-      NotClaimOwner,
-    }
-    ```
+	```rust
+	#[pallet::error]
+	pub enum Error<T> {
+		/// The claim already exists.
+		AlreadyClaimed,
+		/// The claim does not exist, so it cannot be revoked.
+		NoSuchClaim,
+		/// The claim is owned by another account, so caller can't revoke it.
+		NotClaimOwner,
+	}
+	```
 
 1. Save your changes.

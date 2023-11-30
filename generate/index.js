@@ -260,10 +260,9 @@ function getStepName(folder) {
 
 function generateSidebar(steps) {
 	const sidebarFilePath = path.join(repoPath, '_sidebar.md');
-	let output = "- [Home](/)\n\n";
+	let output = "- [Home](/)\n\n---\n\n";
 	steps.forEach((step, index) => {
 		output += `- [${index + 1}. ${step}](${repoName}/${index + 1}/README.md)\n`
 	});
-	output += "- [Home](/)\n"
 	fs.writeFileSync(sidebarFilePath, output);
 }

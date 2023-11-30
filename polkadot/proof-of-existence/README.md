@@ -80,57 +80,58 @@ Therefore, the first step is to remove some files and content from the files in 
 
 1. Change to the `pallets/template/src` directory by running the following command:
 
-    ```bash
-    cd pallets/template/src
-    ```
+	```bash
+	cd pallets/template/src
+	```
 
 1. Remove the following files:
 
-    ```bash
-    benchmarking.rs
-    mock.rs
-    tests.rs
-    ```
+	```bash
+	benchmarking.rs
+	mock.rs
+	tests.rs
+	```
 
 1. Open the `lib.rs` file in a text editor.
 
-    This file contains code that you can use as a template for a new pallet.
-    You won't be using the template code in this tutorial.
-    However, you can review the template code to see what it provides before you delete it.
+	This file contains code that you can use as a template for a new pallet.
+	You won't be using the template code in this tutorial.
+	However, you can review the template code to see what it provides before you delete it.
 
 1. Delete all of the lines in the `lib.rs` file.
 
 1. Add the macro required to build both the native Rust binary (`std`) and the WebAssembly (`no_std`) binary.
 
-    ```rust
-    #![cfg_attr(not(feature = "std"), no_std)]
-    ```
+	```rust
+	```
 
-    All of the pallets used in a runtime must be set to compile with the `no_std` features.
+	All of the pallets used in a runtime must be set to compile with the `no_std` features.
 
 1. Add a skeleton set of pallet dependencies and [macros](/reference/frame-macros) that the custom pallet requires by copying the following code:
 
-    ```rust
-    // Re-export pallet items so that they can be accessed from the crate namespace.
-    pub use pallet::*;
+	```rust
+	#![cfg_attr(not(feature = "std"), no_std)]
 
-    #[frame_support::pallet]
-    pub mod pallet {
-      use frame_support::pallet_prelude::*;
-      use frame_system::pallet_prelude::*;
+	// Re-export pallet items so that they can be accessed from the crate namespace.
+	pub use pallet::*;
 
-      #[pallet::pallet]
-      #[pallet::generate_store(pub(super) trait Store)]
-      pub struct Pallet<T>(_);
+	#[frame_support::pallet]
+	pub mod pallet {
+		use super::*;
+		use frame_support::pallet_prelude::*;
+		use frame_system::pallet_prelude::*;
 
-      #[pallet::config]  // <-- Step 2. code block will replace this.
-      #[pallet::event]   // <-- Step 3. code block will replace this.
-      #[pallet::error]   // <-- Step 4. code block will replace this.
-      #[pallet::storage] // <-- Step 5. code block will replace this.
-      #[pallet::call]    // <-- Step 6. code block will replace this.
-    }
-    ```
+		#[pallet::pallet]
+		pub struct Pallet<T>(_);
 
-    You now have a framework that includes placeholders for _events_, _errors_, _storage_, and _callable functions_.
+		#[pallet::config]  // <-- Step 2. code block will replace this.
+		#[pallet::event]   // <-- Step 3. code block will replace this.
+		#[pallet::error]   // <-- Step 4. code block will replace this.
+		#[pallet::storage] // <-- Step 5. code block will replace this.
+		#[pallet::call]    // <-- Step 6. code block will replace this.
+	}
+	```
+
+	You now have a framework that includes placeholders for _events_, _errors_, _storage_, and _callable functions_.
 
 1. Save your changes.

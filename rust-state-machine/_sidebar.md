@@ -1,5 +1,7 @@
 - [Home](/)
 
+---
+
 - [1. Initialize your Rust Project](rust-state-machine/1/README.md)
 - [2. Rust Tooling](rust-state-machine/2/README.md)
 - [3. Creating a Balances Pallet](rust-state-machine/3/README.md)
@@ -35,5 +37,3 @@
 - [33. Adding Call Macro to Balances](rust-state-machine/33/README.md)
 - [34. Adding Call Macro to PoE](rust-state-machine/34/README.md)
 - [35. Use the Runtime Macro](rust-state-machine/35/README.md)
-- [36. Rust State Machine](rust-state-machine/36/README.md)
-- [Home](/)

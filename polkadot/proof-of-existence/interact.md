@@ -19,23 +19,23 @@ To test the proof-of-existence pallet using the front-end:
 
 1. Navigate to the ["Developer > Extrinsics"](https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9944#/extrinsics) tab.
 
-    ![Extrinsics Tab](./assets/poe-extrinsics-tab.png)
+	![Extrinsics Tab](./assets/poe-extrinsics-tab.png)
 
 1. Adjust the extrinsics page to select "ALICE" as the account, and "templateModule > createClaim" as the extrinsic.
 
-    ![Create Claim](./assets/poe-create-claim.png)
+	![Create Claim](./assets/poe-create-claim.png)
 
 1. Then you can toggle "hash a file", which will allow you to select a file to hash and claim on the blockchain.
 
-    ![Hash File](./assets/poe-hash-file.png)
+	![Hash File](./assets/poe-hash-file.png)
 
 1. Click "Submit Transaction" in the bottom right corner, then on the pop up click "Sign and Submit".
 
-    ![Submit Extrinsic](./assets/poe-submit.png)
+	![Submit Extrinsic](./assets/poe-submit.png)
 
 1. If everything was successful, you should see a green extrinsic success notification!
 
-    ![Extrinsic Success](./assets/poe-success.png)
+	![Extrinsic Success](./assets/poe-success.png)
 
 ### Read a claim
 
@@ -43,21 +43,21 @@ The final step of this tutorial is to check what claims have been stored on your
 
 1. Navigate to the ["Developer > Chain State"](https://polkadot.js.org/apps/?rpc=ws%3A%2F%2F127.0.0.1%3A9944#/chainstate) tab.
 
-    ![Chain State](./assets/poe-chain-state.png)
+	![Chain State](./assets/poe-chain-state.png)
 
 1. Adjust the state query to "templateModule > claims".
 
 1. Toggle off the "include option" on the hash input to leave the input empty.
 
-    This will allow us to see all the claims, rather than just one at a time.
+	This will allow us to see all the claims, rather than just one at a time.
 
-    ![Query All Claims](./assets/poe-claims.png)
+	![Query All Claims](./assets/poe-claims.png)
 
 1. Press the "+" button to execute the query.
 
-    ![Query Results](./assets/poe-query.png)
+	![Query Results](./assets/poe-query.png)
 
-    Now you can see that the claim is stored in the blockchain with the data about the owners address and the block number when the claim was made!
+	Now you can see that the claim is stored in the blockchain with the data about the owners address and the block number when the claim was made!
 
 <!-- slide:break -->
 

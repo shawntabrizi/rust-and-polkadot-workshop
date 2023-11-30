@@ -16,5 +16,5 @@
 
 - Polkadot
 
-    - [Proof of Existence](polkadot/proof-of-existence/)
+    - [Proof of Existence](polkadot/proof-of-existence/README.md)
     - [Collectables](polkadot/collectables/README.md)

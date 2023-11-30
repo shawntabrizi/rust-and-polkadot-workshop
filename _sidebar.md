@@ -3,7 +3,7 @@
 - Pre-Rust Content
     - [Why Rust?](pre-rust/why-rust.md)
     - [Crypto Basics](pre-rust/crypto/README.md)
-    - [Blockchain Basics](pre-rust/blockchain-basics.md)
+    - [Blockchain Basics](pre-rust/blockchain/README.md)
 
 - Rust State Machine
 

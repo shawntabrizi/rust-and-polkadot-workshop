@@ -10,7 +10,8 @@
     - [Start](rust-state-machine/1/README.md)
 
 - Pre-Polkadot
-    - [Polkadot Basics](pre-polkadot/polkadot-basics.md)
+    - [An Introduction to Polkadot](pre-polkadot/polkadot-basics.md)
+    - [What is Shared Security?](pre-polkadot/shared-security.md)
     - [Substrate Basics](pre-polkadot/substrate-basics.md)
     - [FRAME Basics](pre-polkadot/frame-basics.md)
 

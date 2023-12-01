@@ -6,7 +6,7 @@
     - [Why Rust?](pre-rust/why-rust.md)
 
 - Rust State Machine
-
+    - [Install](pre-rust/install.md)
     - [Start](rust-state-machine/1/README.md)
 
 - Pre-Polkadot

@@ -1,49 +1,16 @@
 # An Introduction to Cryptography for Blockchain
 
-## 1. Introduction to Cryptography
+Cryptography is not a trivial topic to teach.
 
-- Definition and objectives of cryptography
-- History of cryptography
-- Types of cryptography
-    - Symmetric-key cryptography
-        - Block ciphers (e.g., AES, DES)
-        - Stream ciphers
-    - Asymmetric-key cryptography (public-key cryptography)
-        - Public-key algorithms (e.g., RSA, ECC)
-        - Digital signatures
+You could spend an entire lifetime going deep into the details of and contributing to the space of cryptography.
+That is NOT the intention of this content.
 
-## 2. Hash Functions
+Instead, this content is intended to introduce concepts in cryptography which are heavily used in blockchains:
 
-- Properties of hash functions
-- Common hash functions (e.g., SHA-256, SHA-3)
-- Applications of hash functions in blockchain
-    - Merkle trees
-    - Proof-of-work
+1. [Hash Functions](pre-rust/crypto/hash.md)
+2. [Hash Based Structures](pre-rust/crypto/hash-structures.md)
+3. [Digital Signatures](pre-rust/crypto/signatures.md)
 
-## 3. Digital Signatures
+We will not attempt to explain HOW these different primitives work, but instead just explain the properties of these primitives and how these properties can be used to achieve our desired outcomes.
 
-- Purpose of digital signatures
-- Generation and verification of digital signatures
-- Applications of digital signatures in blockchain
-    - Transaction authentication
-    - Smart contracts
-
-## 4. Elliptic Curve Cryptography (ECC)
-
-- Overview of ECC
-- Advantages of ECC over RSA
-- Applications of ECC in blockchain
-    - Digital signatures
-    - Transaction security
-
-## 5. Cryptographic Protocols
-
-- Secure communication protocols (e.g., TLS/SSL)
-- Authentication protocols (e.g., OAuth2)
-- Distributed consensus protocols (e.g., Proof-of-Work, Proof-of-Stake)
-
-## 6. Cryptographic Security
-
-- Common attacks in cryptography
-- Cryptographic key management
-- Post-quantum cryptography
+There are more crypto topics that could be covered to get a deeper understanding of blockchains, but consider this the minimal baseline knowledge needed for this workshop.

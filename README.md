@@ -36,8 +36,9 @@ In the second day, we will move our focus over to the Polkadot ecosystem, and bu
 #### Lectures
 
 1. The day starts with an [introduction to Polkadot](pre-polkadot/polkadot-basics.md).
-2. Then we learn about [Substrate](pre-polkadot/substrate-basics.md), the blockchain development framework provided by the Polkadot SDK.
-3. Finally, we will briefly go over [FRAME](pre-polkadot/frame-basics.md), which is a framework for building state machines for Substrate, very similar to what we designed in the workshop on day 1.
+2. Then a look into the concept of [shared security](pre-polkadot/shared-security.md).
+3. Next we learn about [Substrate](pre-polkadot/substrate-basics.md), the blockchain development framework provided by the Polkadot SDK.
+4. Finally, we will briefly go over [FRAME](pre-polkadot/frame-basics.md), which is a framework for building state machines for Substrate, very similar to what we designed in the workshop on day 1.
 
 #### Workshops
 

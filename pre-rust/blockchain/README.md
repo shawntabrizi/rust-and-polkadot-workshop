@@ -1,49 +1,9 @@
 # An Introduction to Blockchains
 
-## 1. Introduction to Blockchain Technology
+This introduction to blockchain attempts to build up knowledge through the history and development of blockchain technology today.
 
-* What is blockchain?
-* How does blockchain work?
+1. We start with an [introduction to Bitcoin](pre-rust/blockchain/bitcoin.md), the very first blockchain, and the problems that it tried to solve.
+2. Then we look at [Ethereum](pre-rust/blockchain/ethereum.md), which is an next major evolution of blockchain technology after Bitcoin.
+3. Finally, we try to generalize some of the concepts around [blockchain architecture](pre-rust/blockchain/architecture.md) based on what we learned from Bitcoin and Ethereum.
 
-## 2. Blockchain Components
-
-* Blocks: The fundamental units of a blockchain
-* Transactions: The data stored in blocks
-* Nodes: The computers that maintain the blockchain
-* Miners: The computers that validate transactions and add blocks to the blockchain
-* Wallets: The software or hardware that stores users' private keys and allows them to interact with the blockchain
-
-## 3. Key Concepts of Blockchain
-
-* Decentralization: The lack of a central authority
-* Immutability: The irreversibility of data once it is added to the blockchain
-* Transparency: The ability for anyone to view the data on the blockchain
-* Security: The use of cryptography to protect the blockchain from tampering
-
-## 4. Applications of Blockchain
-
-* Cryptocurrencies: Digital or virtual currencies that use blockchain technology
-* Decentralized Finance (DeFi): Financial services that are not controlled by any one institution
-* Non-Fungible Tokens (NFTs): Unique digital assets
-* Supply Chain Management: Tracking the movement of goods and materials
-* Voting Systems: Secure and transparent voting systems
-* Healthcare: Storing and sharing medical records
-* Identity Management: Verifying identities and preventing fraud
-
-## 5. Benefits of Blockchain Technology
-
-* Increased security: Blockchain technology is very secure, as it is difficult to hack or tamper with.
-* Increased transparency: All transactions on the blockchain are publicly viewable, which can help to reduce fraud and corruption.
-* Reduced costs: Blockchain technology can help to reduce costs by eliminating the need for intermediaries.
-* Increased efficiency: Blockchain technology can help to improve efficiency by automating processes and reducing paperwork.
-
-## 6. Challenges of Blockchain Technology
-
-* Scalability: Blockchain technology can be slow and expensive to scale, as it requires a lot of computing power to verify transactions.
-* Regulation: Blockchain technology is still a relatively new technology, and there is a lack of clear regulations in place.
-* Adoption: Blockchain technology is not yet widely adopted, and it may take some time for it to become mainstream.
-
-## 7. Future of Blockchain Technology
-
-* Blockchain technology is still in its early stages of development, but it has the potential to revolutionize many industries.
-* As blockchain technology continues to develop, it is likely to become more widely adopted and have a significant impact on the world.
+We will extend our deep dive into blockchain technology when we start to teach about Polkadot in the second half of this workshop.

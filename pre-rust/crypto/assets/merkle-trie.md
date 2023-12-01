@@ -1,3 +1,0 @@
-# Merkle Tries
-
-TODO

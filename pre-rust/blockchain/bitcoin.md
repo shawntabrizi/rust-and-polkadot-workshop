@@ -116,7 +116,7 @@ This is where the term "proof of work" comes from: literally a process to easily
 
 ## Chaining Blocks
 
-With this mechanism in place, you can actually order blocks of transactions by chaining them together with their unique hash.
+With this mechanism in place, you can actually order blocks of transactions by creating a [hash chain](pre-rust/crypto/hash-structures.md).
 
 For example:
 

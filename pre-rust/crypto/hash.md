@@ -62,6 +62,16 @@ An example of a cryptographic hash function is XXHash. Note the performance incr
 
 From: https://github.com/Cyan4973/xxHash#benchmarks
 
+## Scale of Hashes
+
+Hash functions can vary in output size, but for the purposes of this illustration let's assume we are working with a cryptographic 256-bit hash like Blake2_256.
+
+There are 2^256 possible unique hashes, which is around 10^77.
+
+The number of atoms in the universe is estimated to be around 10^80 to 10^85.
+
+As you can see, this immense scale allows hash functions to have the key properties listed above which make them secure to use in modern cryptography.
+
 ## Hash Functions on Blockchains
 
 Hash functions, like all software, is a constantly evolving space. Different blockchains use different hash functions based on the time they were developed and the properties they were after.

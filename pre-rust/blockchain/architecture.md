@@ -59,9 +59,9 @@ If you want to construct the blockchain's state, you need to start with some gen
 
 ### Storage
 
-The blockchain state is normally placed in a database on the computer.
+The blockchain state is normally placed in a database on the computer running a node.
 
-
+Within the database, data is organized into a merkle trie
 
 ## Context: Network
 

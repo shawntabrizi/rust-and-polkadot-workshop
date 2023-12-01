@@ -1,9 +1,9 @@
 - [Welcome](/README.md)
 
 - Pre-Rust Content
-    - [Why Rust?](pre-rust/why-rust.md)
     - [Crypto Basics](pre-rust/crypto/README.md)
     - [Blockchain Basics](pre-rust/blockchain/README.md)
+    - [Why Rust?](pre-rust/why-rust.md)
 
 - Rust State Machine
 

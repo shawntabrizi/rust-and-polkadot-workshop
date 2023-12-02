@@ -1,0 +1,48 @@
+diff --git a/src/system.rs b/src/system.rs
+index 4e1228a..00e6de8 100644
+--- a/src/system.rs
++++ b/src/system.rs
+@@ -17,19 +17,21 @@ impl Pallet {
+ 
+ 	/// Get the current block number.
+ 	pub fn block_number(&self) -> u32 {
+-		/* TODO: Return the current block number. */
++		self.block_number
+ 	}
+ 
+ 	// This function can be used to increment the block number.
+ 	// Increases the block number by one.
+ 	pub fn inc_block_number(&mut self) {
+-		/* TODO: Increment the current block number by one. */
++		self.block_number += 1;
+ 	}
+ 
+ 	// Increment the nonce of an account. This helps us keep track of how many transactions each
+ 	// account has made.
+ 	pub fn inc_nonce(&mut self, who: &'static str) {
+-		/* TODO: Get the current nonce of `who`, and increment it by one. */
++		let nonce = *self.nonce.get(who).unwrap_or(&0);
++		let new_nonce = nonce + 1;
++		self.nonce.insert(who, new_nonce);
+ 	}
+ }
+ 
+@@ -37,11 +39,12 @@ impl Pallet {
+ mod test {
+ 	#[test]
+ 	fn init_system() {
+-		/* TODO: Create a test which checks the following:
+-			- Increment the current block number.
+-			- Increment the nonce of `alice`.
+-			- Check the block number is what we expect.
+-			- Check the nonce of `alice` is what we expect.
+-		*/
++		let mut system = super::Pallet::new();
++		system.inc_block_number();
++		system.inc_nonce(&"alice");
++
++		assert_eq!(system.block_number(), 1);
++		assert_eq!(system.nonce.get(&"alice"), Some(&1));
++		assert_eq!(system.nonce.get(&"bob"), None);
+ 	}
+ }

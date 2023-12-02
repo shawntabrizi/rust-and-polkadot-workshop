@@ -1,0 +1,46 @@
+diff --git a/src/balances.rs b/src/balances.rs
+index 90e409e..7ec12f5 100644
+--- a/src/balances.rs
++++ b/src/balances.rs
+@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
+ /// This is the Balances Module.
+ /// It is a simple module which keeps track of how much balance each account has in this state
+ /// machine.
+-/* TODO: Add the derive macro to implement the `Debug` trait for `Pallet`. */
++#[derive(Debug)]
+ pub struct Pallet {
+ 	// A simple storage mapping from accounts (`&'static str`) to their balances (`u128`).
+ 	balances: BTreeMap<&'static str, u128>,
+diff --git a/src/main.rs b/src/main.rs
+index 860ca79..8f731c7 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -3,7 +3,7 @@ mod system;
+ 
+ // This is our main Runtime.
+ // It accumulates all of the different pallets we want to use.
+-/* TODO: Add the derive macro to implement the `Debug` trait for `Runtime`. */
++#[derive(Debug)]
+ pub struct Runtime {
+ 	system: system::Pallet,
+ 	balances: balances::Pallet,
+@@ -35,5 +35,5 @@ fn main() {
+ 		.transfer(&"alice", &"charlie", 20)
+ 		.map_err(|e| eprintln!("{}", e));
+ 
+-	/* TODO: Print the final runtime state after all transactions. */
++	println!("{:#?}", runtime);
+ }
+diff --git a/src/system.rs b/src/system.rs
+index d8424a2..d9252f2 100644
+--- a/src/system.rs
++++ b/src/system.rs
+@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
+ 
+ /// This is the System Pallet.
+ /// It handles low level state needed for your blockchain.
+-/* TODO: Add the derive macro to implement the `Debug` trait for `Pallet`. */
++#[derive(Debug)]
+ pub struct Pallet {
+ 	/// The current block number.
+ 	block_number: u32,

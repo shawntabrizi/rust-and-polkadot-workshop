@@ -1,0 +1,39 @@
+diff --git a/src/balances.rs b/src/balances.rs
+index 7ec12f5..b9559f7 100644
+--- a/src/balances.rs
++++ b/src/balances.rs
+@@ -1,5 +1,15 @@
+ use std::collections::BTreeMap;
+ 
++/*
++	TODO: Define the common types used in this pallet:
++		- `AccountID`
++		- `Balance`
++
++	Then update this pallet to use these common types.
++
++	HINT: Remember that our `Result` does not return `AccountID`, so keep this `&'static str`.
++*/
++
+ /// This is the Balances Module.
+ /// It is a simple module which keeps track of how much balance each account has in this state
+ /// machine.
+diff --git a/src/system.rs b/src/system.rs
+index d9252f2..50eaccd 100644
+--- a/src/system.rs
++++ b/src/system.rs
+@@ -1,5 +1,14 @@
+ use std::collections::BTreeMap;
+ 
++/*
++	TODO: Define the common types used in this pallet:
++		- `AccountID`
++		- `BlockNumber`
++		- `Nonce`
++
++	Then update this pallet to use these common types.
++*/
++
+ /// This is the System Pallet.
+ /// It handles low level state needed for your blockchain.
+ #[derive(Debug)]

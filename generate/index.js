@@ -96,10 +96,16 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 
 		// Get the list of modified or created files in the commit
 		const diffOutput = execSync(`git -C ${sourcePath} diff --name-status HEAD~1 HEAD`, { encoding: 'utf-8' }).trim().split('\n');
-		const diffRaw = execSync(`git -C ${sourcePath} diff -U10000 HEAD~1 HEAD ':(exclude)README.md'`, { encoding: 'utf-8' });
+		const diffRaw = execSync(`git -C ${sourcePath} diff HEAD~1 HEAD ':(exclude)README.md'`, { encoding: 'utf-8' });
 
 		// Create a raw output
-		const diffFilePath = path.join(outputFolder, 'changes.diff');
+		let diff_name = "changes.diff";
+		if (isSolution) {
+			diff_name = "solution.diff";
+		} else if (isTemplate) {
+			diff_name = "template.diff";
+		}
+		const diffFilePath = path.join(outputFolder, diff_name);
 		fs.writeFileSync(diffFilePath, diffRaw);
 
 		// Create a JSON file in the commit folder
@@ -134,11 +140,17 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 				markdownContent = markdownContent.replace("<!-- insert_template_files -->", templateFileText);
 				markdownContent = markdownContent.replace("<!-- insert_solution_files -->", solutionFileText);
 
+				let diffText = generateDiffMarkdown("template");
+				markdownContent = markdownContent.replace("<!-- insert_diff_files -->", diffText);
+
 				stepNames.push(getStepName(templateFolder))
 			} else {
 				markdownContent = sourceMarkdown;
 				let sourceFileText = generateFileMarkdown("source", sourceFiles);
 				markdownContent = markdownContent.replace("<!-- insert_source_files -->", sourceFileText);
+
+				let diffText = generateDiffMarkdown("source");
+				markdownContent = markdownContent.replace("<!-- insert_diff_files -->", diffText);
 
 				stepNames.push(getStepName(sourceFolder))
 			}
@@ -208,6 +220,26 @@ function generateFileMarkdown(type, files) {
 	return output
 }
 
+function generateDiffMarkdown(type) {
+	let output = "";
+
+	if (type == "template" || type == "solution") {
+		let filepath = `./template/template.diff`;
+		output += `#### **template.diff**\n\n`
+		output += `[${filepath}](${filepath} ':include :type=code diff')\n\n`
+
+		filepath = `./solution/solution.diff`;
+		output += `#### **solution.diff**\n\n`
+		output += `[${filepath}](${filepath} ':include :type=code diff')\n\n`
+	} else {
+		let filepath = `./${type}/changes.diff`;
+		output += `#### **changes.diff**\n\n`
+		output += `[${filepath}](${filepath} ':include :type=code diff')\n\n`
+	}
+
+	return output;
+}
+
 let templateMarkdown = `
 [filename](./template/README.md ':include')
 
@@ -231,6 +263,14 @@ let templateMarkdown = `
 
 <!-- tabs:end -->
 
+#### **diff**
+
+<!-- tabs:start -->
+
+<!-- insert_diff_files -->
+
+<!-- tabs:end -->
+
 <!-- tabs:end -->
 `;
 
@@ -241,7 +281,21 @@ let sourceMarkdown = `
 
 <!-- tabs:start -->
 
+#### **source**
+
+<!-- tabs:start -->
+
 <!-- insert_source_files -->
+
+<!-- tabs:end -->
+
+#### **diff**
+
+<!-- tabs:start -->
+
+<!-- insert_diff_files -->
+
+<!-- tabs:end -->
 
 <!-- tabs:end -->
 `;

@@ -16,52 +16,10 @@ Because any change to a file would result in a different hash, users can prove t
 
 ![File Hash](./assets/file-hash.png)
 
-## Digital objects and account signatures
-
-Blockchains use [public key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) to map digital identities to accounts that have private keys.
-The blockchain records the account you use to store the hash for a digital object as part of the transaction.
-Because the account information is stored as part of the transaction, the controller of the private key for that account can later prove ownership as the person who initially uploaded the file.
-
-## How much time do you need to complete this tutorial?
-
-This tutorial requires compiling Rust code and takes approximately one to two hours to complete.
-
-## Before you begin
-
-For this tutorial, you download and use working code. Before you begin, verify the following:
-
-- You have configured your environment for Substrate development by installing [Rust and the Rust toolchain](/main-docs/install/).
-
-- You have completed [Build a local blockchain](/tutorials/get-started/build-local-blockchain/) and have the Substrate node template installed locally.
-
-- You have used predefined accounts as described in [Simulate a network](/tutorials/get-started/simulate-network/) to start nodes on a single computer.
-
-- You are generally familiar with software development and use command-line interfaces.
-
-## Tutorial objectives
-
-By completing this tutorial, you will accomplish the following objectives:
-
-- Learn the basic structure of a custom pallet.
-
-- See examples of how Rust macros simplify the code you need to write.
-
-- Start a blockchain node that contains a custom pallet.
-
-- Add front-end code that exposes the proof-of-existence pallet.
-
-## Design the application
-
-The proof-of-existence application exposes the following callable functions:
-
-- `create_claim()` allows a user to claim the existence of a file by uploading a hash.
-
-- `revoke_claim()` allows the current owner of a claim to revoke ownership.
-
 ## Build a custom pallet
 
 The Substrate node template has a FRAME-based runtime.
-As you learned in [Runtime development](/main-docs/fundamentals/runtime-intro), FRAME is a library of code that allows you to build a Substrate runtime by composing modules called pallets.
+As you learned, FRAME is a library of code that allows you to build a Substrate runtime by composing modules called pallets.
 You can think of the pallets as individual pieces of logic that define what your blockchain can do.
 Substrate provides you with a number of pre-built pallets for use in FRAME-based runtimes.
 
@@ -71,43 +29,22 @@ This tutorial demonstrates how to create your own FRAME pallet to be included in
 
 <!-- slide:break -->
 
-# Set up scaffolding for your pallet
+# Before you begin
 
-This tutorial demonstrates how to create a custom pallet from scratch.
-Therefore, the first step is to remove some files and content from the files in the node template directory.
+1. Make sure you already have Rust for Substrate setup on your computer:
 
-1. Open a terminal shell and navigate to the root directory for the node template.
+	https://docs.substrate.io/install/
 
-1. Change to the `pallets/template/src` directory by running the following command:
 
-	```bash
-	cd pallets/template/src
-	```
-
-1. Remove the following files:
+2. Clone the [`substrate-node-template`](https://github.com/substrate-developer-hub/substrate-node-template).
 
 	```bash
-	benchmarking.rs
-	mock.rs
-	tests.rs
+	git clone https://github.com/substrate-developer-hub/substrate-node-template
 	```
 
-1. Open the `lib.rs` file in a text editor.
+3. Replace the contents of `substrate-node-template/pallets/template/src/lib.rs` with:
 
-	This file contains code that you can use as a template for a new pallet.
-	You won't be using the template code in this tutorial.
-	However, you can review the template code to see what it provides before you delete it.
-
-1. Delete all of the lines in the `lib.rs` file.
-
-1. Add the macro required to build both the native Rust binary (`std`) and the WebAssembly (`no_std`) binary.
-
-	```rust
-	```
-
-	All of the pallets used in a runtime must be set to compile with the `no_std` features.
-
-1. Add a skeleton set of pallet dependencies and [macros](/reference/frame-macros) that the custom pallet requires by copying the following code:
+	Note: This code will not compile until you complete the full tutorial. The goal is to show you the skeleton of a pallet, and fill in all the parts piece by piece.
 
 	```rust
 	#![cfg_attr(not(feature = "std"), no_std)]
@@ -131,7 +68,3 @@ Therefore, the first step is to remove some files and content from the files in 
 		#[pallet::call]    // <-- Step 6. code block will replace this.
 	}
 	```
-
-	You now have a framework that includes placeholders for _events_, _errors_, _storage_, and _callable functions_.
-
-1. Save your changes.

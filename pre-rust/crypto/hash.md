@@ -84,17 +84,17 @@ Hash functions, like all software, is a constantly evolving space. Different blo
 
 Hash functions are being used all around you and in nearly all parts of the internet. Here are just a few examples of how they are being used.
 
-1. Data Integrity
+![Hash File](./assets/file-hash.png ':size=500')
+
+1. Data Integrity:
 
 	Hash functions are employed to verify the integrity of data. By comparing the hash value of the original data with the hash value calculated after data transfer, users can detect any changes or corruption.
 
-	This property is commonly used with Torrent software.
-
-2. Password Storage
+2. Password Storage:
 
 	Hash functions secure passwords by storing only their hash values. During authentication, the system compares the stored hash with the hash of the entered password, eliminating the need to store actual passwords.
 
-3. Digital Signatures
+3. Digital Signatures:
 
 	In digital signatures, hash functions play a role in creating a unique identifier for a piece of data. The hash value is then encrypted with a private key to generate the digital signature.
 

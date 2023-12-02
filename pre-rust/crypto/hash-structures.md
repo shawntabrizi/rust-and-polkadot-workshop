@@ -9,7 +9,7 @@ Let's take a look at two basic hash based data structures used in blockchain.
 
 ## Hash Chains
 
-![Hash Chain](./assets/Hash-Chains.png)
+![Hash Chain](./assets/Hash-Chains.png ':size=500')
 
 A hash chain is a linked list using hashes to connect nodes. Each block contains a reference to the previous hash.
 
@@ -28,7 +28,7 @@ This structure is similar to the structure of a linked list, but with a few uniq
 
 A binary merkle tree is a binary tree using hashes to connect nodes.
 
-![Merkle Tree](./assets/Merkle-tree-all-purple.png)
+![Merkle Tree](./assets/Merkle-tree-all-purple.png ':size=500')
 
 
 To create this structure, you must:
@@ -63,7 +63,7 @@ In that merkle tree, I want to prove to you there is node with the message "Hell
 The naive approach would be to give you all data which is stored in the tree, where you can plainly see "Hello, World!", and let you calculate the whole structure yourself.
 However, since the structure uses recursive hashes, whose output cannot be easily controlled, I can provide the same assurance with just a subset of data.
 
-![Merkle Proof](./assets/Merkle-Copaths.png)
+![Merkle Proof](./assets/Merkle-Copaths.png ':size=500')
 
 Instead of giving you all the data, imagine I just give you the data of the nodes leading to the specific data I want to prove exists.
 Data which is not relevant to you can be represented just by their hash.

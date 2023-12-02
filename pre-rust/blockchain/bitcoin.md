@@ -63,6 +63,8 @@ So why not just create decentralized systems?
 
 The double spend attack was one of the main problems that made creating a decentralized digital currency so difficult.
 
+![Double Spend](./assets/double-spend.png ':size=500')
+
 A double spend attack is when an individual tries to spend the same digital currency unit more than once, exploiting the absence of a centralized authority to prevent such occurrences.
 
 For example:

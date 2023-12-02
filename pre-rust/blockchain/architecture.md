@@ -111,7 +111,7 @@ Now let's take a look at the architecture of blockchains from the context of the
 
 A blockchain is not run on a single computer, but instead run on many computers all of which are connected together on a peer-to-per network.
 
-![Peer-to-peer Network](./assets/peer-to-peer.svg)
+![Peer-to-peer Network](./assets/peer-to-peer.svg ':size=500')
 
 Because of this, there is never a single source of truth for a blockchain. When you are interacting with a blockchain, you are connecting to a single node, and that node is propagating transactions and other information you send to it to the rest of the network.
 

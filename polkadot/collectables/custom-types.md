@@ -25,9 +25,9 @@ Check your code against the solution and let's move on to adding storage items f
 Add the following custom types to your Pallet.
 
 ```rust
-// Allows easy access our Pallet's `Balance` type. Comes from `Currency` interface.
+// Allows easy access our Pallet's `Balance` type. Comes from `Fungible` interface.
 type BalanceOf<T> =
-	<<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+	<<T as Config>::Fungible as Inspect<<T as frame_system::Config>::AccountId>>::Balance;
 
 // The Gender type used in the `Kitty` struct
 #[derive(Clone, Encode, Decode, PartialEq, Copy, RuntimeDebug, TypeInfo, MaxEncodedLen)]
@@ -70,15 +70,19 @@ pub mod pallet {
 	use frame_support::pallet_prelude::*;
 	use frame_system::pallet_prelude::*;
 
-	use frame_support::traits::{Currency, Randomness};
+	use frame_support::traits::{
+		fungible::{Inspect, Mutate},
+		tokens::Preservation,
+		Randomness,
+	};
 
 	// The basis which we buil
 	#[pallet::pallet]
 	pub struct Pallet<T>(_);
 
-	// Allows easy access our Pallet's `Balance` type. Comes from `Currency` interface.
+	// Allows easy access our Pallet's `Balance` type. Comes from `Fungible` interface.
 	type BalanceOf<T> =
-		<<T as Config>::Currency as Currency<<T as frame_system::Config>::AccountId>>::Balance;
+		<<T as Config>::Fungible as Inspect<<T as frame_system::Config>::AccountId>>::Balance;
 
 	// The Gender type used in the `Kitty` struct
 	#[derive(Clone, Encode, Decode, PartialEq, Copy, RuntimeDebug, TypeInfo, MaxEncodedLen)]
@@ -107,8 +111,8 @@ pub mod pallet {
 		/// Because this pallet emits events, it depends on the runtime's definition of an event.
 		type RuntimeEvent: From<Event<Self>> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
 
-		/// The Currency handler for the kitties pallet.
-		type Currency: Currency<Self::AccountId>;
+		/// The Fungible handler for the kitties pallet.
+		type Fungible: Inspect<Self::AccountId> + Mutate<Self::AccountId>;
 
 		/// The maximum amount of kitties a single account can own.
 		#[pallet::constant]

@@ -48,7 +48,7 @@ impl Randomness<Hash, BlockNumber> for BlockHashRandomness {
 ```rust
 impl pallet_template::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
-	type Currency = Balances;
+	type Fungible = Balances;
 	type KittyRandomness = BlockHashRandomness;
 	type MaxKittiesOwned = frame_support::pallet_prelude::ConstU32<100>;
 }

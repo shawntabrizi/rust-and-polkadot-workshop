@@ -29,4 +29,20 @@
 
 <!-- tabs:end -->
 
+#### **diff**
+
+<!-- tabs:start -->
+
+#### **template.diff**
+
+[./template/template.diff](./template/template.diff ':include :type=code diff')
+
+#### **solution.diff**
+
+[./solution/solution.diff](./solution/solution.diff ':include :type=code diff')
+
+
+
+<!-- tabs:end -->
+
 <!-- tabs:end -->

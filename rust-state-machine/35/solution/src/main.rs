@@ -71,13 +71,6 @@ fn main() {
 			},
 			support::Extrinsic {
 				caller: alice.clone(),
-				call: RuntimeCall::balances(balances::Call::transfer {
-					to: charlie.clone(),
-					amount: 20,
-				}),
-			},
-			support::Extrinsic {
-				caller: alice.clone(),
 				call: RuntimeCall::balances(balances::Call::transfer { to: charlie, amount: 20 }),
 			},
 		],

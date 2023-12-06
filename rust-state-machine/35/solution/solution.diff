@@ -1,5 +1,5 @@
 diff --git a/src/main.rs b/src/main.rs
-index cab75e0..8273633 100644
+index cab75e0..79eb013 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -19,18 +19,12 @@ mod types {
@@ -94,7 +94,7 @@ index cab75e0..8273633 100644
  fn main() {
  	// Create a new instance of the Runtime.
  	// It will instantiate with it all the modules it uses.
-@@ -130,14 +64,21 @@ fn main() {
+@@ -130,14 +64,14 @@ fn main() {
  		extrinsics: vec![
  			support::Extrinsic {
  				caller: alice.clone(),
@@ -107,18 +107,11 @@ index cab75e0..8273633 100644
  			support::Extrinsic {
  				caller: alice.clone(),
 -				call: RuntimeCall::Balances(balances::Call::transfer { to: charlie, amount: 20 }),
-+				call: RuntimeCall::balances(balances::Call::transfer {
-+					to: charlie.clone(),
-+					amount: 20,
-+				}),
-+			},
-+			support::Extrinsic {
-+				caller: alice.clone(),
 +				call: RuntimeCall::balances(balances::Call::transfer { to: charlie, amount: 20 }),
  			},
  		],
  	};
-@@ -147,13 +88,13 @@ fn main() {
+@@ -147,13 +81,13 @@ fn main() {
  		extrinsics: vec![
  			support::Extrinsic {
  				caller: alice.clone(),
@@ -134,7 +127,7 @@ index cab75e0..8273633 100644
  					claim: &"Hello, world!",
  				}),
  			},
-@@ -165,13 +106,13 @@ fn main() {
+@@ -165,13 +99,13 @@ fn main() {
  		extrinsics: vec![
  			support::Extrinsic {
  				caller: alice,

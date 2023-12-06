@@ -1,15 +1,9 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index c806cee..78f233d 100644
+index d221761..78f233d 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
-@@ -30,20 +30,18 @@ impl Pallet {
- 	/// and that no mathematical overflows occur.
- 	pub fn transfer(
- 		&mut self,
--		caller: &String,
--		to: &String,
-+		caller: String,
-+		to: String,
+@@ -34,16 +34,14 @@ impl Pallet {
+ 		to: String,
  		amount: u128,
  	) -> Result<(), &'static str> {
 -		/* TODO:

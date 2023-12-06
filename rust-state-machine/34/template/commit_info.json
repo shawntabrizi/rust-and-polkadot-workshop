@@ -1,5 +1,5 @@
 {
-  "commitHash": "3cbc19d2515bbb63603ce74a577684da60b78f1c",
+  "commitHash": "b1128ecac064ed4368b6c9afa46626da0f49277c",
   "commitMessage": "template: use call macro in proof of existence",
   "files": [
     {

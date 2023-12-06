@@ -1,5 +1,5 @@
 {
-  "commitHash": "a1a517d4b9b138fffae996ad2b5ab17ee3f3bd68",
+  "commitHash": "79e130f7afc0b5f120e6bde28f71262d76f1d33b",
   "commitMessage": "template: add debug and print the runtime state",
   "files": [
     {

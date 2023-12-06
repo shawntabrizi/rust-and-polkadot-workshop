@@ -30,8 +30,8 @@ impl Pallet {
 	/// and that no mathematical overflows occur.
 	pub fn transfer(
 		&mut self,
-		caller: &String,
-		to: &String,
+		caller: String,
+		to: String,
 		amount: u128,
 	) -> Result<(), &'static str> {
 		/* TODO:

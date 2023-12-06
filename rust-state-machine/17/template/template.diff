@@ -1,5 +1,5 @@
 diff --git a/src/main.rs b/src/main.rs
-index 7baa9d5..e422c8e 100644
+index 8d30b1b..d681065 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -11,6 +11,12 @@ mod types {
@@ -16,7 +16,7 @@ index 7baa9d5..e422c8e 100644
  // It accumulates all of the different pallets we want to use.
  #[derive(Debug)]
 diff --git a/src/system.rs b/src/system.rs
-index dd26b67..0c93a86 100644
+index b496b5b..5c2a7f5 100644
 --- a/src/system.rs
 +++ b/src/system.rs
 @@ -2,6 +2,11 @@ use core::ops::AddAssign;
@@ -41,7 +41,7 @@ index dd26b67..0c93a86 100644
 +
  impl<AccountId, BlockNumber, Nonce> Pallet<AccountId, BlockNumber, Nonce>
  where
- 	AccountId: Ord,
+ 	AccountId: Ord + Clone,
 @@ -45,6 +54,11 @@ where
  
  #[cfg(test)]
@@ -53,4 +53,4 @@ index dd26b67..0c93a86 100644
 +
  	#[test]
  	fn init_system() {
- 		let mut system = super::Pallet::<&'static str, u32, u32>::new();
+ 		let mut system = super::Pallet::<String, u32, u32>::new();

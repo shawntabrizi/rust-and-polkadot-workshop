@@ -1,5 +1,5 @@
 {
-  "commitHash": "82d7a6545ba948cbbe27b7efec135d7c4eae6e9e",
+  "commitHash": "d5824c0c7cdeb568129a4893af7392da9f3bcf6e",
   "commitMessage": "template: add proof of existence functions with tests",
   "files": [
     {

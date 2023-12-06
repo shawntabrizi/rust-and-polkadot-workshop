@@ -1,8 +1,8 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index 7ec12f5..b9559f7 100644
+index e09906c..51aea28 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
-@@ -1,5 +1,15 @@
+@@ -1,5 +1,13 @@
  use std::collections::BTreeMap;
  
 +/*
@@ -11,15 +11,13 @@ index 7ec12f5..b9559f7 100644
 +		- `Balance`
 +
 +	Then update this pallet to use these common types.
-+
-+	HINT: Remember that our `Result` does not return `AccountID`, so keep this `&'static str`.
 +*/
 +
  /// This is the Balances Module.
  /// It is a simple module which keeps track of how much balance each account has in this state
  /// machine.
 diff --git a/src/system.rs b/src/system.rs
-index d9252f2..50eaccd 100644
+index dda7af9..071090b 100644
 --- a/src/system.rs
 +++ b/src/system.rs
 @@ -1,5 +1,14 @@

@@ -1,9 +1,15 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index 2cda2bc..86018f8 100644
+index c806cee..78f233d 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
-@@ -34,16 +34,14 @@ impl Pallet {
- 		to: &'static str,
+@@ -30,20 +30,18 @@ impl Pallet {
+ 	/// and that no mathematical overflows occur.
+ 	pub fn transfer(
+ 		&mut self,
+-		caller: &String,
+-		to: &String,
++		caller: String,
++		to: String,
  		amount: u128,
  	) -> Result<(), &'static str> {
 -		/* TODO:
@@ -25,7 +31,7 @@ index 2cda2bc..86018f8 100644
  
  		Ok(())
  	}
-@@ -63,10 +61,15 @@ mod tests {
+@@ -63,10 +61,21 @@ mod tests {
  
  	#[test]
  	fn transfer_balance() {
@@ -36,13 +42,19 @@ index 2cda2bc..86018f8 100644
 -		*/
 +		let mut balances = super::Pallet::new();
 +
-+		assert_eq!(balances.transfer(&"alice", &"bob", 51), Err("Not enough funds."));
++		assert_eq!(
++			balances.transfer("alice".to_string(), "bob".to_string(), 51),
++			Err("Not enough funds.")
++		);
 +
-+		balances.set_balance(&"alice", 100);
-+		assert_eq!(balances.transfer(&"alice", &"bob", 51), Ok(()));
-+		assert_eq!(balances.balance(&"alice"), 49);
-+		assert_eq!(balances.balance(&"bob"), 51);
++		balances.set_balance(&"alice".to_string(), 100);
++		assert_eq!(balances.transfer("alice".to_string(), "bob".to_string(), 51), Ok(()));
++		assert_eq!(balances.balance(&"alice".to_string()), 49);
++		assert_eq!(balances.balance(&"bob".to_string()), 51);
 +
-+		assert_eq!(balances.transfer(&"alice", &"bob", 51), Err("Not enough funds."));
++		assert_eq!(
++			balances.transfer("alice".to_string(), "bob".to_string(), 51),
++			Err("Not enough funds.")
++		);
  	}
  }

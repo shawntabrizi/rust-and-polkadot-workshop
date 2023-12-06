@@ -1,10 +1,10 @@
 diff --git a/src/main.rs b/src/main.rs
-index 8a1c379..5cdbd53 100644
+index b314856..df9057a 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -7,12 +7,14 @@ mod system;
  mod types {
- 	pub type AccountId = &'static str;
+ 	pub type AccountId = String;
  	pub type Balance = u128;
 +	/* TODO: Move your type definitions for `BlockNumber` and `Nonce` here. */
  }
@@ -18,10 +18,10 @@ index 8a1c379..5cdbd53 100644
  	balances: balances::Pallet<types::AccountId, types::Balance>,
  }
 diff --git a/src/system.rs b/src/system.rs
-index 4b0d0b2..617e199 100644
+index f34406f..e0a0a92 100644
 --- a/src/system.rs
 +++ b/src/system.rs
-@@ -4,6 +4,13 @@ type AccountId = &'static str;
+@@ -4,6 +4,13 @@ type AccountId = String;
  type BlockNumber = u32;
  type Nonce = u32;
  
@@ -60,4 +60,4 @@ index 4b0d0b2..617e199 100644
 +		*/
  		let mut system = super::Pallet::new();
  		system.inc_block_number();
- 		system.inc_nonce(&"alice");
+ 		system.inc_nonce(&"alice".to_string());

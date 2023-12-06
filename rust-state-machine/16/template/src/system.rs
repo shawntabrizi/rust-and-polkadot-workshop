@@ -1,6 +1,6 @@
 use std::collections::BTreeMap;
 
-type AccountId = &'static str;
+type AccountId = String;
 type BlockNumber = u32;
 type Nonce = u32;
 
@@ -48,10 +48,10 @@ impl Pallet {
 
 	// Increment the nonce of an account. This helps us keep track of how many transactions each
 	// account has made.
-	pub fn inc_nonce(&mut self, who: AccountId) {
+	pub fn inc_nonce(&mut self, who: &AccountId) {
 		let nonce = *self.nonce.get(who).unwrap_or(&0);
 		let new_nonce = nonce + 1;
-		self.nonce.insert(who, new_nonce);
+		self.nonce.insert(who.clone(), new_nonce);
 	}
 }
 
@@ -65,10 +65,10 @@ mod test {
 		*/
 		let mut system = super::Pallet::new();
 		system.inc_block_number();
-		system.inc_nonce(&"alice");
+		system.inc_nonce(&"alice".to_string());
 
 		assert_eq!(system.block_number(), 1);
-		assert_eq!(system.nonce.get(&"alice"), Some(&1));
-		assert_eq!(system.nonce.get(&"bob"), None);
+		assert_eq!(system.nonce.get(&"alice".to_string()), Some(&1));
+		assert_eq!(system.nonce.get(&"bob".to_string()), None);
 	}
 }

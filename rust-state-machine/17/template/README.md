@@ -29,7 +29,7 @@ You could a trait `GetName`:
 
 ```rust
 pub trait GetName {
-	fn name() -> &'static str;
+	fn name() -> String;
 }
 ```
 
@@ -38,8 +38,8 @@ Then you could implement this trait for any object.
 ```rust
 struct Shawn;
 impl GetName for Shawn {
-	fn name() -> &'static str {
-		return &"shawn";
+	fn name() -> String {
+		return "shawn".to_string();
 	}
 }
 ```
@@ -123,7 +123,7 @@ Just like before, we need some object which will implement this trait. In our ca
 
 ```rust
 impl system::Config for Runtime {
-	type AccountId = &'static str;
+	type AccountId = String;
 	type BlockNumber = u32;
 	type Nonce = u32;
 }

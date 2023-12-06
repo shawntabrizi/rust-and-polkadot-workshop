@@ -10,7 +10,7 @@ index ea8024e..d2fffb8 100644
  	println!("Hello, world!");
 diff --git a/src/system.rs b/src/system.rs
 new file mode 100644
-index 0000000..533f13b
+index 0000000..b4e6ef4
 --- /dev/null
 +++ b/src/system.rs
 @@ -0,0 +1,17 @@
@@ -22,7 +22,7 @@ index 0000000..533f13b
 +	/// The current block number.
 +	/* TODO: Create a field `block_number` that stores a `u32`. */
 +	/// A map from an account to their nonce.
-+	/* TODO: Create a field `nonce` that is a `BTreeMap` from `&'static str` to `u32`. */
++	/* TODO: Create a field `nonce` that is a `BTreeMap` from `String` to `u32`. */
 +}
 +
 +impl Pallet {

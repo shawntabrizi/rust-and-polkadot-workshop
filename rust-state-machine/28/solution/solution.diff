@@ -1,12 +1,13 @@
 diff --git a/src/proof_of_existence.rs b/src/proof_of_existence.rs
-index 2cc9af3..20255b9 100644
+index b85acdf..20255b9 100644
 --- a/src/proof_of_existence.rs
 +++ b/src/proof_of_existence.rs
-@@ -26,14 +26,16 @@ impl<T: Config> Pallet<T> {
+@@ -26,15 +26,16 @@ impl<T: Config> Pallet<T> {
  
  	/// Get the owner (if any) of a claim.
  	pub fn get_claim(&self, claim: &T::Content) -> Option<&T::AccountId> {
 -		/* TODO: `get` the `claim` */
+-		unimplemented!()
 +		self.claims.get(&claim)
  	}
  
@@ -22,7 +23,7 @@ index 2cc9af3..20255b9 100644
  		Ok(())
  	}
  
-@@ -41,9 +43,11 @@ impl<T: Config> Pallet<T> {
+@@ -42,9 +43,11 @@ impl<T: Config> Pallet<T> {
  	/// This function should only succeed if the caller is the owner of an existing claim.
  	/// It will return an error if the claim does not exist, or if the caller is not the owner.
  	pub fn revoke_claim(&mut self, caller: T::AccountId, claim: T::Content) -> DispatchResult {
@@ -37,7 +38,7 @@ index 2cc9af3..20255b9 100644
  		Ok(())
  	}
  }
-@@ -64,12 +68,15 @@ mod test {
+@@ -65,12 +68,15 @@ mod test {
  
  	#[test]
  	fn basic_proof_of_existence() {

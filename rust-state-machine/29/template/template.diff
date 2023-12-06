@@ -1,8 +1,8 @@
 diff --git a/src/proof_of_existence.rs b/src/proof_of_existence.rs
-index 20255b9..f2fb690 100644
+index 20255b9..587dfc7 100644
 --- a/src/proof_of_existence.rs
 +++ b/src/proof_of_existence.rs
-@@ -52,6 +52,33 @@ impl<T: Config> Pallet<T> {
+@@ -52,6 +52,34 @@ impl<T: Config> Pallet<T> {
  	}
  }
  
@@ -19,6 +19,7 @@ index 20255b9..f2fb690 100644
 +		Remember that you only need to pass in the `claim` data, as `caller` information is passed
 +		in through the `dispatch` logic.
 +	*/
++	RemoveMe(core::marker::PhantomData<T>),
 +}
 +
 +/// Implementation of the dispatch logic, mapping from `POECall` to the appropriate underlying

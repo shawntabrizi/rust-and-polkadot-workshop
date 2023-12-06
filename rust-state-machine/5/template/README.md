@@ -81,7 +81,7 @@ To make our module useful, we need to at least have some functions which will al
 
 	```rust
 	impl BalancesModule {
-		pub fn set_balance(&mut self, who: &'static str, amount: u128) {
+		pub fn set_balance(&mut self, who: &String, amount: u128) {
 			self.balances.insert(who, amount);
 		}
 
@@ -94,7 +94,7 @@ To make our module useful, we need to at least have some functions which will al
 2. Create a new function inside `impl BalancesModule` called `fn balance`:
 
 	```rust
-	pub fn balance(&self, who: &'static str) -> u128 {
+	pub fn balance(&self, who: &String) -> u128 {
 		*self.balances.get(&who).unwrap_or(&0)
 	}
 	```

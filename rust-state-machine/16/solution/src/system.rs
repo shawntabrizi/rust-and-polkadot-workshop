@@ -14,7 +14,7 @@ pub struct Pallet<AccountId, BlockNumber, Nonce> {
 
 impl<AccountId, BlockNumber, Nonce> Pallet<AccountId, BlockNumber, Nonce>
 where
-	AccountId: Ord,
+	AccountId: Ord + Clone,
 	BlockNumber: Zero + One + AddAssign + Copy,
 	Nonce: Zero + One + Copy,
 {
@@ -36,10 +36,10 @@ where
 
 	// Increment the nonce of an account. This helps us keep track of how many transactions each
 	// account has made.
-	pub fn inc_nonce(&mut self, who: AccountId) {
+	pub fn inc_nonce(&mut self, who: &AccountId) {
 		let nonce = *self.nonce.get(&who).unwrap_or(&Nonce::zero());
 		let new_nonce = nonce + Nonce::one();
-		self.nonce.insert(who, new_nonce);
+		self.nonce.insert(who.clone(), new_nonce);
 	}
 }
 
@@ -47,12 +47,12 @@ where
 mod test {
 	#[test]
 	fn init_system() {
-		let mut system = super::Pallet::<&'static str, u32, u32>::new();
+		let mut system = super::Pallet::<String, u32, u32>::new();
 		system.inc_block_number();
-		system.inc_nonce(&"alice");
+		system.inc_nonce(&"alice".to_string());
 
 		assert_eq!(system.block_number(), 1);
-		assert_eq!(system.nonce.get(&"alice"), Some(&1));
-		assert_eq!(system.nonce.get(&"bob"), None);
+		assert_eq!(system.nonce.get(&"alice".to_string()), Some(&1));
+		assert_eq!(system.nonce.get(&"bob".to_string()), None);
 	}
 }

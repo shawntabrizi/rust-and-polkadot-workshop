@@ -1,5 +1,5 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index 34debc2..b0b3191 100644
+index 947ad84..42d66d0 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
 @@ -34,7 +34,10 @@ impl<T: Config> Pallet<T> {
@@ -29,19 +29,14 @@ index 34debc2..b0b3191 100644
  	type Caller = T::AccountId;
  	type Call = Call<T>;
 diff --git a/src/main.rs b/src/main.rs
-index 60b086a..ee9ea1d 100644
+index 5a55bad..5fc9afe 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -122,10 +122,12 @@ fn main() {
+@@ -125,6 +125,7 @@ fn main() {
  		extrinsics: vec![
  			support::Extrinsic {
- 				caller: &"alice",
-+				/* TODO: Update the enum name to match what is generated with the macro. */
- 				call: RuntimeCall::Balances(balances::Call::Transfer { to: &"bob", amount: 20 }),
- 			},
- 			support::Extrinsic {
- 				caller: &"alice",
+ 				caller: alice.clone(),
 +				/* TODO: Update the enum name to match what is generated with the macro. */
  				call: RuntimeCall::Balances(balances::Call::Transfer {
- 					to: &"charlie",
+ 					to: bob.clone(),
  					amount: 20,

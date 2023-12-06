@@ -1,25 +1,25 @@
 diff --git a/src/main.rs b/src/main.rs
-index bb4f7a0..99b903a 100644
+index ff6022a..50301cb 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -100,34 +100,25 @@ fn main() {
+@@ -103,34 +103,25 @@ fn main() {
  	// Initialize the system with some initial balance.
- 	runtime.balances.set_balance(&"alice", 100);
+ 	runtime.balances.set_balance(&alice, 100);
  
 -	// start emulating a block
 -	runtime.system.inc_block_number();
 -	assert_eq!(runtime.system.block_number(), 1);
 -
 -	// first transaction
--	runtime.system.inc_nonce(&"alice");
--	let _res = runtime.balances.transfer(&"alice", &"bob", 30).map_err(|e| eprintln!("{}", e));
--
--	// second transaction
--	runtime.system.inc_nonce(&"alice");
+-	runtime.system.inc_nonce(&alice);
 -	let _res = runtime
 -		.balances
--		.transfer(&"alice", &"charlie", 20)
+-		.transfer(alice.clone(), bob, 30)
 -		.map_err(|e| eprintln!("{}", e));
+-
+-	// second transaction
+-	runtime.system.inc_nonce(&alice);
+-	let _res = runtime.balances.transfer(alice, charlie, 20).map_err(|e| eprintln!("{}", e));
 -
 -	/*
 -		TODO: Replace the logic above with a new `Block`.
@@ -33,12 +33,12 @@ index bb4f7a0..99b903a 100644
 +		header: support::Header { block_number: 1 },
 +		extrinsics: vec![
 +			support::Extrinsic {
-+				caller: &"alice",
-+				call: RuntimeCall::BalancesTransfer { to: &"bob", amount: 20 },
++				caller: alice.clone(),
++				call: RuntimeCall::BalancesTransfer { to: bob, amount: 20 },
 +			},
 +			support::Extrinsic {
-+				caller: &"alice",
-+				call: RuntimeCall::BalancesTransfer { to: &"charlie", amount: 20 },
++				caller: alice,
++				call: RuntimeCall::BalancesTransfer { to: charlie, amount: 20 },
 +			},
 +		],
 +	};

@@ -1,5 +1,5 @@
 {
-  "commitHash": "011fac8822047a13c8ae3690b828a40815fd19b9",
+  "commitHash": "e16df4bcc042c3721427edcb7c42e25f19dcbe37",
   "commitMessage": "template: implement basic dispatch for transfer",
   "files": [
     {

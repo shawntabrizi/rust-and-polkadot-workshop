@@ -1,5 +1,5 @@
 diff --git a/src/main.rs b/src/main.rs
-index 4ff7e4f..cdda4b2 100644
+index cab75e0..8273633 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -19,18 +19,12 @@ mod types {
@@ -44,7 +44,7 @@ index 4ff7e4f..cdda4b2 100644
 -	fn execute_block(&mut self, block: types::Block) -> support::DispatchResult {
 -		self.system.inc_block_number();
 -		if block.header.block_number != self.system.block_number() {
--			return Err(&"block number does not match what is expected")
+-			return Err(&"block number does not match what is expected");
 -		}
 -		// An extrinsic error is not enough to trigger the block to be invalid. We capture the
 -		// result, and emit an error message if one is emitted.
@@ -94,47 +94,57 @@ index 4ff7e4f..cdda4b2 100644
  fn main() {
  	// Create a new instance of the Runtime.
  	// It will instantiate with it all the modules it uses.
-@@ -127,11 +61,11 @@ fn main() {
+@@ -130,14 +64,21 @@ fn main() {
  		extrinsics: vec![
  			support::Extrinsic {
- 				caller: &"alice",
--				call: RuntimeCall::Balances(balances::Call::transfer { to: &"bob", amount: 20 }),
-+				call: RuntimeCall::balances(balances::Call::transfer { to: &"bob", amount: 20 }),
- 			},
- 			support::Extrinsic {
- 				caller: &"alice",
+ 				caller: alice.clone(),
 -				call: RuntimeCall::Balances(balances::Call::transfer {
 +				call: RuntimeCall::balances(balances::Call::transfer {
- 					to: &"charlie",
+ 					to: bob.clone(),
  					amount: 20,
  				}),
-@@ -144,13 +78,13 @@ fn main() {
+ 			},
+ 			support::Extrinsic {
+ 				caller: alice.clone(),
+-				call: RuntimeCall::Balances(balances::Call::transfer { to: charlie, amount: 20 }),
++				call: RuntimeCall::balances(balances::Call::transfer {
++					to: charlie.clone(),
++					amount: 20,
++				}),
++			},
++			support::Extrinsic {
++				caller: alice.clone(),
++				call: RuntimeCall::balances(balances::Call::transfer { to: charlie, amount: 20 }),
+ 			},
+ 		],
+ 	};
+@@ -147,13 +88,13 @@ fn main() {
  		extrinsics: vec![
  			support::Extrinsic {
- 				caller: &"alice",
+ 				caller: alice.clone(),
 -				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::create_claim {
 +				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::create_claim {
  					claim: &"Hello, world!",
  				}),
  			},
  			support::Extrinsic {
- 				caller: &"bob",
+ 				caller: bob.clone(),
 -				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::create_claim {
 +				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::create_claim {
  					claim: &"Hello, world!",
  				}),
  			},
-@@ -162,13 +96,13 @@ fn main() {
+@@ -165,13 +106,13 @@ fn main() {
  		extrinsics: vec![
  			support::Extrinsic {
- 				caller: &"alice",
+ 				caller: alice,
 -				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::revoke_claim {
 +				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::revoke_claim {
  					claim: &"Hello, world!",
  				}),
  			},
  			support::Extrinsic {
- 				caller: &"bob",
+ 				caller: bob,
 -				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::create_claim {
 +				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::create_claim {
  					claim: &"Hello, world!",

@@ -27,6 +27,7 @@ impl<T: Config> Pallet<T> {
 	/// Get the owner (if any) of a claim.
 	pub fn get_claim(&self, claim: &T::Content) -> Option<&T::AccountId> {
 		/* TODO: `get` the `claim` */
+		unimplemented!()
 	}
 
 	/// Create a new claim on behalf of the `caller`.

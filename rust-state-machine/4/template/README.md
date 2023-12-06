@@ -25,7 +25,7 @@ Maps are simple `key -> value` objects, allowing us to define an arbitrary sized
 
 	```rust
 	pub struct Pallet {
-		balances: BTreeMap<&'static str, u128>,
+		balances: BTreeMap<String, u128>,
 	}
 	```
 

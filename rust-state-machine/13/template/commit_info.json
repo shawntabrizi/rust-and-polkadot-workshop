@@ -1,5 +1,5 @@
 {
-  "commitHash": "affd196ed62ebb3c33e54364c06af8f3cefb4a5c",
+  "commitHash": "9b8db3c41e6a56bbacb21fdf523bf28bd06228f2",
   "commitMessage": "template: define common types within modules",
   "files": [
     {

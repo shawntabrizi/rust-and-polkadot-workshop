@@ -1,10 +1,10 @@
 diff --git a/src/main.rs b/src/main.rs
-index 5cdbd53..7baa9d5 100644
+index df9057a..8d30b1b 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -7,15 +7,15 @@ mod system;
  mod types {
- 	pub type AccountId = &'static str;
+ 	pub type AccountId = String;
  	pub type Balance = u128;
 -	/* TODO: Move your type definitions for `BlockNumber` and `Nonce` here. */
 +	pub type BlockNumber = u32;
@@ -22,7 +22,7 @@ index 5cdbd53..7baa9d5 100644
  }
  
 diff --git a/src/system.rs b/src/system.rs
-index 617e199..dd26b67 100644
+index e0a0a92..b496b5b 100644
 --- a/src/system.rs
 +++ b/src/system.rs
 @@ -1,38 +1,26 @@
@@ -30,7 +30,7 @@ index 617e199..dd26b67 100644
 +use num::traits::{One, Zero};
  use std::collections::BTreeMap;
  
--type AccountId = &'static str;
+-type AccountId = String;
 -type BlockNumber = u32;
 -type Nonce = u32;
 -
@@ -63,7 +63,7 @@ index 617e199..dd26b67 100644
 -impl Pallet {
 +impl<AccountId, BlockNumber, Nonce> Pallet<AccountId, BlockNumber, Nonce>
 +where
-+	AccountId: Ord,
++	AccountId: Ord + Clone,
 +	BlockNumber: Zero + One + AddAssign + Copy,
 +	Nonce: Zero + One + Copy,
 +{
@@ -84,12 +84,12 @@ index 617e199..dd26b67 100644
  
  	// Increment the nonce of an account. This helps us keep track of how many transactions each
  	// account has made.
- 	pub fn inc_nonce(&mut self, who: AccountId) {
+ 	pub fn inc_nonce(&mut self, who: &AccountId) {
 -		let nonce = *self.nonce.get(who).unwrap_or(&0);
 -		let new_nonce = nonce + 1;
 +		let nonce = *self.nonce.get(&who).unwrap_or(&Nonce::zero());
 +		let new_nonce = nonce + Nonce::one();
- 		self.nonce.insert(who, new_nonce);
+ 		self.nonce.insert(who.clone(), new_nonce);
  	}
  }
 @@ -59,11 +47,7 @@ impl Pallet {
@@ -101,7 +101,7 @@ index 617e199..dd26b67 100644
 -			When creating an instance of `Pallet`, you should explicitly define the types you use.
 -		*/
 -		let mut system = super::Pallet::new();
-+		let mut system = super::Pallet::<&'static str, u32, u32>::new();
++		let mut system = super::Pallet::<String, u32, u32>::new();
  		system.inc_block_number();
- 		system.inc_nonce(&"alice");
+ 		system.inc_nonce(&"alice".to_string());
  

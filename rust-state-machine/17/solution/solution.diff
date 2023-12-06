@@ -1,5 +1,5 @@
 diff --git a/src/main.rs b/src/main.rs
-index e422c8e..4eb1f16 100644
+index d681065..40dc8ac 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -11,20 +11,20 @@ mod types {
@@ -31,7 +31,7 @@ index e422c8e..4eb1f16 100644
  	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
  	fn new() -> Self {
 diff --git a/src/system.rs b/src/system.rs
-index 0c93a86..173cbc2 100644
+index 5c2a7f5..52cd57f 100644
 --- a/src/system.rs
 +++ b/src/system.rs
 @@ -2,66 +2,70 @@ use core::ops::AddAssign;
@@ -47,7 +47,7 @@ index 0c93a86..173cbc2 100644
 +pub trait Config {
 +	/// A type which can identify an account in our state machine.
 +	/// On a real blockchain, you would want this to be a cryptographic public key.
-+	type AccountId: Ord;
++	type AccountId: Ord + Clone;
 +	/// A type which can be used to represent the current block number.
 +	/// Usually a basic unsigned integer.
 +	type BlockNumber: Zero + One + AddAssign + Copy;
@@ -75,7 +75,7 @@ index 0c93a86..173cbc2 100644
 -
 -impl<AccountId, BlockNumber, Nonce> Pallet<AccountId, BlockNumber, Nonce>
 -where
--	AccountId: Ord,
+-	AccountId: Ord + Clone,
 -	BlockNumber: Zero + One + AddAssign + Copy,
 -	Nonce: Zero + One + Copy,
 -{
@@ -103,13 +103,13 @@ index 0c93a86..173cbc2 100644
  
  	// Increment the nonce of an account. This helps us keep track of how many transactions each
  	// account has made.
--	pub fn inc_nonce(&mut self, who: AccountId) {
+-	pub fn inc_nonce(&mut self, who: &AccountId) {
 -		let nonce = *self.nonce.get(&who).unwrap_or(&Nonce::zero());
 -		let new_nonce = nonce + Nonce::one();
-+	pub fn inc_nonce(&mut self, who: T::AccountId) {
++	pub fn inc_nonce(&mut self, who: &T::AccountId) {
 +		let nonce = *self.nonce.get(&who).unwrap_or(&T::Nonce::zero());
 +		let new_nonce = nonce + T::Nonce::one();
- 		self.nonce.insert(who, new_nonce);
+ 		self.nonce.insert(who.clone(), new_nonce);
  	}
  }
  
@@ -121,15 +121,15 @@ index 0c93a86..173cbc2 100644
 -	*/
 +	struct TestConfig;
 +	impl super::Config for TestConfig {
-+		type AccountId = &'static str;
++		type AccountId = String;
 +		type BlockNumber = u32;
 +		type Nonce = u32;
 +	}
  
  	#[test]
  	fn init_system() {
--		let mut system = super::Pallet::<&'static str, u32, u32>::new();
+-		let mut system = super::Pallet::<String, u32, u32>::new();
 +		let mut system = super::Pallet::<TestConfig>::new();
  		system.inc_block_number();
- 		system.inc_nonce(&"alice");
+ 		system.inc_nonce(&"alice".to_string());
  

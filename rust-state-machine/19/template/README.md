@@ -17,7 +17,7 @@ We can extend our previous example to show what trait inheritance does with func
 ```rust
 pub trait GetName {
 	// returns a string representing the object's name
-	fn name() -> &'static str;
+	fn name() -> String;
 }
 
 pub trait SayName: GetName {
@@ -35,8 +35,8 @@ So when we implement these traits, it looks like:
 ```rust
 struct Shawn;
 impl GetName for Shawn {
-	fn name() -> &'static str {
-		return &"shawn";
+	fn name() -> String {
+		return "shawn".to_string();
 	}
 }
 

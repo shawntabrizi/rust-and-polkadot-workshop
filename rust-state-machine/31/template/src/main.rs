@@ -9,7 +9,7 @@ use crate::support::Dispatch;
 // Modules are configured for these types directly, and they satisfy all of our
 // trait requirements.
 mod types {
-	pub type AccountId = &'static str;
+	pub type AccountId = String;
 	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
@@ -63,7 +63,7 @@ impl Runtime {
 	fn execute_block(&mut self, block: types::Block) -> support::DispatchResult {
 		self.system.inc_block_number();
 		if block.header.block_number != self.system.block_number() {
-			return Err(&"block number does not match what is expected")
+			return Err(&"block number does not match what is expected");
 		}
 		// An extrinsic error is not enough to trigger the block to be invalid. We capture the
 		// result, and emit an error message if one is emitted.
@@ -111,9 +111,12 @@ fn main() {
 	// Create a new instance of the Runtime.
 	// It will instantiate with it all the modules it uses.
 	let mut runtime = Runtime::new();
+	let alice = "alice".to_string();
+	let bob = "bob".to_string();
+	let charlie = "charlie".to_string();
 
 	// Initialize the system with some initial balance.
-	runtime.balances.set_balance(&"alice", 100);
+	runtime.balances.set_balance(&alice, 100);
 
 	// Here are the extrinsics in our block.
 	// You can add or remove these based on the modules and calls you have set up.
@@ -121,15 +124,12 @@ fn main() {
 		header: support::Header { block_number: 1 },
 		extrinsics: vec![
 			support::Extrinsic {
-				caller: &"alice",
-				call: RuntimeCall::Balances(balances::Call::Transfer { to: &"bob", amount: 20 }),
+				caller: alice.clone(),
+				call: RuntimeCall::Balances(balances::Call::Transfer { to: bob, amount: 20 }),
 			},
 			support::Extrinsic {
-				caller: &"alice",
-				call: RuntimeCall::Balances(balances::Call::Transfer {
-					to: &"charlie",
-					amount: 20,
-				}),
+				caller: alice,
+				call: RuntimeCall::Balances(balances::Call::Transfer { to: charlie, amount: 20 }),
 			},
 		],
 	};

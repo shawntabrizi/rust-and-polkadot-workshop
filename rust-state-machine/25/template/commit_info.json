@@ -1,5 +1,5 @@
 {
-  "commitHash": "17302f9b04a0438e25ec8c1c189a06bdfe17dc98",
+  "commitHash": "b49dce82a835e0c50bc3b8ff4d7169eb3975b670",
   "commitMessage": "template: introduce module level dispatch to balances",
   "files": [
     {

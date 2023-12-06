@@ -1,12 +1,12 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index 2a4e68a..0725fe2 100644
+index 543111e..1effef7 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
 @@ -1,8 +1,17 @@
 +/* TODO: You might need to import some stuff for this step. */
  use std::collections::BTreeMap;
  
- type AccountId = &'static str;
+ type AccountId = String;
  type Balance = u128;
  
 +/*
@@ -48,7 +48,7 @@ index 2a4e68a..0725fe2 100644
 +		*/
  		let mut balances = super::Pallet::new();
  
- 		assert_eq!(balances.balance(&"alice"), 0);
+ 		assert_eq!(balances.balance(&"alice".to_string()), 0);
 @@ -65,6 +89,10 @@ mod tests {
  
  	#[test]
@@ -59,9 +59,9 @@ index 2a4e68a..0725fe2 100644
 +		*/
  		let mut balances = super::Pallet::new();
  
- 		assert_eq!(balances.transfer(&"alice", &"bob", 51), Err("Not enough funds."));
+ 		assert_eq!(
 diff --git a/src/main.rs b/src/main.rs
-index 8f731c7..2554ff8 100644
+index 1ebef92..1cfc058 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -1,11 +1,21 @@

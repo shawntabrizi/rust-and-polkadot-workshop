@@ -65,6 +65,7 @@ pub enum Call<T: Config> {
 		Remember that you only need to pass in the `claim` data, as `caller` information is passed
 		in through the `dispatch` logic.
 	*/
+	RemoveMe(core::marker::PhantomData<T>),
 }
 
 /// Implementation of the dispatch logic, mapping from `POECall` to the appropriate underlying

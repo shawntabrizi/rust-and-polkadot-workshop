@@ -1,5 +1,5 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index 86018f8..90e409e 100644
+index 78f233d..1b9d9d8 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
 @@ -3,6 +3,7 @@ use std::collections::BTreeMap;
@@ -8,10 +8,10 @@ index 86018f8..90e409e 100644
  /// machine.
 +/* TODO: Add the derive macro to implement the `Debug` trait for `Pallet`. */
  pub struct Pallet {
- 	// A simple storage mapping from accounts (`&'static str`) to their balances (`u128`).
- 	balances: BTreeMap<&'static str, u128>,
+ 	// A simple storage mapping from accounts (`String`) to their balances (`u128`).
+ 	balances: BTreeMap<String, u128>,
 diff --git a/src/main.rs b/src/main.rs
-index 707e8e0..860ca79 100644
+index 808d673..b79655a 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -3,6 +3,7 @@ mod system;
@@ -22,15 +22,15 @@ index 707e8e0..860ca79 100644
  pub struct Runtime {
  	system: system::Pallet,
  	balances: balances::Pallet,
-@@ -33,4 +34,6 @@ fn main() {
- 		.balances
- 		.transfer(&"alice", &"charlie", 20)
- 		.map_err(|e| eprintln!("{}", e));
+@@ -37,4 +38,6 @@ fn main() {
+ 	// second transaction
+ 	runtime.system.inc_nonce(&alice);
+ 	let _res = runtime.balances.transfer(alice, charlie, 20).map_err(|e| eprintln!("{}", e));
 +
 +	/* TODO: Print the final runtime state after all transactions. */
  }
 diff --git a/src/system.rs b/src/system.rs
-index 00e6de8..d8424a2 100644
+index 4689438..56f3b9a 100644
 --- a/src/system.rs
 +++ b/src/system.rs
 @@ -2,6 +2,7 @@ use std::collections::BTreeMap;

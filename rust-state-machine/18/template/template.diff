@@ -1,5 +1,5 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index 4519171..eacb2ef 100644
+index e333e0d..9f5c453 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
 @@ -1,6 +1,11 @@
@@ -24,7 +24,7 @@ index 4519171..eacb2ef 100644
 +
  impl<AccountId, Balance> Pallet<AccountId, Balance>
  where
- 	AccountId: Ord,
+ 	AccountId: Ord + Clone,
 @@ -55,6 +64,11 @@ where
  
  #[cfg(test)]
@@ -36,9 +36,9 @@ index 4519171..eacb2ef 100644
 +
  	#[test]
  	fn init_balances() {
- 		let mut balances = super::Pallet::<&'static str, u128>::new();
+ 		let mut balances = super::Pallet::<String, u128>::new();
 diff --git a/src/main.rs b/src/main.rs
-index 4eb1f16..4605a58 100644
+index 40dc8ac..343797e 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -25,6 +25,12 @@ impl system::Config for Runtime {

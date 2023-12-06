@@ -1,22 +1,25 @@
 diff --git a/src/main.rs b/src/main.rs
-index d5b7e9a..bb4f7a0 100644
+index c8e03cc..ff6022a 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -93,7 +93,11 @@ impl crate::support::Dispatch for Runtime {
+@@ -93,11 +93,14 @@ impl crate::support::Dispatch for Runtime {
  }
  
  fn main() {
 +	// Create a new instance of the Runtime.
 +	// It will instantiate with it all the modules it uses.
  	let mut runtime = Runtime::new();
-+
+ 	let alice = "alice".to_string();
+ 	let bob = "bob".to_string();
+ 	let charlie = "charlie".to_string();
+ 
 +	// Initialize the system with some initial balance.
- 	runtime.balances.set_balance(&"alice", 100);
+ 	runtime.balances.set_balance(&alice, 100);
  
  	// start emulating a block
-@@ -111,5 +115,20 @@ fn main() {
- 		.transfer(&"alice", &"charlie", 20)
- 		.map_err(|e| eprintln!("{}", e));
+@@ -115,5 +118,20 @@ fn main() {
+ 	runtime.system.inc_nonce(&alice);
+ 	let _res = runtime.balances.transfer(alice, charlie, 20).map_err(|e| eprintln!("{}", e));
  
 +	/*
 +		TODO: Replace the logic above with a new `Block`.

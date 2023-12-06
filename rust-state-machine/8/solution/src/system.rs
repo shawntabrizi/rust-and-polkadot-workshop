@@ -6,7 +6,7 @@ pub struct Pallet {
 	/// The current block number.
 	block_number: u32,
 	/// A map from an account to their nonce.
-	nonce: BTreeMap<&'static str, u32>,
+	nonce: BTreeMap<String, u32>,
 }
 
 impl Pallet {

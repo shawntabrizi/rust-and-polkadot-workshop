@@ -1,5 +1,5 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index 8cc6723..d9d8eea 100644
+index 25256ba..989fa71 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
 @@ -3,15 +3,7 @@ use std::collections::BTreeMap;
@@ -14,7 +14,7 @@ index 8cc6723..d9d8eea 100644
 -pub trait Config {
 -	/// A type which can identify an account in our state machine.
 -	/// On a real blockchain, you would want this to be a cryptographic public key.
--	type AccountId: Ord;
+-	type AccountId: Ord + Clone;
 +pub trait Config: crate::system::Config {
  	/// A type which can represent the balance of an account.
  	/// Usually this is a large unsigned integer.
@@ -25,18 +25,18 @@ index 8cc6723..d9d8eea 100644
  
 -	/* TODO: Implement `crate::system::Config` for `TestConfig` to make your tests work again. */
 +	impl crate::system::Config for TestConfig {
-+		type AccountId = &'static str;
++		type AccountId = String;
 +		type BlockNumber = u32;
 +		type Nonce = u32;
 +	}
  
  	impl super::Config for TestConfig {
--		type AccountId = &'static str;
+-		type AccountId = String;
  		type Balance = u128;
  	}
  
 diff --git a/src/main.rs b/src/main.rs
-index 338bd5a..f6aa54a 100644
+index c5a98c4..dd1d1f6 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -26,8 +26,6 @@ impl system::Config for Runtime {

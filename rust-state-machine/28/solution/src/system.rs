@@ -7,7 +7,7 @@ use std::collections::BTreeMap;
 pub trait Config {
 	/// A type which can identify an account in our state machine.
 	/// On a real blockchain, you would want this to be a cryptographic public key.
-	type AccountId: Ord;
+	type AccountId: Ord + Clone;
 	/// A type which can be used to represent the current block number.
 	/// Usually a basic unsigned integer.
 	type BlockNumber: Zero + One + AddAssign + Copy;
@@ -47,10 +47,10 @@ impl<T: Config> Pallet<T> {
 
 	// Increment the nonce of an account. This helps us keep track of how many transactions each
 	// account has made.
-	pub fn inc_nonce(&mut self, who: T::AccountId) {
+	pub fn inc_nonce(&mut self, who: &T::AccountId) {
 		let nonce = *self.nonce.get(&who).unwrap_or(&T::Nonce::zero());
 		let new_nonce = nonce + T::Nonce::one();
-		self.nonce.insert(who, new_nonce);
+		self.nonce.insert(who.clone(), new_nonce);
 	}
 }
 
@@ -58,7 +58,7 @@ impl<T: Config> Pallet<T> {
 mod test {
 	struct TestConfig;
 	impl super::Config for TestConfig {
-		type AccountId = &'static str;
+		type AccountId = String;
 		type BlockNumber = u32;
 		type Nonce = u32;
 	}
@@ -67,10 +67,10 @@ mod test {
 	fn init_system() {
 		let mut system = super::Pallet::<TestConfig>::new();
 		system.inc_block_number();
-		system.inc_nonce(&"alice");
+		system.inc_nonce(&"alice".to_string());
 
 		assert_eq!(system.block_number(), 1);
-		assert_eq!(system.nonce.get(&"alice"), Some(&1));
-		assert_eq!(system.nonce.get(&"bob"), None);
+		assert_eq!(system.nonce.get(&"alice".to_string()), Some(&1));
+		assert_eq!(system.nonce.get(&"bob".to_string()), None);
 	}
 }

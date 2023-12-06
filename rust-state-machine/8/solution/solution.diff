@@ -10,7 +10,7 @@ index d2fffb8..815fd74 100644
  fn main() {
  	println!("Hello, world!");
 diff --git a/src/system.rs b/src/system.rs
-index 533f13b..f148447 100644
+index b4e6ef4..99d537c 100644
 --- a/src/system.rs
 +++ b/src/system.rs
 @@ -1,17 +1,17 @@
@@ -24,8 +24,8 @@ index 533f13b..f148447 100644
 -	/* TODO: Create a field `block_number` that stores a `u32`. */
 +	block_number: u32,
  	/// A map from an account to their nonce.
--	/* TODO: Create a field `nonce` that is a `BTreeMap` from `&'static str` to `u32`. */
-+	nonce: BTreeMap<&'static str, u32>,
+-	/* TODO: Create a field `nonce` that is a `BTreeMap` from `String` to `u32`. */
++	nonce: BTreeMap<String, u32>,
  }
  
  impl Pallet {

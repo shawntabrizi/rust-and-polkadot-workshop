@@ -6,7 +6,7 @@ pub struct Pallet {
 	/// The current block number.
 	/* TODO: Create a field `block_number` that stores a `u32`. */
 	/// A map from an account to their nonce.
-	/* TODO: Create a field `nonce` that is a `BTreeMap` from `&'static str` to `u32`. */
+	/* TODO: Create a field `nonce` that is a `BTreeMap` from `String` to `u32`. */
 }
 
 impl Pallet {

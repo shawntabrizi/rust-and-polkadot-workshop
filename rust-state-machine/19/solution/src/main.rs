@@ -5,7 +5,7 @@ mod system;
 // Modules are configured for these types directly, and they satisfy all of our
 // trait requirements.
 mod types {
-	pub type AccountId = &'static str;
+	pub type AccountId = String;
 	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
@@ -38,22 +38,26 @@ impl Runtime {
 
 fn main() {
 	let mut runtime = Runtime::new();
-	runtime.balances.set_balance(&"alice", 100);
+	let alice = "alice".to_string();
+	let bob = "bob".to_string();
+	let charlie = "charlie".to_string();
+
+	runtime.balances.set_balance(&alice, 100);
 
 	// start emulating a block
 	runtime.system.inc_block_number();
 	assert_eq!(runtime.system.block_number(), 1);
 
 	// first transaction
-	runtime.system.inc_nonce(&"alice");
-	let _res = runtime.balances.transfer(&"alice", &"bob", 30).map_err(|e| eprintln!("{}", e));
-
-	// second transaction
-	runtime.system.inc_nonce(&"alice");
+	runtime.system.inc_nonce(&alice);
 	let _res = runtime
 		.balances
-		.transfer(&"alice", &"charlie", 20)
+		.transfer(alice.clone(), bob, 30)
 		.map_err(|e| eprintln!("{}", e));
+
+	// second transaction
+	runtime.system.inc_nonce(&alice);
+	let _res = runtime.balances.transfer(alice, charlie, 20).map_err(|e| eprintln!("{}", e));
 
 	println!("{:#?}", runtime);
 }

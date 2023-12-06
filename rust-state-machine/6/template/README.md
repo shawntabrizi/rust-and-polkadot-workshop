@@ -29,10 +29,10 @@ For that, we will go back to the `main.rs` file, and create our first `#[test]` 
 	fn init_balances() {
 		let mut balances = balances::Pallet::new();
 
-		assert_eq!(balances.balance(&"alice"), 0);
-		balances.set_balance(&"alice", 100);
-		assert_eq!(balances.balance(&"alice"), 100);
-		assert_eq!(balances.balance(&"bob"), 0);
+		assert_eq!(balances.balance("alice".to_string()), 0);
+		balances.set_balance("alice".to_string(), 100);
+		assert_eq!(balances.balance("alice".to_string()), 100);
+		assert_eq!(balances.balance("bob".to_string()), 0);
 	}
 	```
 

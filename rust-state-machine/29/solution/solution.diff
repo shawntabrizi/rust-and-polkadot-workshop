@@ -1,8 +1,8 @@
 diff --git a/src/proof_of_existence.rs b/src/proof_of_existence.rs
-index f2fb690..f9d9059 100644
+index 587dfc7..f9d9059 100644
 --- a/src/proof_of_existence.rs
 +++ b/src/proof_of_existence.rs
-@@ -56,27 +56,31 @@ impl<T: Config> Pallet<T> {
+@@ -56,28 +56,31 @@ impl<T: Config> Pallet<T> {
  // We should expect that the caller of each call will be provided by the dispatcher,
  // and not included as a parameter of the call.
  pub enum Call<T: Config> {
@@ -15,6 +15,7 @@ index f2fb690..f9d9059 100644
 -		Remember that you only need to pass in the `claim` data, as `caller` information is passed
 -		in through the `dispatch` logic.
 -	*/
+-	RemoveMe(core::marker::PhantomData<T>),
 +	CreateClaim { claim: T::Content },
 +	RevokeClaim { claim: T::Content },
  }

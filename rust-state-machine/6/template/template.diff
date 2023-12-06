@@ -1,9 +1,9 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index 1f051d9..6e3b756 100644
+index 2a6bbfb..788d61c 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
 @@ -25,3 +25,16 @@ impl Pallet {
- 		*self.balances.get(&who).unwrap_or(&0)
+ 		*self.balances.get(who).unwrap_or(&0)
  	}
  }
 +

@@ -1,5 +1,5 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index d9d8eea..d9a8600 100644
+index 989fa71..74e6f43 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
 @@ -43,7 +43,7 @@ impl<T: Config> Pallet<T> {
@@ -12,7 +12,7 @@ index d9d8eea..d9a8600 100644
  		let to_balance = self.balance(&to);
  
 diff --git a/src/main.rs b/src/main.rs
-index f6aa54a..e40f194 100644
+index dd1d1f6..597aca6 100644
 --- a/src/main.rs
 +++ b/src/main.rs
 @@ -1,4 +1,5 @@

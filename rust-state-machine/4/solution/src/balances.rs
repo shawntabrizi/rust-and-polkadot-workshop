@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 /// machine.
 pub struct Pallet {
 	// A simple storage mapping from accounts (`&'static str`) to their balances (`u128`).
-	balances: BTreeMap<&'static str, u128>,
+	balances: BTreeMap<String, u128>,
 }
 
 impl Pallet {

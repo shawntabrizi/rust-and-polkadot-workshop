@@ -1,8 +1,8 @@
 diff --git a/src/main.rs b/src/main.rs
-index 815fd74..2d9e1ce 100644
+index 815fd74..95b5760 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,6 +1,20 @@
+@@ -1,6 +1,21 @@
  mod balances;
  mod system;
  
@@ -17,6 +17,7 @@ index 815fd74..2d9e1ce 100644
 +	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
 +	fn new() -> Self {
 +		/* TODO: Create a new `Runtime` by creating new instances of `system` and `balances`. */
++		unimplemented!()
 +	}
 +}
 +

@@ -1,7 +1,7 @@
 /* TODO: You might need to import some stuff for this step. */
 use std::collections::BTreeMap;
 
-type AccountId = &'static str;
+type AccountId = String;
 type Balance = u128;
 
 /*
@@ -39,14 +39,14 @@ impl Pallet {
 	}
 
 	/// Set the balance of an account `who` to some `amount`.
-	pub fn set_balance(&mut self, who: AccountId, amount: Balance) {
-		self.balances.insert(who, amount);
+	pub fn set_balance(&mut self, who: &AccountId, amount: Balance) {
+		self.balances.insert(who.clone(), amount);
 	}
 
 	/// Get the balance of an account `who`.
 	/// If the account has no stored balance, we return zero.
-	pub fn balance(&self, who: AccountId) -> Balance {
-		*self.balances.get(&who).unwrap_or(&0)
+	pub fn balance(&self, who: &AccountId) -> Balance {
+		*self.balances.get(who).unwrap_or(&0)
 	}
 
 	/// Transfer `amount` from one account to another.
@@ -81,10 +81,10 @@ mod tests {
 		*/
 		let mut balances = super::Pallet::new();
 
-		assert_eq!(balances.balance(&"alice"), 0);
-		balances.set_balance(&"alice", 100);
-		assert_eq!(balances.balance(&"alice"), 100);
-		assert_eq!(balances.balance(&"bob"), 0);
+		assert_eq!(balances.balance(&"alice".to_string()), 0);
+		balances.set_balance(&"alice".to_string(), 100);
+		assert_eq!(balances.balance(&"alice".to_string()), 100);
+		assert_eq!(balances.balance(&"bob".to_string()), 0);
 	}
 
 	#[test]
@@ -95,13 +95,19 @@ mod tests {
 		*/
 		let mut balances = super::Pallet::new();
 
-		assert_eq!(balances.transfer(&"alice", &"bob", 51), Err("Not enough funds."));
+		assert_eq!(
+			balances.transfer("alice".to_string(), "bob".to_string(), 51),
+			Err("Not enough funds.")
+		);
 
-		balances.set_balance(&"alice", 100);
-		assert_eq!(balances.transfer(&"alice", &"bob", 51), Ok(()));
-		assert_eq!(balances.balance(&"alice"), 49);
-		assert_eq!(balances.balance(&"bob"), 51);
+		balances.set_balance(&"alice".to_string(), 100);
+		assert_eq!(balances.transfer("alice".to_string(), "bob".to_string(), 51), Ok(()));
+		assert_eq!(balances.balance(&"alice".to_string()), 49);
+		assert_eq!(balances.balance(&"bob".to_string()), 51);
 
-		assert_eq!(balances.transfer(&"alice", &"bob", 51), Err("Not enough funds."));
+		assert_eq!(
+			balances.transfer("alice".to_string(), "bob".to_string(), 51),
+			Err("Not enough funds.")
+		);
 	}
 }

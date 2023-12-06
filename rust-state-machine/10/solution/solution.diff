@@ -1,8 +1,8 @@
 diff --git a/src/main.rs b/src/main.rs
-index 2d9e1ce..2d9887b 100644
+index 95b5760..2d9887b 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -4,14 +4,14 @@ mod system;
+@@ -4,15 +4,14 @@ mod system;
  // This is our main Runtime.
  // It accumulates all of the different pallets we want to use.
  pub struct Runtime {
@@ -16,6 +16,7 @@ index 2d9e1ce..2d9887b 100644
  	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
  	fn new() -> Self {
 -		/* TODO: Create a new `Runtime` by creating new instances of `system` and `balances`. */
+-		unimplemented!()
 +		Self { system: system::Pallet::new(), balances: balances::Pallet::new() }
  	}
  }

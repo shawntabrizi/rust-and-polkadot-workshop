@@ -9,7 +9,7 @@ use crate::support::Dispatch;
 // Modules are configured for these types directly, and they satisfy all of our
 // trait requirements.
 mod types {
-	pub type AccountId = &'static str;
+	pub type AccountId = String;
 	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
@@ -50,9 +50,12 @@ fn main() {
 	// Create a new instance of the Runtime.
 	// It will instantiate with it all the modules it uses.
 	let mut runtime = Runtime::new();
+	let alice = "alice".to_string();
+	let bob = "bob".to_string();
+	let charlie = "charlie".to_string();
 
 	// Initialize the system with some initial balance.
-	runtime.balances.set_balance(&"alice", 100);
+	runtime.balances.set_balance(&alice, 100);
 
 	// Here are the extrinsics in our block.
 	// You can add or remove these based on the modules and calls you have set up.
@@ -60,15 +63,22 @@ fn main() {
 		header: support::Header { block_number: 1 },
 		extrinsics: vec![
 			support::Extrinsic {
-				caller: &"alice",
-				call: RuntimeCall::balances(balances::Call::transfer { to: &"bob", amount: 20 }),
-			},
-			support::Extrinsic {
-				caller: &"alice",
+				caller: alice.clone(),
 				call: RuntimeCall::balances(balances::Call::transfer {
-					to: &"charlie",
+					to: bob.clone(),
 					amount: 20,
 				}),
+			},
+			support::Extrinsic {
+				caller: alice.clone(),
+				call: RuntimeCall::balances(balances::Call::transfer {
+					to: charlie.clone(),
+					amount: 20,
+				}),
+			},
+			support::Extrinsic {
+				caller: alice.clone(),
+				call: RuntimeCall::balances(balances::Call::transfer { to: charlie, amount: 20 }),
 			},
 		],
 	};
@@ -77,13 +87,13 @@ fn main() {
 		header: support::Header { block_number: 2 },
 		extrinsics: vec![
 			support::Extrinsic {
-				caller: &"alice",
+				caller: alice.clone(),
 				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::create_claim {
 					claim: &"Hello, world!",
 				}),
 			},
 			support::Extrinsic {
-				caller: &"bob",
+				caller: bob.clone(),
 				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::create_claim {
 					claim: &"Hello, world!",
 				}),
@@ -95,13 +105,13 @@ fn main() {
 		header: support::Header { block_number: 3 },
 		extrinsics: vec![
 			support::Extrinsic {
-				caller: &"alice",
+				caller: alice,
 				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::revoke_claim {
 					claim: &"Hello, world!",
 				}),
 			},
 			support::Extrinsic {
-				caller: &"bob",
+				caller: bob,
 				call: RuntimeCall::proof_of_existence(proof_of_existence::Call::create_claim {
 					claim: &"Hello, world!",
 				}),

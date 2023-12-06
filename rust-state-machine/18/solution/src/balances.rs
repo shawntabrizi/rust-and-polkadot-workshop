@@ -6,7 +6,7 @@ use std::collections::BTreeMap;
 pub trait Config {
 	/// A type which can identify an account in our state machine.
 	/// On a real blockchain, you would want this to be a cryptographic public key.
-	type AccountId: Ord;
+	type AccountId: Ord + Clone;
 	/// A type which can represent the balance of an account.
 	/// Usually this is a large unsigned integer.
 	type Balance: Zero + CheckedSub + CheckedAdd + Copy;
@@ -28,8 +28,8 @@ impl<T: Config> Pallet<T> {
 	}
 
 	/// Set the balance of an account `who` to some `amount`.
-	pub fn set_balance(&mut self, who: T::AccountId, amount: T::Balance) {
-		self.balances.insert(who, amount);
+	pub fn set_balance(&mut self, who: &T::AccountId, amount: T::Balance) {
+		self.balances.insert(who.clone(), amount);
 	}
 
 	/// Get the balance of an account `who`.
@@ -64,7 +64,7 @@ impl<T: Config> Pallet<T> {
 mod tests {
 	struct TestConfig;
 	impl super::Config for TestConfig {
-		type AccountId = &'static str;
+		type AccountId = String;
 		type Balance = u128;
 	}
 
@@ -72,23 +72,29 @@ mod tests {
 	fn init_balances() {
 		let mut balances = super::Pallet::<TestConfig>::new();
 
-		assert_eq!(balances.balance(&"alice"), 0);
-		balances.set_balance(&"alice", 100);
-		assert_eq!(balances.balance(&"alice"), 100);
-		assert_eq!(balances.balance(&"bob"), 0);
+		assert_eq!(balances.balance(&"alice".to_string()), 0);
+		balances.set_balance(&"alice".to_string(), 100);
+		assert_eq!(balances.balance(&"alice".to_string()), 100);
+		assert_eq!(balances.balance(&"bob".to_string()), 0);
 	}
 
 	#[test]
 	fn transfer_balance() {
 		let mut balances = super::Pallet::<TestConfig>::new();
 
-		assert_eq!(balances.transfer(&"alice", &"bob", 51), Err("Not enough funds."));
+		assert_eq!(
+			balances.transfer("alice".to_string(), "bob".to_string(), 51),
+			Err("Not enough funds.")
+		);
 
-		balances.set_balance(&"alice", 100);
-		assert_eq!(balances.transfer(&"alice", &"bob", 51), Ok(()));
-		assert_eq!(balances.balance(&"alice"), 49);
-		assert_eq!(balances.balance(&"bob"), 51);
+		balances.set_balance(&"alice".to_string(), 100);
+		assert_eq!(balances.transfer("alice".to_string(), "bob".to_string(), 51), Ok(()));
+		assert_eq!(balances.balance(&"alice".to_string()), 49);
+		assert_eq!(balances.balance(&"bob".to_string()), 51);
 
-		assert_eq!(balances.transfer(&"alice", &"bob", 51), Err("Not enough funds."));
+		assert_eq!(
+			balances.transfer("alice".to_string(), "bob".to_string(), 51),
+			Err("Not enough funds.")
+		);
 	}
 }

@@ -1,0 +1,22 @@
+{
+  "commitHash": "b6428a3dc2ae0acfddd5abfb3cd09974fa9ff5c9",
+  "commitMessage": "introduce support traits and types",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    },
+    {
+      "status": "A",
+      "file": "src/support.rs"
+    }
+  ]
+}

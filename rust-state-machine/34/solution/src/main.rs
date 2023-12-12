@@ -142,13 +142,13 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: alice.clone(),
-				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::create_claim {
+				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::CreateClaim {
 					claim: &"Hello, world!",
 				}),
 			},
 			support::Extrinsic {
 				caller: bob.clone(),
-				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::create_claim {
+				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::CreateClaim {
 					claim: &"Hello, world!",
 				}),
 			},
@@ -160,13 +160,13 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: alice,
-				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::revoke_claim {
+				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::RevokeClaim {
 					claim: &"Hello, world!",
 				}),
 			},
 			support::Extrinsic {
 				caller: bob,
-				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::create_claim {
+				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::CreateClaim {
 					claim: &"Hello, world!",
 				}),
 			},

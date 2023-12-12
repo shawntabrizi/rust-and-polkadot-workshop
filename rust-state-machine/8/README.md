@@ -1,37 +1,13 @@
 
-[filename](./template/README.md ':include')
+[filename](./source/README.md ':include')
 
 <!-- slide:break -->
 
 <!-- tabs:start -->
 
-#### **template**
+#### **source**
 
 <!-- tabs:start -->
-
-#### **<span class="file-template file-modified">src/main.rs</span>**
-
-[./template/src/main.rs](./template/src/main.rs ':include :type=code rust')
-
-#### **<span class="file-template file-added">src/system.rs</span>**
-
-[./template/src/system.rs](./template/src/system.rs ':include :type=code rust')
-
-
-
-<!-- tabs:end -->
-
-#### **solution**
-
-<!-- tabs:start -->
-
-#### **<span class="file-solution file-modified">src/main.rs</span>**
-
-[./solution/src/main.rs](./solution/src/main.rs ':include :type=code rust')
-
-#### **<span class="file-solution file-modified">src/system.rs</span>**
-
-[./solution/src/system.rs](./solution/src/system.rs ':include :type=code rust')
 
 
 
@@ -41,13 +17,9 @@
 
 <!-- tabs:start -->
 
-#### **template.diff**
+#### **changes.diff**
 
-[./template/template.diff](./template/template.diff ':include :type=code diff')
-
-#### **solution.diff**
-
-[./solution/solution.diff](./solution/solution.diff ':include :type=code diff')
+[./source/changes.diff](./source/changes.diff ':include :type=code diff')
 
 
 

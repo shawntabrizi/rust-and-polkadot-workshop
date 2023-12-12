@@ -1,22 +1,53 @@
 diff --git a/src/main.rs b/src/main.rs
-index ca513a4..8e1547b 100644
+index 2737873..71cca32 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -134,9 +134,17 @@ fn main() {
- 		],
- 	};
+@@ -16,12 +16,14 @@ mod types {
+ 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
+ 	pub type Header = crate::support::Header<BlockNumber>;
+ 	pub type Block = crate::support::Block<Header, Extrinsic>;
++	/* TODO: Add the concrete `Content` type for your runtime. */
+ }
  
-+	/*
-+		TODO:
-+		Create new block(s) which execute extrinsics for the new `ProofOfExistence` pallet.
-+			- Make sure to set the block number correctly.
-+			- Feel free to allow some extrinsics to fail, and see the errors appear.
-+	*/
+ // These are all the calls which are exposed to the world.
+ // Note that it is just an accumulation of the calls exposed by each module.
+ pub enum RuntimeCall {
+ 	Balances(balances::Call<Runtime>),
++	/* TODO: Add a `ProofOfExistence` variant to access `proof_of_existence::Call`. */
+ }
+ 
+ // This is our main Runtime.
+@@ -30,6 +32,7 @@ pub enum RuntimeCall {
+ pub struct Runtime {
+ 	system: system::Pallet<Self>,
+ 	balances: balances::Pallet<Self>,
++	/* TODO: Add `proof_of_existence` field to your `Runtime`. */
+ }
+ 
+ impl system::Config for Runtime {
+@@ -42,10 +45,16 @@ impl balances::Config for Runtime {
+ 	type Balance = types::Balance;
+ }
+ 
++/* TODO: Implement proof_of_existence::Config` for `Runtime`. */
 +
- 	// Execute the extrinsics which make up our block.
- 	// If there are any errors, our system panics, since we should not execute invalid blocks.
- 	runtime.execute_block(block_1).expect("invalid block");
-+	/* TODO: Execute your new block(s). */
+ impl Runtime {
+ 	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
+ 	fn new() -> Self {
+-		Self { system: system::Pallet::new(), balances: balances::Pallet::new() }
++		Self {
++			system: system::Pallet::new(),
++			balances: balances::Pallet::new(),
++			/* TODO: Initialize the `proof_of_existence` pallet. */
++		}
+ 	}
  
- 	// Simply print the debug format of our runtime state.
- 	println!("{:#?}", runtime);
+ 	// Execute a block of extrinsics. Increments the block number.
+@@ -88,6 +97,7 @@ impl crate::support::Dispatch for Runtime {
+ 			RuntimeCall::Balances(call) => {
+ 				self.balances.dispatch(caller, call)?;
+ 			},
++			/* TODO: Dispatch `calls` to the `ProofOfExistence` pallet. */
+ 		}
+ 		Ok(())
+ 	}

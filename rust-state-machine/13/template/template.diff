@@ -1,37 +1,43 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index e09906c..51aea28 100644
+index 78f233d..1b9d9d8 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
-@@ -1,5 +1,13 @@
- use std::collections::BTreeMap;
- 
-+/*
-+	TODO: Define the common types used in this pallet:
-+		- `AccountID`
-+		- `Balance`
-+
-+	Then update this pallet to use these common types.
-+*/
-+
+@@ -3,6 +3,7 @@ use std::collections::BTreeMap;
  /// This is the Balances Module.
  /// It is a simple module which keeps track of how much balance each account has in this state
  /// machine.
++/* TODO: Add the derive macro to implement the `Debug` trait for `Pallet`. */
+ pub struct Pallet {
+ 	// A simple storage mapping from accounts (`String`) to their balances (`u128`).
+ 	balances: BTreeMap<String, u128>,
+diff --git a/src/main.rs b/src/main.rs
+index 808d673..b79655a 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -3,6 +3,7 @@ mod system;
+ 
+ // This is our main Runtime.
+ // It accumulates all of the different pallets we want to use.
++/* TODO: Add the derive macro to implement the `Debug` trait for `Runtime`. */
+ pub struct Runtime {
+ 	system: system::Pallet,
+ 	balances: balances::Pallet,
+@@ -37,4 +38,6 @@ fn main() {
+ 	// second transaction
+ 	runtime.system.inc_nonce(&alice);
+ 	let _res = runtime.balances.transfer(alice, charlie, 20).map_err(|e| eprintln!("{}", e));
++
++	/* TODO: Print the final runtime state after all transactions. */
+ }
 diff --git a/src/system.rs b/src/system.rs
-index dda7af9..071090b 100644
+index 4689438..56f3b9a 100644
 --- a/src/system.rs
 +++ b/src/system.rs
-@@ -1,5 +1,14 @@
- use std::collections::BTreeMap;
+@@ -2,6 +2,7 @@ use std::collections::BTreeMap;
  
-+/*
-+	TODO: Define the common types used in this pallet:
-+		- `AccountID`
-+		- `BlockNumber`
-+		- `Nonce`
-+
-+	Then update this pallet to use these common types.
-+*/
-+
  /// This is the System Pallet.
  /// It handles low level state needed for your blockchain.
- #[derive(Debug)]
++/* TODO: Add the derive macro to implement the `Debug` trait for `Pallet`. */
+ pub struct Pallet {
+ 	/// The current block number.
+ 	block_number: u32,

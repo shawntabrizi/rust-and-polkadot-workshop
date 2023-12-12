@@ -1,6 +1,6 @@
 {
-  "commitHash": "7066258c2662f28b0a4b840c8aacd36af920272f",
-  "commitMessage": "solution: define common types within modules",
+  "commitHash": "02bb464cbbf72cee2974f3add6ff6bbe53c5a84f",
+  "commitMessage": "solution: add debug and print the runtime state",
   "files": [
     {
       "status": "M",
@@ -9,6 +9,10 @@
     {
       "status": "M",
       "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
     },
     {
       "status": "M",

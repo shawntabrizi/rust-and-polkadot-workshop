@@ -1,6 +1,6 @@
 {
-  "commitHash": "c86a35262f4839da2cafdf8f13d4e1e38ea21c1f",
-  "commitMessage": "template: use runtime macro in main",
+  "commitHash": "9c490afbefb870b6408a8001f62e1722a6b06a40",
+  "commitMessage": "template: use call macro in proof of existence",
   "files": [
     {
       "status": "M",
@@ -9,6 +9,10 @@
     {
       "status": "M",
       "file": "src/main.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/proof_of_existence.rs"
     }
   ]
 }

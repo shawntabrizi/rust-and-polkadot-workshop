@@ -1,0 +1,18 @@
+{
+  "commitHash": "d6445589bd206bf9fc93c63514a890429089f407",
+  "commitMessage": "template: tightly couple balances to system",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

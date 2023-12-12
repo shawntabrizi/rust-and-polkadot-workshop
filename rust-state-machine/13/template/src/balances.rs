@@ -1,17 +1,9 @@
 use std::collections::BTreeMap;
 
-/*
-	TODO: Define the common types used in this pallet:
-		- `AccountID`
-		- `Balance`
-
-	Then update this pallet to use these common types.
-*/
-
 /// This is the Balances Module.
 /// It is a simple module which keeps track of how much balance each account has in this state
 /// machine.
-#[derive(Debug)]
+/* TODO: Add the derive macro to implement the `Debug` trait for `Pallet`. */
 pub struct Pallet {
 	// A simple storage mapping from accounts (`String`) to their balances (`u128`).
 	balances: BTreeMap<String, u128>,

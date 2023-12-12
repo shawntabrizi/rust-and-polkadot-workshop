@@ -1,50 +1,51 @@
-# Proof of Existence Pallet
+# Nested Dispatch
 
-We have gone a long way since we built our very first Balances Pallet.
+Now that we have defined Pallet level dispatch logic in the Pallet, we should update our Runtime to take advantage of that logic.
 
-The structure of our Runtime and Pallets have evolved quite a bit since.
+After this, whenever the Pallet logic is updated, the Runtime dispatch logic will also automatically get updated and route calls directly. This makes our code easier to manage, and prevent potential errors or maintenance in the future.
 
-- Generic Types
-- Config Trait
-- Nested Dispatch
-- and more...
+## Nested Calls
 
-This will be the last pallet we build for this tutorial, but we will build it knowing all of the tips and tricks we have learned so far.
+The Balances Pallet now exposes its own list of calls in `balances::Call`. Rather than list them all again in the Runtime, we can use a nested enum to route our calls correctly.
 
-The goal here is for you to ensure that all of the intricacies of Pallet development is well understood and that you are able to navigate all of the Rust code.
+Imagine the following construction:
 
-## What is Proof of Existence?
+```rust
+pub enum RuntimeCall {
+	Balances(balances::Call<Runtime>),
+}
+```
 
-The Proof of Existence Pallet uses the blockchain to provide a secure and immutable ledger that can be used to verify the existence of a particular document, file, or piece of data at a specific point in time.
+In this case, we have a variant `RuntimeCall::Balances`, which itself contains a type `balances::Call`. This means we can access all the calls exposed by `balances:Call` under this variant. As we create more pallets or extend our calls, this nested structure will scale very well.
 
-Because the blockchain acts as an immutable ledger whose history cannot be changed, when some data is placed on the blockchain, it can be referenced at a future time to show that some data already existed in the past.
+We call the `RuntimeCall` an "outer enum", and the `balances::Call` an "inter enum". This construction of using outer and inter enums is very common in the Polkadot SDK.
 
-For example, imagine you knew the outcome of the next Presidential Election., but before you reveal it, you want to make sure that you prove that you had discovered it at a certain time. You could put some sort of data on the blockchain which represents the cure you found, and then later, when you get your research reviewed and published,
+## Re-Dispatching to Pallet
 
-Normally, you would not put the raw contents of your claim on the blockchain but a [hash](https://en.wikipedia.org/wiki/Cryptographic_hash_function) of the data, which is both smaller and obfuscates the data in your claim before you are ready to reveal it.
+Our current `dispatch` logic directly calls the functions in the Pallet. As we mentioned, having this logic live outside of the Pallet can increase the burden of maintenance or errors.
 
-However, for the purposes of this tutorial, we won't introduce hash functions yet.
+But now that we have defined Pallet level dispatch logic in the Pallet itself, we can use this to make the Runtime dispatch more extensible.
 
-## Pallet Structure
+To do this, rather than calling the Pallet function directly, we can extract the inner call from the `RuntimeCall`, and then use the `balances::Pallet` to dispatch that call to the appropriate logic.
 
-The `BTreeMap` is again the best tool to use for storing data in this Pallet. However, you will notice that the construction of the storage is a bit different than before. Rather than having a map from accounts to some data, we will actually map the content we want to claim to the user who owns it.
+That would look something like:
 
-This construction of `content -> account` allows an account to be the owner of multiple different claims, but having each claim only be owned by one user.
+```rust
+match runtime_call {
+	RuntimeCall::Balances(call) => {
+		self.balances.dispatch(caller, call)?;
+	},
+}
+```
 
-## Create Your Pallet
+Here you can see that the first thing we do is check that the call is a `Balances` variant, then we extract from it the `call` which is a `balances::Call` type, and then we use `self.balances` which is a `balances::Pallet` to dispatch the `balances::Call`.
 
-Let's start to create this pallet:
+## Updating Your Block
 
-1. Create a new file for your Proof of Existence Pallet.
+Since we have updated the construction of the `RuntimeCall` enum, we will also need to update our `Block` construction in `fn main`. Nothing magical here, just needing to construct a nested enum using both `RuntimeCall::Balances` and `balances::Call::Transfer`.
 
-	```bash
-	touch src/proof_of_existence.rs
-	```
+## Enable Nested Dispatch
 
-2. Copy the contents from the template into your new file.
+Now is the time to complete this step and glue together Pallet level dispatch with the Runtime level dispatch logic.
 
-3. Complete the `TODO`s to add a storage to your new pallet and allow it to be initialized.
-
-4. In your `main.rs` file, import the `proof_of_existence` module.
-
-Make sure that everything compiles after you complete these steps.
+Follow the `TODO`s provided in the template to get your full end to end dispatch logic running.

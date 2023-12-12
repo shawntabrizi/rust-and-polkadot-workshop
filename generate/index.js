@@ -182,7 +182,10 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
             diffText
           );
 
-          stepNames.push(getStepName(templateFolder));
+          stepNames.push({
+            name: getStepName(templateFolder),
+            is_section: isSection,
+          });
         } else {
           markdownContent = sourceMarkdown;
           let sourceFileText = generateFileMarkdown("source", sourceFiles);
@@ -197,7 +200,10 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
             diffText
           );
 
-          stepNames.push(getStepName(sourceFolder));
+          stepNames.push({
+            name: getStepName(sourceFolder),
+            is_section: isSection,
+          });
         }
         // Create a Markdown file in the commit folder
         const markdownFilePath = path.join(stepFolder, "README.md");
@@ -360,8 +366,15 @@ function getStepName(folder) {
 function generateSidebar(steps) {
   const sidebarFilePath = path.join(repoPath, "_sidebar.md");
   let output = "- [Home](/)\n\n---\n\n";
-  steps.forEach((step, index) => {
-    output += `- [${index + 1}. ${step}](${repoName}/${index + 1}/README.md)\n`;
+  output += "- Introduction\n";
+  steps.forEach(({ name, is_section }, index) => {
+    if (is_section) {
+      output += `- ${name}\n`;
+    } else {
+      output += `    - [${index + 1}. ${name}](${repoName}/${
+        index + 1
+      }/README.md)\n`;
+    }
   });
   fs.writeFileSync(sidebarFilePath, output);
 }

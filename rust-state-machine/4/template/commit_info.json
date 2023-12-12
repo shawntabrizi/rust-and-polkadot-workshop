@@ -1,5 +1,5 @@
 {
-  "commitHash": "0cd6afe66be0bbdea0649236e25efbe1bc5d3aed",
+  "commitHash": "27f265e96f6710aa81560e573e89b4e9097aef9b",
   "commitMessage": "template: add balances module state and initialization",
   "files": [
     {

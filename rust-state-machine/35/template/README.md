@@ -1,79 +1,56 @@
-# Adding Call Macro to PoE
+# Use the Runtime Macro
 
-We have already seen the `#[macros::call]` macro help clean up the Balances Pallet.
+Finally, let's add the `#[macros::runtime]` macro to our `main.rs` file, and really clean up a ton of boilerplate code.
 
-Let's also add it to the Proof of Existence Pallet, where there is even more code that can be eliminated.
+## Runtime Macro
 
-## Add Your Call Macro
+The purpose of the `#[macros::runtime]` macro is to get rid of all of the boilerplate function we implemented for the `Runtime`, including `fn new()` and `fn execute_block()`. Similar to the `Call` macro, it also generates the `enum RuntimeCall` and all the `dispatch` logic for re-dispatching to pallets.
 
-We basically need to repeat the steps that we did for the Balances Pallet here:
+We apply the `#[macros::runtime]` attribute on top of the main `struct Runtime` object.
 
-1. Move your `create_claim` and `revoke_claim` functions into its own `impl<T: Config> Pallet<T>`.
-2. Add the `#[macros::call]` attribute over this new `impl<T: Config> Pallet<T>`.
-3. Delete your existing `enum Call`.
-4. Delete your existing implementation of `Dispatch for Pallet`.
-5. Then, in your `main.rs` file, change instances of:
-	- `proof_of_existence::Call::CreateClaim` to `proof_of_existence::Call::create_claim` using `snake_case`.
-	- `proof_of_existence::Call::RevokeClaim` to `proof_of_existence::Call::revoke_claim` using `snake_case`.
+### Parse
 
-Check that everything is compiling and running just as before.
+In order to generate the code we want, we need to keep track of:
 
-## Expand your Rust Code
+1. The name of the `struct` representing our Runtime. Usually this is `Runtime`, but we provide flexibility to the developer.
+2. The list of Pallets included in our `Runtime`
+	1. Their name, as specified by the user.
+	2. The specific type for their `Pallet`, for example `balances::Pallet` vs `proof_of_existence::Pallet`.
 
-Let's take the opportunity to show you how you can peek deeper into what the macros are doing.
+All of this information is tracked in the `RuntimeDef` struct.
 
-Rust provides the command `cargo expand` which allows you to output the generated rust code after all macros have been applied to your project.
+We are also checking that our `Runtime` definition always contains the System Pallet, and does so as the first pallet in our `Runtime` definition. We will explain more about the assumption of the macros below.
 
-Run the following command:
+### Expand
 
-```bash
-cargo expand > out.rs
-```
+Once we have parsed all the data we need, we just need to generate the code that we expect.
 
-This will output your project's generated code into a file `out.rs`.
+Starting with `let runtime_impl = quote!`, you will see the entire `impl Runtime` code block has been swallowed into the macro. Since we know all the pallets in your `Runtime`, we can automatically implement functions like `new()`. The `execute_block` function does not take advantage of any of the parsed data, but the code is completely boilerplate, so we hide it away.
 
-Then take a look at that file.
+Then we have another code block being generated with `let dispatch_impl = quote!` which is the `enum RuntimeCall` and the implementation of `Dispatch for Runtime`.
 
-Here are some things you should notice:
+Again, due to the quirks of using macros, our `RuntimeCall` enum will have `snake_case` variants which exactly match the name of the fields in the `Runtime` struct.
 
-- All of your different `mod` files have been combined together into a single file with your `main.rs`.
-- You will see that our final Pallet code has all of the `Call` and `Dispatch` logic generated!
-- You might notice that the very first `#[derive(Debug)]` macro has generated code
+## Macro Assumptions
 
-	```rust
-    #[automatically_derived]
-    impl<T: ::core::fmt::Debug + Config> ::core::fmt::Debug for Pallet<T>
-    where
-        T::Content: ::core::fmt::Debug,
-        T::AccountId: ::core::fmt::Debug,
-    {
-        fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-            ::core::fmt::Formatter::debug_struct_field1_finish(f, "Pallet", "claims", &&self.claims)
-        }
-    }
-	```
-- You might even notice that other smaller macros like `vec![]` have changed:
+One of the assumptions programmed into these macros is the existence of the System Pallet. For example, in the `execute_block` logic, we need access to both `system.inc_block_number` and `system.inc_nonce`.
 
-	```rust
-	extrinsics: <[_]>::into_vec(
-		#[rustc_box]
-		::alloc::boxed::Box::new([
-			// stuff
-		])
-	)
-	```
-- And `println!()` :
+Some macro level assumptions are intentional, and actually define the architectural decisions of the framework designing those macros. This is the case with the System Pallet, since so much of a blockchain framework depends on a consistent meta-layer.
 
-	```rust
-	{
-		::std::io::_print(format_args!("{0:#?}\n", runtime));
-	};
-	```
-- etc...
+Other assumptions exist just because it is easier to write the macro if the assumption is made.
 
-There are two main takeaways for you:
+The main takeaway here is that macros can almost always continue to improve, providing better and better user experiences for developers. It just needs someone to identify what improvements need to be made, and someone else to program those improvements into the low level macro code.
 
-1. Macros ultimately follow all the same rules as regular Rust code, because it does generate regular Rust code. They feel magical, but there is really nothing magic about them.
-2. Macros are an important part of the Rust ecosystem, and heavily used to improve developer experience and code quality.
+## Add the Runtime Macro
 
-If you ever use externally developed macros, and you want to look closer at what is going on, `cargo expand` can be a useful tool for you to better understand some of the hidden architectural details of a project. As you jump into the Polkadot SDK, I recommend you continue to use this tool to enhance your learning and understanding.
+Let's finally go through the steps to add the `#[macros::runtime]` attribute to your `Runtime`.
+
+1. In `main.rs`, add `#[macros::runtime]` on top of your `pub struct Runtime`.
+2. Remove the entire `impl Runtime` code block.
+3. Remove the entire `enum RuntimeCall`.
+4. Remove the entire implementation of `Dispatch for Runtime`.
+5. Update instances of the `RuntimeCall` enum to use `snake_case`:
+	- Change `RuntimeCall::Balances` to `RuntimeCall::balances`.
+	- Change `RuntimeCall::ProofOfExistence` to `RuntimeCall::proof_of_existence`.
+
+And that's it! You have now completed the full tutorial for building a simple rust state machine. 🎉

@@ -1,14 +1,10 @@
 {
-  "commitHash": "10ca046b0dcc50415f3634c212b35a5c5e75523c",
-  "commitMessage": "solution: introduce proof of existence module",
+  "commitHash": "a3c9ac4287a37039845509a5d6fab4878d056938",
+  "commitMessage": "solution: add proof of existence functions with tests",
   "files": [
     {
       "status": "M",
       "file": "README.md"
-    },
-    {
-      "status": "M",
-      "file": "src/main.rs"
     },
     {
       "status": "M",

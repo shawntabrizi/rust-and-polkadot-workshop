@@ -1,6 +1,6 @@
 {
-  "commitHash": "a814f55765537db8f5939989e54e2b372749fcbb",
-  "commitMessage": "solution: add proof of existence dispatch logic",
+  "commitHash": "32c5c6029df7adbbea9fac82e215f574747bd7e2",
+  "commitMessage": "solution: integrate proof of existence into the runtime",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/proof_of_existence.rs"
+      "file": "src/main.rs"
     }
   ]
 }

@@ -1,3 +1,3 @@
-# Derive Debug
+# Using Named Types
 
-You can find the solution for the previous step here.
+You can find the solution to the previous step here.

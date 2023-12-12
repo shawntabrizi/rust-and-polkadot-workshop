@@ -5,18 +5,18 @@ mod system;
 // Modules are configured for these types directly, and they satisfy all of our
 // trait requirements.
 mod types {
-	/*
-		TODO: Move your type definitions for `AccountId` and `Balance` here.
-	*/
+	pub type AccountId = String;
+	pub type Balance = u128;
+	/* TODO: Move your type definitions for `BlockNumber` and `Nonce` here. */
 }
 
 // This is our main Runtime.
 // It accumulates all of the different pallets we want to use.
 #[derive(Debug)]
 pub struct Runtime {
+	/* TODO: Use your type definitions for your new generic `system::Pallet`. */
 	system: system::Pallet,
-	/* TODO: Use your type definitions for your new generic `balances::Pallet`. */
-	balances: balances::Pallet,
+	balances: balances::Pallet<types::AccountId, types::Balance>,
 }
 
 impl Runtime {

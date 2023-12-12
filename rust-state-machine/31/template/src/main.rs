@@ -16,14 +16,14 @@ mod types {
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
 	pub type Header = crate::support::Header<BlockNumber>;
 	pub type Block = crate::support::Block<Header, Extrinsic>;
-	/* TODO: Add the concrete `Content` type for your runtime. */
+	pub type Content = &'static str;
 }
 
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
 	Balances(balances::Call<Runtime>),
-	/* TODO: Add a `ProofOfExistence` variant to access `proof_of_existence::Call`. */
+	ProofOfExistence(proof_of_existence::Call<Runtime>),
 }
 
 // This is our main Runtime.
@@ -32,7 +32,7 @@ pub enum RuntimeCall {
 pub struct Runtime {
 	system: system::Pallet<Self>,
 	balances: balances::Pallet<Self>,
-	/* TODO: Add `proof_of_existence` field to your `Runtime`. */
+	proof_of_existence: proof_of_existence::Pallet<Self>,
 }
 
 impl system::Config for Runtime {
@@ -45,7 +45,9 @@ impl balances::Config for Runtime {
 	type Balance = types::Balance;
 }
 
-/* TODO: Implement proof_of_existence::Config` for `Runtime`. */
+impl proof_of_existence::Config for Runtime {
+	type Content = types::Content;
+}
 
 impl Runtime {
 	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
@@ -53,7 +55,7 @@ impl Runtime {
 		Self {
 			system: system::Pallet::new(),
 			balances: balances::Pallet::new(),
-			/* TODO: Initialize the `proof_of_existence` pallet. */
+			proof_of_existence: proof_of_existence::Pallet::new(),
 		}
 	}
 
@@ -97,7 +99,9 @@ impl crate::support::Dispatch for Runtime {
 			RuntimeCall::Balances(call) => {
 				self.balances.dispatch(caller, call)?;
 			},
-			/* TODO: Dispatch `calls` to the `ProofOfExistence` pallet. */
+			RuntimeCall::ProofOfExistence(call) => {
+				self.proof_of_existence.dispatch(caller, call)?;
+			},
 		}
 		Ok(())
 	}
@@ -130,9 +134,17 @@ fn main() {
 		],
 	};
 
+	/*
+		TODO:
+		Create new block(s) which execute extrinsics for the new `ProofOfExistence` pallet.
+			- Make sure to set the block number correctly.
+			- Feel free to allow some extrinsics to fail, and see the errors appear.
+	*/
+
 	// Execute the extrinsics which make up our block.
 	// If there are any errors, our system panics, since we should not execute invalid blocks.
 	runtime.execute_block(block_1).expect("invalid block");
+	/* TODO: Execute your new block(s). */
 
 	// Simply print the debug format of our runtime state.
 	println!("{:#?}", runtime);

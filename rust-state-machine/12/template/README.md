@@ -1,63 +1,56 @@
-# Using Our Runtime
+# Derive Debug
 
-Until now, we have just been scaffolding parts of our blockchain. Tests have ensured that the code we have written so far make sense, but we haven't actually USED any of the logic we have written for our `main` program.
+In Rust, `derive` macros provide a convenient way to automatically implement trait functionality for custom data structures.
 
-Let's change that by using our Runtime and actually executing logic on our blockchain.
+## Macros
 
-## Simulating a Block
+In the most simple terms, Macros are rust code that write more rust code.
 
-The input to any blockchain state transition function is a block of transactions.
+Macros can make your code easier to read, help avoid repetition, and even let you create your own special rules for coding in Rust.
 
-Later in the tutorial we will actually spend more time to build proper blocks and execute them, but for now, we can "simulate" all the basics of what a block would do by individually calling the functions our Pallets expose.
+We will be using (but not writing) macros heavily near the end of this tutorial, and you will see how powerful they can be.
 
-### Genesis State
+For now, treat them as "magic".
 
-The state of your blockchain will propagate from block to block. This means if Alice received 100 tokens on block 4, that she can transfer at least 100 tokens on block 5, and so on.
+## Traits
 
-But how do users get any balance to begin with?
+Think of traits in Rust as shared rules for different types. They allow you to define a set of things that types must be able to do. This way, you can make sure different parts of your code follow the same rules.
 
-The answer to this question can be different for different blockchains, but in general most modern blockchains start with a Genesis State. This is the starting state of your blockchain on "block 0".
+Take a look at [this example](https://doc.rust-lang.org/rust-by-example/trait.html) or re-read [the Rust Book](https://doc.rust-lang.org/book/ch10-02-traits.html) if you need a refresher on Traits.
 
-This means anything set in the genesis state can be used on block 1, and can bootstrap your blockchain to being functional.
+We will make and use custom traits later in this tutorial, but know for this step that `#[derive(Debug)]` is a macro which implements the `Debug` trait for your custom types.
 
-In our situation, you can simply call low level functions like `set_balance` before we simulate our first block to establish our genesis state.
+### Debug Trait
 
-### Steps of a Basic Block
+The Debug trait in Rust is part of the standard library and is used to print and format values for debugging purposes. It provides a default implementation through the `#[derive(Debug)] annotation.
 
-Let's quickly break down the steps of executing a basic block:
-
-1. First we increment the blocknumber, since each new block will have a new blocknumber.
-2. Then we go through an execute each transaction in that block:
-	1. Each transaction for our blockchain will come from a user, thus we will increment the users nonce as we process their transaction.
-	2. Then we will attempt to execute the function they want to call, for example `transfer`.
-	3. Repeat this process for every transaction.
-
-### Handling Errors
-
-The `main()` function in Rust cannot propagate or handle errors itself. Either everything inside of it is handled, or you will have to trigger a `panic`.
-
-As you have already learned, triggering a `panic` is generally not good, but may be the only thing you can do if something is seriously wrong. For our blockchain, the only thing which can really cause a panic is importing a block which does not match the expected blocknumber. There is nothing in this case we can do to "handle" this error. If someone is telling us to execute the wrong block, then we have some larger problem with our overall system that needs to be fixed.
-
-However, users can also submit transactions which result in an error. For example, Alice trying to send more funds than she has in her account.
-
-Should we panic?
-
-Absolutely not! This is the kind of error that our runtime should be able to handle since it is expected that such errors would occur. **A block can be valid even if transactions in the block are invalid!**
-
-When a transaction returns an error we should show that error to the user, and then "swallow" the result. For example:
+For example:
 
 ```rust
-let _res = i_can_return_error().map_err(|e| eprintln!("{}", e));
+#[derive(Debug)]
+pub struct MyStruct {
+    field1: i32,
+    field2: String,
+}
 ```
 
-In this case, you can see that any error that `i_can_return_error` would return gets printed to the console, but otherwise, the `Result` of that function gets placed in an unused variable `_res`.
+With the `Debug` trait derived, you can now print the `struct` to console:
 
-You should be VERY CAREFUL when you do this. Swallowing an error is exactly the opposite of proper error handling that Rust provides to developers. However, we really do not have a choice here in our `main` function, and we fully understand what we are doing here.
+```rust
+let my_instance = MyStruct { field1: 42, field2: "Hello".to_string() };
+println!("{:#?}", my_instance);
+```
 
-On real blockchain systems, users are still charged a transaction fee, even when their transaction results in an `Err`. This ensures that users are still paying a cost for triggering logic on the blockchain, even when the function fails. This is an important part of keeping our blockchain resilient to DDOS and sybil attacks.
+The characters `:#?` help [format](https://doc.rust-lang.org/std/fmt/) the output to make it more readable.
 
-## Simulate Your First Block
+## Derive the Debug Trait for Your Runtime
 
-Do you think you understand everything it takes to simulate your first block?
+This is a very simple, but helpful step!
 
-Follow the instructions provided by the template to turn your `main` function from "Hello, World!" to actually executing your blockchain's runtime.
+We want to be able to print out the current state of our `Runtime` at the end of our `main` to allow us to easily inspect what it looks like and that everything is functioning as we expect.
+
+To do this, we need to add `#[derive(Debug)]` to the `struct Runtime`.
+
+However... `struct Runtime` is composed of `system::Pallet` and `balances::Pallet`, so these structs ALSO need to implement the Debug trait.
+
+Complete the `TODO`s across the different files in your project and print out your final runtime at the end of the `main` function.

@@ -1,6 +1,6 @@
 {
-  "commitHash": "c5c4504537d7a37622d652fa803909007cd52c42",
-  "commitMessage": "introduce balances module",
+  "commitHash": "659b9c78e6b9c87e79e1fd87b9ff3683d9abc9f0",
+  "commitMessage": "section: introduce balances module",
   "files": [
     {
       "status": "M",

@@ -1,22 +1,11 @@
-# Integrate PoE Into Your Runtime
+# Add PoE Extrinsics to Blocks
 
-The Proof of Existence pallet is done, but we still need to integrate it into your Runtime.
+The Proof Of Existence Pallet is fully integrated into your runtime at this point, but we aren't really using it.
 
-Let's take a look at that process.
+Create some new `Block`s in your `fn main()` to test out the functionality of the Proof of Existence Pallet.
 
-## Integration Steps
+Be creative, and even feel free to introduce some extrinsics which will trigger errors based on the logic of your pallets.
 
-1. The first place to start is adding the `proof_of_existence` field to your `struct Runtime`.
-2. Next you need to update your `fn new()` to also initialize `proof_of_existence`.
-3. After, create a new concrete `type Content` which is a `&'static str`. As mentioned, normally this would be a hash, but for simplicity we are once again a simple static string.
+Don't forget to increment your block number and actually call `execute_block` for each of those blocks.
 
-	> If you want to use a hash now or in the future, it would be as simple as updating this one line to change all the types in your Runtime and Pallet. That is the kind of flexibility we have been working toward!
-
-4. Then, implement `proof_of_existence::Config` for `Runtime`, using your `types::Content`.
-5. At this point, things should already compile successfully, so use this as a checkpoint.
-6. Introduce a new variant `ProofOfExistence` for the `RuntimeCall`.
-7. Finally, update your `fn dispatch` logic to handle re-dispatching `ProofOfExistence` calls to the `proof_of_existence::Pallet`.
-
-Hopefully from this process, you can see how all of the abstractions we have introduced has made integrating new Pallets into your runtime quite easy.
-
-We will make this process even easier in the near future using macros!
+Take a look at the final output and check that the state of your machine makes sense!

@@ -1,29 +1,17 @@
 
-[filename](./template/README.md ':include')
+[filename](./source/README.md ':include')
 
 <!-- slide:break -->
 
 <!-- tabs:start -->
 
-#### **template**
+#### **source**
 
 <!-- tabs:start -->
 
-#### **<span class="file-template file-modified">src/main.rs</span>**
+#### **<span class="file-source file-added">export_tutorial.sh</span>**
 
-[./template/src/main.rs](./template/src/main.rs ':include :type=code rust')
-
-
-
-<!-- tabs:end -->
-
-#### **solution**
-
-<!-- tabs:start -->
-
-#### **<span class="file-solution file-modified">src/main.rs</span>**
-
-[./solution/src/main.rs](./solution/src/main.rs ':include :type=code rust')
+[./source/export_tutorial.sh](./source/export_tutorial.sh ':include :type=code text')
 
 
 
@@ -33,13 +21,9 @@
 
 <!-- tabs:start -->
 
-#### **template.diff**
+#### **changes.diff**
 
-[./template/template.diff](./template/template.diff ':include :type=code diff')
-
-#### **solution.diff**
-
-[./solution/solution.diff](./solution/solution.diff ':include :type=code diff')
+[./source/changes.diff](./source/changes.diff ':include :type=code diff')
 
 
 

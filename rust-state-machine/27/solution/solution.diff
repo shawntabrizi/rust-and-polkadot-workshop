@@ -1,47 +1,30 @@
 diff --git a/src/main.rs b/src/main.rs
-index f0257a6..199f7de 100644
+index a01adfd..2737873 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -20,8 +20,7 @@ mod types {
- // These are all the calls which are exposed to the world.
- // Note that it is just an accumulation of the calls exposed by each module.
- pub enum RuntimeCall {
--	/* TODO: Turn this into a nested enum where variant `Balances` contains a `balances::Call`. */
--	BalancesTransfer { to: types::AccountId, amount: types::Balance },
-+	Balances(balances::Call<Runtime>),
+@@ -1,5 +1,5 @@
+ mod balances;
+-/* TODO: Import the `proof_of_existence` module. */
++mod proof_of_existence;
+ mod support;
+ mod system;
+ 
+diff --git a/src/proof_of_existence.rs b/src/proof_of_existence.rs
+index 87ea242..5e7de2a 100644
+--- a/src/proof_of_existence.rs
++++ b/src/proof_of_existence.rs
+@@ -14,12 +14,12 @@ pub trait Config: crate::system::Config {
+ pub struct Pallet<T: Config> {
+ 	/// A simple storage map from content to the owner of that content.
+ 	/// Accounts can make multiple different claims, but each claim can only have one owner.
+-	/* TODO: Add a field `claims` which is a `BTreeMap` fom `T::Content` to `T::AccountId`. */
++	claims: BTreeMap<T::Content, T::AccountId>,
  }
  
- // This is our main Runtime.
-@@ -85,13 +84,8 @@ impl crate::support::Dispatch for Runtime {
- 		// This match statement will allow us to correctly route `RuntimeCall`s
- 		// to the appropriate pallet level function.
- 		match runtime_call {
--			/*
--				TODO:
--				Adjust this logic to handle the nested enums, and simply call the `dispatch` logic
--				on the balances call, rather than the function directly.
--			*/
--			RuntimeCall::BalancesTransfer { to, amount } => {
--				self.balances.transfer(caller, to, amount)?;
-+			RuntimeCall::Balances(call) => {
-+				self.balances.dispatch(caller, call)?;
- 			},
- 		}
- 		Ok(())
-@@ -114,14 +108,13 @@ fn main() {
- 	let block_1 = types::Block {
- 		header: support::Header { block_number: 1 },
- 		extrinsics: vec![
--			/* TODO: Update your extrinsics to use the nested enum. */
- 			support::Extrinsic {
- 				caller: alice.clone(),
--				call: RuntimeCall::BalancesTransfer { to: bob, amount: 20 },
-+				call: RuntimeCall::Balances(balances::Call::Transfer { to: bob, amount: 20 }),
- 			},
- 			support::Extrinsic {
- 				caller: alice,
--				call: RuntimeCall::BalancesTransfer { to: charlie, amount: 20 },
-+				call: RuntimeCall::Balances(balances::Call::Transfer { to: charlie, amount: 20 }),
- 			},
- 		],
- 	};
+ impl<T: Config> Pallet<T> {
+ 	/// Create a new instance of the Proof of Existence Module.
+ 	pub fn new() -> Self {
+-		/* TODO: Return a new instance of the `Pallet` struct. */
++		Self { claims: BTreeMap::new() }
+ 	}
+ }

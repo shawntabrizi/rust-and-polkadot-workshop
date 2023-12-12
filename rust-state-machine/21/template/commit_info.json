@@ -1,0 +1,14 @@
+{
+  "commitHash": "b3b6c54f12f388a0d907cc61663e2e98ec5db265",
+  "commitMessage": "template: construct concrete support types",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

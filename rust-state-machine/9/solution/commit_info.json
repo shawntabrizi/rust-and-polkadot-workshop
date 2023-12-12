@@ -1,14 +1,10 @@
 {
-  "commitHash": "cf0e243d6545b6132c1f41aa2dc09bed95d02b1e",
-  "commitMessage": "solution: introduce system module",
+  "commitHash": "bb102c593883e7f8c42ea1ad355e6ff60ea8c256",
+  "commitMessage": "solution: introduce increment block number and nonce with test",
   "files": [
     {
       "status": "M",
       "file": "README.md"
-    },
-    {
-      "status": "M",
-      "file": "src/main.rs"
     },
     {
       "status": "M",

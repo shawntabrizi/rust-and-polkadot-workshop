@@ -1,63 +1,56 @@
 diff --git a/src/main.rs b/src/main.rs
-index b314856..df9057a 100644
+index 8d30b1b..d681065 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -7,12 +7,14 @@ mod system;
- mod types {
- 	pub type AccountId = String;
- 	pub type Balance = u128;
-+	/* TODO: Move your type definitions for `BlockNumber` and `Nonce` here. */
+@@ -11,6 +11,12 @@ mod types {
+ 	pub type Nonce = u32;
  }
- 
- // This is our main Runtime.
- // It accumulates all of the different pallets we want to use.
- #[derive(Debug)]
- pub struct Runtime {
-+	/* TODO: Use your type definitions for your new generic `system::Pallet`. */
- 	system: system::Pallet,
- 	balances: balances::Pallet<types::AccountId, types::Balance>,
- }
-diff --git a/src/system.rs b/src/system.rs
-index f34406f..e0a0a92 100644
---- a/src/system.rs
-+++ b/src/system.rs
-@@ -4,6 +4,13 @@ type AccountId = String;
- type BlockNumber = u32;
- type Nonce = u32;
  
 +/*
 +	TODO:
-+	Update the `Pallet` struct to be generic over the `AccountId`, `BlockNumber`, and `Nonce` type.
-+	You won't need the type definitions above after you are done.
-+	Types will now be defined in `main.rs`. See the TODOs there.
++	Implement the `system::Config` trait you created on your `Runtime`.
++	Use `Self` to satisfy the generic parameter required for `system::Pallet`.
++*/
++
+ // This is our main Runtime.
+ // It accumulates all of the different pallets we want to use.
+ #[derive(Debug)]
+diff --git a/src/system.rs b/src/system.rs
+index b496b5b..5c2a7f5 100644
+--- a/src/system.rs
++++ b/src/system.rs
+@@ -2,6 +2,11 @@ use core::ops::AddAssign;
+ use num::traits::{One, Zero};
+ use std::collections::BTreeMap;
+ 
++/*
++	TODO: Combine all generic types and their trait bounds into a single `pub trait Config`.
++	When you are done, your `Pallet` can simply be defined with `Pallet<T: Config>`.
 +*/
 +
  /// This is the System Pallet.
  /// It handles low level state needed for your blockchain.
  #[derive(Debug)]
-@@ -14,6 +21,14 @@ pub struct Pallet {
+@@ -12,6 +17,10 @@ pub struct Pallet<AccountId, BlockNumber, Nonce> {
  	nonce: BTreeMap<AccountId, Nonce>,
  }
  
 +/*
-+	TODO:
-+	The generic types need to satisfy certain traits in order to be used in the functions below.
-+	See if you can figure them out yourself.
-+
-+	NOTE: You might need to adjust some of the functions below to satisfy the borrow checker.
++	TODO: Update all of these functions to use your new configuration trait.
 +*/
 +
- impl Pallet {
- 	/// Create a new instance of the System Pallet.
- 	pub fn new() -> Self {
-@@ -44,6 +59,10 @@ impl Pallet {
+ impl<AccountId, BlockNumber, Nonce> Pallet<AccountId, BlockNumber, Nonce>
+ where
+ 	AccountId: Ord + Clone,
+@@ -45,6 +54,11 @@ where
+ 
+ #[cfg(test)]
  mod test {
++	/*
++		TODO: Create a `struct TestConfig`, and implement `super::Config` on it with concrete types.
++		Use this struct to instantiate your `Pallet`.
++	*/
++
  	#[test]
  	fn init_system() {
-+		/*
-+			TODO:
-+			When creating an instance of `Pallet`, you should explicitly define the types you use.
-+		*/
- 		let mut system = super::Pallet::new();
- 		system.inc_block_number();
- 		system.inc_nonce(&"alice".to_string());
+ 		let mut system = super::Pallet::<String, u32, u32>::new();

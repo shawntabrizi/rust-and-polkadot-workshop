@@ -1,6 +1,6 @@
 {
-  "commitHash": "acd92d6e29113fe32eb33bb85cc033054de8acd2",
-  "commitMessage": "template: use call macro in balances",
+  "commitHash": "bf0dfd63be3a8a533f15ffd0a7d418771e0d0082",
+  "commitMessage": "template: use call macro in proof of existence",
   "files": [
     {
       "status": "M",
@@ -8,11 +8,11 @@
     },
     {
       "status": "M",
-      "file": "src/balances.rs"
+      "file": "src/main.rs"
     },
     {
       "status": "M",
-      "file": "src/main.rs"
+      "file": "src/proof_of_existence.rs"
     }
   ]
 }

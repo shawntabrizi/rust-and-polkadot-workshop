@@ -1,32 +1,41 @@
 diff --git a/src/main.rs b/src/main.rs
-index 50301cb..f0257a6 100644
+index 199f7de..a01adfd 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -20,6 +20,7 @@ mod types {
- // These are all the calls which are exposed to the world.
- // Note that it is just an accumulation of the calls exposed by each module.
- pub enum RuntimeCall {
-+	/* TODO: Turn this into a nested enum where variant `Balances` contains a `balances::Call`. */
- 	BalancesTransfer { to: types::AccountId, amount: types::Balance },
- }
+@@ -1,4 +1,5 @@
+ mod balances;
++/* TODO: Import the `proof_of_existence` module. */
+ mod support;
+ mod system;
  
-@@ -84,6 +85,11 @@ impl crate::support::Dispatch for Runtime {
- 		// This match statement will allow us to correctly route `RuntimeCall`s
- 		// to the appropriate pallet level function.
- 		match runtime_call {
-+			/*
-+				TODO:
-+				Adjust this logic to handle the nested enums, and simply call the `dispatch` logic
-+				on the balances call, rather than the function directly.
-+			*/
- 			RuntimeCall::BalancesTransfer { to, amount } => {
- 				self.balances.transfer(caller, to, amount)?;
- 			},
-@@ -108,6 +114,7 @@ fn main() {
- 	let block_1 = types::Block {
- 		header: support::Header { block_number: 1 },
- 		extrinsics: vec![
-+			/* TODO: Update your extrinsics to use the nested enum. */
- 			support::Extrinsic {
- 				caller: alice.clone(),
- 				call: RuntimeCall::BalancesTransfer { to: bob, amount: 20 },
+diff --git a/src/proof_of_existence.rs b/src/proof_of_existence.rs
+new file mode 100644
+index 0000000..87ea242
+--- /dev/null
++++ b/src/proof_of_existence.rs
+@@ -0,0 +1,25 @@
++use core::fmt::Debug;
++use std::collections::BTreeMap;
++
++pub trait Config: crate::system::Config {
++	/// The type which represents the content that can be claimed using this pallet.
++	/// Could be the content directly as bytes, or better yet the hash of that content.
++	/// We leave that decision to the runtime developer.
++	type Content: Debug + Ord;
++}
++
++/// This is the Proof of Existence Module.
++/// It is a simple module that allows accounts to claim existence of some data.
++#[derive(Debug)]
++pub struct Pallet<T: Config> {
++	/// A simple storage map from content to the owner of that content.
++	/// Accounts can make multiple different claims, but each claim can only have one owner.
++	/* TODO: Add a field `claims` which is a `BTreeMap` fom `T::Content` to `T::AccountId`. */
++}
++
++impl<T: Config> Pallet<T> {
++	/// Create a new instance of the Proof of Existence Module.
++	pub fn new() -> Self {
++		/* TODO: Return a new instance of the `Pallet` struct. */
++	}
++}

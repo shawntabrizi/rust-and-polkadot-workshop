@@ -1,6 +1,6 @@
 {
-  "commitHash": "f0ff26e13ae8e3333451be2b8853f0fa50566652",
-  "commitMessage": "template: introduce system module",
+  "commitHash": "615b83ba76ff23f4793705ef52e094f0f57f4628",
+  "commitMessage": "template: introduce increment block number and nonce with test",
   "files": [
     {
       "status": "M",
@@ -8,10 +8,6 @@
     },
     {
       "status": "M",
-      "file": "src/main.rs"
-    },
-    {
-      "status": "A",
       "file": "src/system.rs"
     }
   ]

@@ -1,0 +1,18 @@
+{
+  "commitHash": "5ac84af580e5f4d5315c45eebf2756d7fdaec9c2",
+  "commitMessage": "template: introduce system module",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    },
+    {
+      "status": "A",
+      "file": "src/system.rs"
+    }
+  ]
+}

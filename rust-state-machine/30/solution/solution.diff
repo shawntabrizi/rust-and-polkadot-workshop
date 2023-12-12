@@ -1,52 +1,61 @@
-diff --git a/src/proof_of_existence.rs b/src/proof_of_existence.rs
-index 587dfc7..f9d9059 100644
---- a/src/proof_of_existence.rs
-+++ b/src/proof_of_existence.rs
-@@ -56,28 +56,31 @@ impl<T: Config> Pallet<T> {
- // We should expect that the caller of each call will be provided by the dispatcher,
- // and not included as a parameter of the call.
- pub enum Call<T: Config> {
--	/*
--		TODO:
--		Create variants for:
--		- `CreateClaim`
--		- `RevokeClaim`
--
--		Remember that you only need to pass in the `claim` data, as `caller` information is passed
--		in through the `dispatch` logic.
--	*/
--	RemoveMe(core::marker::PhantomData<T>),
-+	CreateClaim { claim: T::Content },
-+	RevokeClaim { claim: T::Content },
+diff --git a/src/main.rs b/src/main.rs
+index 71cca32..ca513a4 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -16,14 +16,14 @@ mod types {
+ 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
+ 	pub type Header = crate::support::Header<BlockNumber>;
+ 	pub type Block = crate::support::Block<Header, Extrinsic>;
+-	/* TODO: Add the concrete `Content` type for your runtime. */
++	pub type Content = &'static str;
  }
  
- /// Implementation of the dispatch logic, mapping from `POECall` to the appropriate underlying
- /// function we want to execute.
- impl<T: Config> crate::support::Dispatch for Pallet<T> {
--	/*
--		TODO:
--		Implement `crate::support::Dispatch` for `Pallet<T>`.
-+	type Caller = T::AccountId;
-+	type Call = Call<T>;
- 
--		In your `dispatch` logic, match on `call` and forward the `caller` and `claim` data to the
--		appropriate function.
--	*/
-+	fn dispatch(
-+		&mut self,
-+		caller: Self::Caller,
-+		call: Self::Call,
-+	) -> crate::support::DispatchResult {
-+		match call {
-+			Call::CreateClaim { claim } => {
-+				self.create_claim(caller, claim)?;
-+			},
-+			Call::RevokeClaim { claim } => {
-+				self.revoke_claim(caller, claim)?;
-+			},
-+		}
-+		Ok(())
-+	}
+ // These are all the calls which are exposed to the world.
+ // Note that it is just an accumulation of the calls exposed by each module.
+ pub enum RuntimeCall {
+ 	Balances(balances::Call<Runtime>),
+-	/* TODO: Add a `ProofOfExistence` variant to access `proof_of_existence::Call`. */
++	ProofOfExistence(proof_of_existence::Call<Runtime>),
  }
  
- #[cfg(test)]
+ // This is our main Runtime.
+@@ -32,7 +32,7 @@ pub enum RuntimeCall {
+ pub struct Runtime {
+ 	system: system::Pallet<Self>,
+ 	balances: balances::Pallet<Self>,
+-	/* TODO: Add `proof_of_existence` field to your `Runtime`. */
++	proof_of_existence: proof_of_existence::Pallet<Self>,
+ }
+ 
+ impl system::Config for Runtime {
+@@ -45,7 +45,9 @@ impl balances::Config for Runtime {
+ 	type Balance = types::Balance;
+ }
+ 
+-/* TODO: Implement proof_of_existence::Config` for `Runtime`. */
++impl proof_of_existence::Config for Runtime {
++	type Content = types::Content;
++}
+ 
+ impl Runtime {
+ 	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
+@@ -53,7 +55,7 @@ impl Runtime {
+ 		Self {
+ 			system: system::Pallet::new(),
+ 			balances: balances::Pallet::new(),
+-			/* TODO: Initialize the `proof_of_existence` pallet. */
++			proof_of_existence: proof_of_existence::Pallet::new(),
+ 		}
+ 	}
+ 
+@@ -97,7 +99,9 @@ impl crate::support::Dispatch for Runtime {
+ 			RuntimeCall::Balances(call) => {
+ 				self.balances.dispatch(caller, call)?;
+ 			},
+-			/* TODO: Dispatch `calls` to the `ProofOfExistence` pallet. */
++			RuntimeCall::ProofOfExistence(call) => {
++				self.proof_of_existence.dispatch(caller, call)?;
++			},
+ 		}
+ 		Ok(())
+ 	}

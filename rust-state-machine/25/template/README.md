@@ -1,45 +1,29 @@
-# Using Execute Block
+# Pallet Level Dispatch
 
-We have now successfully implemented the `execute_block` and `dispatch` logic needed to build and execute real `Blocks`.
+We want to make our code more modular and extensible.
 
-Let's bring that logic into our `main` function.
+Currently, all dispatch happens through the `RuntimeCall`, which is hardcoding dispatch logic for each of the Pallets in our system.
 
-## Creating a Block
+What we would prefer is for Pallet level dispatch logic to live in the Pallet itself, and our Runtime taking advantage of that. We ave already seen end to end what it takes to set up call dispatch, so let's do it again at the Pallet level.
 
-You can create a new `Block` by filling out all the fields of the struct and assigning it to a variable.
+## Pallet Call
 
-For example:
+To make our system more extensible, we want to keep all the calls for a pallet defined at the pallet level.
 
-```rust
-let block_1 = types::Block {
-	header: support::Header { block_number: 1 },
-	extrinsics: vec![
-		support::Extrinsic {
-			caller: &"alice",
-			call: RuntimeCall::BalancesTransfer { to: &"bob", amount: 69 },
-		},
-	],
-};
-```
+For this, we define an `enum Call` in our Balances pallet, and just like before, we introduce a new enum variant representing the function that we want to call.
 
-It is important that you set the block number correctly since we verify this in our `execute_block` function. The first block in our state machine will have the number `1`.
+Note that this enum needs to be generic over `T: Config` because we need access to the types defined by our configuration trait!
 
-Also remember that you can add multiple extrinsics in a single block by extending the vector.
+## Pallet Dispatch
 
-## Executing a Block
+You will also notice in the template, we have included the shell for you to implement Pallet level dispatch.
 
-Once you have constructed your `Block`, you can pass it to the `execute_block` function implemented on your `runtime`.
+Everything should look the same as the Runtime level dispatch, except the `type Call` is the Pallet level call we just created.
 
-```rust
-runtime.execute_block(block_1).expect("invalid block");
-```
+Just like before, you simply need to match the `Call` variant with the appropriate function, and pass the parameters needed by the function.
 
-Note how we panic with the message `"invalid block"` if the `execute_block` function returns an error. This should only happen when something is seriously wrong with your block, for example the block number is incorrect for what we expect.
+## Create Your Pallet Level Dispatch
 
-This panic will NOT be triggered if there is an error in an extrinsic, as we "swallow" those errors in the `execute_block` function. This is the behavior we want.
+Follow the `TODO`s in the template to complete the logic for Pallet level dispatch.
 
-## Update Your Main Function
-
-Go ahead and use the `Block` type and `execute_block` function to update the logic of your `main` function.
-
-Follow the `TODO`s provided in the template to complete this step
+In the next step, we will use this logic to improve our dispatch logic in our Runtime.

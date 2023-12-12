@@ -51,9 +51,11 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
     .slice(1)
     .forEach((commitInfo, index) => {
       const [commitHash, commitMessage] = commitInfo.split("::");
+      const isMeta = commitMessage.toLowerCase().startsWith("meta: ");
       const isTemplate = commitMessage.toLowerCase().startsWith("template: ");
       const isSolution = commitMessage.toLowerCase().startsWith("solution: ");
       const isSection = commitMessage.toLowerCase().startsWith("section: ");
+      const isAction = commitMessage.toLowerCase().startsWith("action: ");
 
       let stepFolder = path.join(repoPath, stepCounter.toString());
       if (!fs.existsSync(stepFolder)) {
@@ -368,13 +370,10 @@ function generateSidebar(steps) {
   let output = "- [Home](/)\n\n---\n\n";
   output += "- Introduction\n";
   steps.forEach(({ name, is_section }, index) => {
-    if (is_section) {
-      output += `- ${name}\n`;
-    } else {
-      output += `    - [${index + 1}. ${name}](${repoName}/${
-        index + 1
-      }/README.md)\n`;
+    if (!is_section) {
+      output += `    `;
     }
+    output += `- [${index + 1}. ${name}](${repoName}/${index + 1}/README.md)\n`;
   });
   fs.writeFileSync(sidebarFilePath, output);
 }

@@ -1,5 +1,5 @@
 {
-  "commitHash": "615b83ba76ff23f4793705ef52e094f0f57f4628",
+  "commitHash": "ed251f55ff1abd583b50352f3ed52fbff986c487",
   "commitMessage": "template: introduce increment block number and nonce with test",
   "files": [
     {

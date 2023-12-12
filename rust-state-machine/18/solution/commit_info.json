@@ -1,5 +1,5 @@
 {
-  "commitHash": "40c2bc602f56f894758146207cd2feb56f0254d7",
+  "commitHash": "52ca0bee8985d08f4cb878a39042e0c63eb489bb",
   "commitMessage": "solution: make balances module configurable",
   "files": [
     {

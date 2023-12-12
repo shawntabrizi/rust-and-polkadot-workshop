@@ -1,5 +1,5 @@
 {
-  "commitHash": "c6bf5a6d486533e8cfa84cca219cfddd2734e5a4",
+  "commitHash": "dd579231a0504598bbc900c9181b1015896a16c9",
   "commitMessage": "solution: add blocks which execute proof of existence",
   "files": [
     {

@@ -1,0 +1,14 @@
+{
+  "commitHash": "8c4d3a8d51148fb5cd872ef2fafbfe99f4f1580e",
+  "commitMessage": "section: introduction",
+  "files": [
+    {
+      "status": "A",
+      "file": ".gitattributes"
+    },
+    {
+      "status": "A",
+      "file": "README.md"
+    }
+  ]
+}

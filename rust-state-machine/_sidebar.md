@@ -3,6 +3,7 @@
 ---
 
 - Introduction
+- [0. Introduction to the Rust State Machine](rust-state-machine/0/README.md)
     - [1. Initialize your Rust Project](rust-state-machine/1/README.md)
     - [2. Rust Tooling](rust-state-machine/2/README.md)
 - [3. Creating a Balances Pallet](rust-state-machine/3/README.md)

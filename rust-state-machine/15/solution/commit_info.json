@@ -1,5 +1,5 @@
 {
-  "commitHash": "7b2db0f104d18fb750fd3e2c65d593eccf2dbfd5",
+  "commitHash": "132566355159926e3876aaa5404c0278f7fc16fd",
   "commitMessage": "solution: make balances module generic",
   "files": [
     {

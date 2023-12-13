@@ -1,6 +1,6 @@
 {
-  "commitHash": "e204bb91b603f08e4e6c61329bd1c9e97cf56864",
-  "commitMessage": "solution: introduce proof of existence module",
+  "commitHash": "5cc5e33849ae4b1b12b04d781c74c803cc623d31",
+  "commitMessage": "solution: implement nested dispatch",
   "files": [
     {
       "status": "M",
@@ -9,10 +9,6 @@
     {
       "status": "M",
       "file": "src/main.rs"
-    },
-    {
-      "status": "M",
-      "file": "src/proof_of_existence.rs"
     }
   ]
 }

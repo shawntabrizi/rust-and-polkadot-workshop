@@ -1,6 +1,6 @@
 {
-  "commitHash": "8c119a195c5d53659e0527633a2a22095a4a1c53",
-  "commitMessage": "template: introduce module level dispatch to balances",
+  "commitHash": "24f9ddcb817856c9e289afff28984c1e14c5b0cf",
+  "commitMessage": "template: use execute_block for main logic",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/balances.rs"
+      "file": "src/main.rs"
     }
   ]
 }

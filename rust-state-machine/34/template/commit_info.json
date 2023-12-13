@@ -1,0 +1,14 @@
+{
+  "commitHash": "be95e43a5ba6b263bf33bea5123e13abd2c1665b",
+  "commitMessage": "template: integrate proof of existence into the runtime",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

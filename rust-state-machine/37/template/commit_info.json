@@ -1,10 +1,14 @@
 {
-  "commitHash": "675725c56c0e70ca31e2fcd747bfa5441d583c1f",
-  "commitMessage": "template: use runtime macro in main",
+  "commitHash": "e8005c5292c5046b7b8a4b8290e641dc14a406b7",
+  "commitMessage": "template: use call macro in balances",
   "files": [
     {
       "status": "M",
       "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
     },
     {
       "status": "M",

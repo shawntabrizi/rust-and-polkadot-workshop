@@ -1,53 +1,68 @@
-# Dispatching Calls
+# Executing Blocks
 
-We have built our `execute_block` logic depending on the `dispatch` logic we have not implemented yet.
+We will now start the process to replace the simple block simulation in our `main` function with a proper block execution pipeline.
 
-Let's do that.
+## Execute Block
 
-## Adding Our Calls
+We have introduced a new function to our `Runtime` called `fn execute_block`.
 
-Dispatch logic is all about routing a user's extrinsic to the proper Pallet function. So far, the only user callable function we have created is the `transfer` function in the Balances Pallet.
+The steps of this function is exactly the same as our current `main` function, but using the concrete `Block` type we defined to extract details like the expected block number and the extrinsics that we want to execute.
 
-So let's add that call to our `RuntimeCall` enum.
+### Iterating Over a Vector
 
-Our `transfer` function expects 3 inputs:
+In order to build our `execute_block` function, we will need to iterate over all the extrinsics in our block, and dispatch those calls. In rust, the common way to access the elements of a vector is to turn it into an iterator.
 
-- `caller`: The account calling the transfer function, and whose balance will be reduced.
-- `to`: The account where the funds will be sent.
-- `amount`: The amount of funds to transfer.
+There are two functions used for turning a vector into an interator, `iter` and `into_iter`, and their difference lies in ownership:
 
-However, remember that our `dispatch` logic already has information about the `caller` which is coming from the `Extrinsic` in the `Block`. So we do not need this data again in the `RuntimeCall`.
+- `iter`: This method creates an iterator that borrows each element from the vector, allowing you to read the values without taking ownership. It's useful when you want to iterate over the vector while keeping it intact.
 
-In fact, every `Call` in our runtime should omit the `caller`, and know that it is being provided by our `dispatch` logic.
+- `into_iter`: This method consumes the vector, transferring ownership of each element to the iterator. It's handy when you want to move or transfer ownership of the vector's elements to another part of your code. After using `into_iter`, the original vector can't be used anymore, as ownership has been transferred.
 
-So when adding a new variant to `RuntimeCall`, it should look something like:
+In our context, we want to use `into_iter()`, so you will get something that looks like:
 
 ```rust
-pub enum RuntimeCall {
-	BalancesTransfer { to: types::AccountId, amount: types;:Balance },
+for support::Extrinsic { caller, call } in block.extrinsics.into_iter() {
+	// do stuff with `caller` and `call`
 }
 ```
 
-A user submitting an extrinsic to our state machine can use this enum variant to specify which function they want to call (`transfer`), and the parameters needed for that call.
+Here you can see we also do a trick to separate out the fields of the `Extrinsic` in a single line, since ultimately we want to work with `caller` and `call`. You can of course break this process up into multiple lines if you want.
 
-## Dispatch Logic
+### Dispatching a Call
 
-The core logic in the `dispatch` function is a simple `match` statement.
+Once we have the `call` and `caller`, what should we do with them?
 
-Basically, given some `RuntimeCall`, we need to match on the variant being provided to us, and then pass the appropriate parameters to the correct Pallet function. As mentioned before, `dispatch` already has access to the `caller` information, so the final logic is as simple as:
+This is where the `Dispatch` trait starts to come into play. You will see in our template, we included the shell of an `unimplemented()` `fn dispatch`. We will write this logic in the next step, but we need to already use the `dispatch` function in our `execute_block` logic.
+
+Once we have the `call` and `caller`, we want to pass them to the `dispatch` logic, which you see is implemented on the `Runtime`.
+
+That will look something like:
 
 ```rust
-match runtime_call {
-	RuntimeCall::BalancesTransfer { to, amount } => {
-		self.balances.transfer(caller, to, amount)?;
-	}
-}
+let _res = self.dispatch(caller, call).map_err(|e| eprintln!("{}", e));
 ```
 
-Dispatch logic really is that simple!
+Note that in Rust, if you want to access a function within a trait, like we do here with `dispatch`, you need to explicitly import that trait into your project.
 
-Note that we propagate up any errors returned by our function call with the `?` operator. This is important if you want to see the error messages that we set up in the `execute_block` logic.
+We left a `TODO` at the top of `main.rs` where we ask you to import `crate::support::Dispatch`, which will allow you access to calling `dispatch` on `Runtime`.
 
-## Write Your Dispatch Logic
+### Better Error Messages
 
-Follow the `TODO`s provided in the template to build your `RuntimeCall` and complete your `dispatch` logic.
+Since this is a more permanent function of our project, it also makes sense to expand the message being printed when there are extrinsic errors. For example:
+
+```rust
+eprintln!(
+	"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
+	block.header.block_number, i, e
+)
+```
+
+This allows you to see the block number, extrinsic number, and the error message whenever there is an extrinsic error. This can be very helpful when you have many blocks being imported each with potentially many extrinsics.
+
+To get the extrinsic number `i`, use you chain the [`enumerate()`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.enumerate) function after the `into_iter()`.
+
+## Build Your Execute Block Function
+
+You should now have all the tools and information needed to successfully write your `execute_block` function.
+
+Follow the `TODO`s provided by the template, and make sure to include the `impl crate::support::Dispatch for Runtime` that we provided for you, and that we will implement in the next steps.

@@ -1,22 +1,10 @@
 {
-  "commitHash": "d92db68b6eaf6c0ae84f184810acfdb24fa83c44",
-  "commitMessage": "introduce support traits and types",
+  "commitHash": "d52417329ee0ed3a58615cf437738fdc84a0824d",
+  "commitMessage": "section: executing blocks and dispatching calls",
   "files": [
     {
       "status": "M",
       "file": "README.md"
-    },
-    {
-      "status": "M",
-      "file": "src/balances.rs"
-    },
-    {
-      "status": "M",
-      "file": "src/main.rs"
-    },
-    {
-      "status": "A",
-      "file": "src/support.rs"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
-  "commitHash": "995c48e0e2220a698e8ffaf661683a2fad302eae",
-  "commitMessage": "template: integrate proof of existence into the runtime",
+  "commitHash": "87932b620604af6d7e5a3e462d35b52d1ca1cbdc",
+  "commitMessage": "template: add proof of existence functions with tests",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/main.rs"
+      "file": "src/proof_of_existence.rs"
     }
   ]
 }

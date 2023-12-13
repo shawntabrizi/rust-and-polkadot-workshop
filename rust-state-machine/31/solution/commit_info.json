@@ -1,10 +1,14 @@
 {
-  "commitHash": "32c8741a368e696d383bfc56c4dc3cffa0dba0b0",
-  "commitMessage": "solution: add proof of existence dispatch logic",
+  "commitHash": "abf4e14615b4cac897bba87c654d9c6b8b2d1d53",
+  "commitMessage": "solution: introduce proof of existence module",
   "files": [
     {
       "status": "M",
       "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
     },
     {
       "status": "M",

@@ -1,5 +1,4 @@
 mod balances;
-/* TODO: Import the `proof_of_existence` module. */
 mod support;
 mod system;
 
@@ -21,7 +20,8 @@ mod types {
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
-	Balances(balances::Call<Runtime>),
+	/* TODO: Turn this into a nested enum where variant `Balances` contains a `balances::Call`. */
+	BalancesTransfer { to: types::AccountId, amount: types::Balance },
 }
 
 // This is our main Runtime.
@@ -85,8 +85,13 @@ impl crate::support::Dispatch for Runtime {
 		// This match statement will allow us to correctly route `RuntimeCall`s
 		// to the appropriate pallet level function.
 		match runtime_call {
-			RuntimeCall::Balances(call) => {
-				self.balances.dispatch(caller, call)?;
+			/*
+				TODO:
+				Adjust this logic to handle the nested enums, and simply call the `dispatch` logic
+				on the balances call, rather than the function directly.
+			*/
+			RuntimeCall::BalancesTransfer { to, amount } => {
+				self.balances.transfer(caller, to, amount)?;
 			},
 		}
 		Ok(())
@@ -109,13 +114,14 @@ fn main() {
 	let block_1 = types::Block {
 		header: support::Header { block_number: 1 },
 		extrinsics: vec![
+			/* TODO: Update your extrinsics to use the nested enum. */
 			support::Extrinsic {
 				caller: alice.clone(),
-				call: RuntimeCall::Balances(balances::Call::Transfer { to: bob, amount: 20 }),
+				call: RuntimeCall::BalancesTransfer { to: bob, amount: 20 },
 			},
 			support::Extrinsic {
 				caller: alice,
-				call: RuntimeCall::Balances(balances::Call::Transfer { to: charlie, amount: 20 }),
+				call: RuntimeCall::BalancesTransfer { to: charlie, amount: 20 },
 			},
 		],
 	};

@@ -1,45 +1,53 @@
-# Using Execute Block
+# Dispatching Calls
 
-We have now successfully implemented the `execute_block` and `dispatch` logic needed to build and execute real `Blocks`.
+We have built our `execute_block` logic depending on the `dispatch` logic we have not implemented yet.
 
-Let's bring that logic into our `main` function.
+Let's do that.
 
-## Creating a Block
+## Adding Our Calls
 
-You can create a new `Block` by filling out all the fields of the struct and assigning it to a variable.
+Dispatch logic is all about routing a user's extrinsic to the proper Pallet function. So far, the only user callable function we have created is the `transfer` function in the Balances Pallet.
 
-For example:
+So let's add that call to our `RuntimeCall` enum.
 
-```rust
-let block_1 = types::Block {
-	header: support::Header { block_number: 1 },
-	extrinsics: vec![
-		support::Extrinsic {
-			caller: &"alice",
-			call: RuntimeCall::BalancesTransfer { to: &"bob", amount: 69 },
-		},
-	],
-};
-```
+Our `transfer` function expects 3 inputs:
 
-It is important that you set the block number correctly since we verify this in our `execute_block` function. The first block in our state machine will have the number `1`.
+- `caller`: The account calling the transfer function, and whose balance will be reduced.
+- `to`: The account where the funds will be sent.
+- `amount`: The amount of funds to transfer.
 
-Also remember that you can add multiple extrinsics in a single block by extending the vector.
+However, remember that our `dispatch` logic already has information about the `caller` which is coming from the `Extrinsic` in the `Block`. So we do not need this data again in the `RuntimeCall`.
 
-## Executing a Block
+In fact, every `Call` in our runtime should omit the `caller`, and know that it is being provided by our `dispatch` logic.
 
-Once you have constructed your `Block`, you can pass it to the `execute_block` function implemented on your `runtime`.
+So when adding a new variant to `RuntimeCall`, it should look something like:
 
 ```rust
-runtime.execute_block(block_1).expect("invalid block");
+pub enum RuntimeCall {
+	BalancesTransfer { to: types::AccountId, amount: types;:Balance },
+}
 ```
 
-Note how we panic with the message `"invalid block"` if the `execute_block` function returns an error. This should only happen when something is seriously wrong with your block, for example the block number is incorrect for what we expect.
+A user submitting an extrinsic to our state machine can use this enum variant to specify which function they want to call (`transfer`), and the parameters needed for that call.
 
-This panic will NOT be triggered if there is an error in an extrinsic, as we "swallow" those errors in the `execute_block` function. This is the behavior we want.
+## Dispatch Logic
 
-## Update Your Main Function
+The core logic in the `dispatch` function is a simple `match` statement.
 
-Go ahead and use the `Block` type and `execute_block` function to update the logic of your `main` function.
+Basically, given some `RuntimeCall`, we need to match on the variant being provided to us, and then pass the appropriate parameters to the correct Pallet function. As mentioned before, `dispatch` already has access to the `caller` information, so the final logic is as simple as:
 
-Follow the `TODO`s provided in the template to complete this step
+```rust
+match runtime_call {
+	RuntimeCall::BalancesTransfer { to, amount } => {
+		self.balances.transfer(caller, to, amount)?;
+	}
+}
+```
+
+Dispatch logic really is that simple!
+
+Note that we propagate up any errors returned by our function call with the `?` operator. This is important if you want to see the error messages that we set up in the `execute_block` logic.
+
+## Write Your Dispatch Logic
+
+Follow the `TODO`s provided in the template to build your `RuntimeCall` and complete your `dispatch` logic.

@@ -1,29 +1,23 @@
-# Pallet Level Dispatch
+# Create Your Block Type
 
-We want to make our code more modular and extensible.
+The support module provided for us a bunch of generic types which can be customized for our simple state machine. To actually start using them, we need to define concrete versions of these types using our other concrete types.
 
-Currently, all dispatch happens through the `RuntimeCall`, which is hardcoding dispatch logic for each of the Pallets in our system.
+## Runtime Call
 
-What we would prefer is for Pallet level dispatch logic to live in the Pallet itself, and our Runtime taking advantage of that. We ave already seen end to end what it takes to set up call dispatch, so let's do it again at the Pallet level.
+You will see the template provides an empty `enum RuntimeCall` which we will expand later. This is an object which is supposed to represent all the various calls exposed by your blockchain to users and the outside world. We need to mock this enum at this step so that it can be used to build a concrete `Extrinsic` type.
 
-## Pallet Call
+For now, there is just the `transfer` function exposed by the Balances Pallet, but we will add more before this tutorial is complete, and figure out ways to automate the creation of our `RuntimeCall`.
 
-To make our system more extensible, we want to keep all the calls for a pallet defined at the pallet level.
+You can access this type within `mod types` with `crate::RuntimeCall`.
 
-For this, we define an `enum Call` in our Balances pallet, and just like before, we introduce a new enum variant representing the function that we want to call.
+## Building the Block Type
 
-Note that this enum needs to be generic over `T: Config` because we need access to the types defined by our configuration trait!
+It's time to define the concrete `Block` type that we will use to enhance our simple state machine.
 
-## Pallet Dispatch
+1. Using the `RuntimeCall` enum and the `AccountId` type, you can define a concrete `Extrinsic` type.
+2. Using the `BlockNumber` type, you can define a concrete `Header` type.
+3. Using the concrete `Header` and `Extrinsic` types, you can define a concrete `Block` type.
 
-You will also notice in the template, we have included the shell for you to implement Pallet level dispatch.
+As you can see, the `Block` is composed of layers of generic types, allowing the whole structure to be flexible and customizable to our needs.
 
-Everything should look the same as the Runtime level dispatch, except the `type Call` is the Pallet level call we just created.
-
-Just like before, you simply need to match the `Call` variant with the appropriate function, and pass the parameters needed by the function.
-
-## Create Your Pallet Level Dispatch
-
-Follow the `TODO`s in the template to complete the logic for Pallet level dispatch.
-
-In the next step, we will use this logic to improve our dispatch logic in our Runtime.
+Pay attention to the generic type definitions to ensure that you use all the correct generic parameters in all the right places.

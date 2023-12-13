@@ -1,3 +1,3 @@
-# Add Proof of Existence Dispatch
+# Pallet Level Dispatch
 
-Find the solution to the previous step here.
+You can find the solution for the previous step here.

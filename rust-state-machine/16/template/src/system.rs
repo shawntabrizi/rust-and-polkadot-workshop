@@ -1,14 +1,12 @@
 use std::collections::BTreeMap;
 
-type AccountId = String;
-type BlockNumber = u32;
-type Nonce = u32;
-
 /*
-	TODO:
-	Update the `Pallet` struct to be generic over the `AccountId`, `BlockNumber`, and `Nonce` type.
-	You won't need the type definitions above after you are done.
-	Types will now be defined in `main.rs`. See the TODOs there.
+	TODO: Define the common types used in this pallet:
+		- `AccountID`
+		- `BlockNumber`
+		- `Nonce`
+
+	Then update this pallet to use these common types.
 */
 
 /// This is the System Pallet.
@@ -16,18 +14,10 @@ type Nonce = u32;
 #[derive(Debug)]
 pub struct Pallet {
 	/// The current block number.
-	block_number: BlockNumber,
+	block_number: u32,
 	/// A map from an account to their nonce.
-	nonce: BTreeMap<AccountId, Nonce>,
+	nonce: BTreeMap<String, u32>,
 }
-
-/*
-	TODO:
-	The generic types need to satisfy certain traits in order to be used in the functions below.
-	See if you can figure them out yourself.
-
-	NOTE: You might need to adjust some of the functions below to satisfy the borrow checker.
-*/
 
 impl Pallet {
 	/// Create a new instance of the System Pallet.
@@ -36,7 +26,7 @@ impl Pallet {
 	}
 
 	/// Get the current block number.
-	pub fn block_number(&self) -> BlockNumber {
+	pub fn block_number(&self) -> u32 {
 		self.block_number
 	}
 
@@ -48,7 +38,7 @@ impl Pallet {
 
 	// Increment the nonce of an account. This helps us keep track of how many transactions each
 	// account has made.
-	pub fn inc_nonce(&mut self, who: &AccountId) {
+	pub fn inc_nonce(&mut self, who: &String) {
 		let nonce = *self.nonce.get(who).unwrap_or(&0);
 		let new_nonce = nonce + 1;
 		self.nonce.insert(who.clone(), new_nonce);
@@ -59,10 +49,6 @@ impl Pallet {
 mod test {
 	#[test]
 	fn init_system() {
-		/*
-			TODO:
-			When creating an instance of `Pallet`, you should explicitly define the types you use.
-		*/
 		let mut system = super::Pallet::new();
 		system.inc_block_number();
 		system.inc_nonce(&"alice".to_string());

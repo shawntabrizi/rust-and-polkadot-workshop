@@ -1,14 +1,29 @@
-# Add Proof of Existence Dispatch
+# Pallet Level Dispatch
 
-We have already established the nested dispatch pipeline for Pallets in the `Runtime`.
+We want to make our code more modular and extensible.
 
-Let's build Pallet level dispatch logic for the Proof of Existence to take advantage of that.
+Currently, all dispatch happens through the `RuntimeCall`, which is hardcoding dispatch logic for each of the Pallets in our system.
 
-## Create Pallet Level Dispatch
+What we would prefer is for Pallet level dispatch logic to live in the Pallet itself, and our Runtime taking advantage of that. We ave already seen end to end what it takes to set up call dispatch, so let's do it again at the Pallet level.
 
-There is nothing new here, but we have left more for you to fill out than before.
+## Pallet Call
 
-1. Create the variants for `CreateClaim` and `RevokeClaim` for your `Call` enum.
-2. Implement the `Dispatch` trait for your `Pallet`.
+To make our system more extensible, we want to keep all the calls for a pallet defined at the pallet level.
 
-If you get stuck, try not to look at the solution provided here, but instead look at what you did in the Balances Pallet. Everything we have done here, we have already done in the past. This is an opportunity to catch where you may have outstanding questions or misunderstandings.
+For this, we define an `enum Call` in our Balances pallet, and just like before, we introduce a new enum variant representing the function that we want to call.
+
+Note that this enum needs to be generic over `T: Config` because we need access to the types defined by our configuration trait!
+
+## Pallet Dispatch
+
+You will also notice in the template, we have included the shell for you to implement Pallet level dispatch.
+
+Everything should look the same as the Runtime level dispatch, except the `type Call` is the Pallet level call we just created.
+
+Just like before, you simply need to match the `Call` variant with the appropriate function, and pass the parameters needed by the function.
+
+## Create Your Pallet Level Dispatch
+
+Follow the `TODO`s in the template to complete the logic for Pallet level dispatch.
+
+In the next step, we will use this logic to improve our dispatch logic in our Runtime.

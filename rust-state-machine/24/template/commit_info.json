@@ -1,6 +1,6 @@
 {
-  "commitHash": "09a92b480b6276a50ed3728104e0bb0f50e58a62",
-  "commitMessage": "template: use execute_block for main logic",
+  "commitHash": "70c27b370201f78224a6a52e56eed8b9dd75584d",
+  "commitMessage": "template: introduce support traits and types",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,15 @@
     },
     {
       "status": "M",
+      "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
       "file": "src/main.rs"
+    },
+    {
+      "status": "A",
+      "file": "src/support.rs"
     }
   ]
 }

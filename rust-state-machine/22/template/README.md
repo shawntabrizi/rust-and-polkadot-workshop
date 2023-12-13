@@ -1,68 +1,81 @@
-# Executing Blocks
+# Tight Coupling
 
-We will now start the process to replace the simple block simulation in our `main` function with a proper block execution pipeline.
+You might have noticed some redundancy when making our pallets generic and configurable. Both pallets defined an `AccountId` type, and technically we could define their concrete type differently!
 
-## Execute Block
+We wouldn't want this on a real production blockchain. Instead, we would want to define common types in a single spot, and use that everywhere.
 
-We have introduced a new function to our `Runtime` called `fn execute_block`.
+## Trait Inheritance
 
-The steps of this function is exactly the same as our current `main` function, but using the concrete `Block` type we defined to extract details like the expected block number and the extrinsics that we want to execute.
+Rust has the ability for traits to inherit from one another. That is, that for you to implement some trait, you also need to implement all traits that it inherits.
 
-### Iterating Over a Vector
+Let's look at some examples.
 
-In order to build our `execute_block` function, we will need to iterate over all the extrinsics in our block, and dispatch those calls. In rust, the common way to access the elements of a vector is to turn it into an iterator.
+### Trait Functions
 
-There are two functions used for turning a vector into an interator, `iter` and `into_iter`, and their difference lies in ownership:
-
-- `iter`: This method creates an iterator that borrows each element from the vector, allowing you to read the values without taking ownership. It's useful when you want to iterate over the vector while keeping it intact.
-
-- `into_iter`: This method consumes the vector, transferring ownership of each element to the iterator. It's handy when you want to move or transfer ownership of the vector's elements to another part of your code. After using `into_iter`, the original vector can't be used anymore, as ownership has been transferred.
-
-In our context, we want to use `into_iter()`, so you will get something that looks like:
+We can extend our previous example to show what trait inheritance does with functions
 
 ```rust
-for support::Extrinsic { caller, call } in block.extrinsics.into_iter() {
-	// do stuff with `caller` and `call`
+pub trait GetName {
+	// returns a string representing the object's name
+	fn name() -> String;
+}
+
+pub trait SayName: GetName {
+	// will print the name from `name()` to console
+	fn say_name() {
+		println!("{}", Self::name());
+	}
 }
 ```
 
-Here you can see we also do a trick to separate out the fields of the `Extrinsic` in a single line, since ultimately we want to work with `caller` and `call`. You can of course break this process up into multiple lines if you want.
+Note how in the definition of `trait SayName`, we reference `GetName` after a colon. This `SayName`, your object must also implement `GetName`. Note that we could even program a "default" implementation of `get_name` by using the `Self::name()` function.
 
-### Dispatching a Call
-
-Once we have the `call` and `caller`, what should we do with them?
-
-This is where the `Dispatch` trait starts to come into play. You will see in our template, we included the shell of an `unimplemented()` `fn dispatch`. We will write this logic in the next step, but we need to already use the `dispatch` function in our `execute_block` logic.
-
-Once we have the `call` and `caller`, we want to pass them to the `dispatch` logic, which you see is implemented on the `Runtime`.
-
-That will look something like:
+So when we implement these traits, it looks like:
 
 ```rust
-let _res = self.dispatch(caller, call).map_err(|e| eprintln!("{}", e));
+struct Shawn;
+impl GetName for Shawn {
+	fn name() -> String {
+		return "shawn".to_string();
+	}
+}
+
+impl SayName for Shawn {}
 ```
 
-Note that in Rust, if you want to access a function within a trait, like we do here with `dispatch`, you need to explicitly import that trait into your project.
-
-We left a `TODO` at the top of `main.rs` where we ask you to import `crate::support::Dispatch`, which will allow you access to calling `dispatch` on `Runtime`.
-
-### Better Error Messages
-
-Since this is a more permanent function of our project, it also makes sense to expand the message being printed when there are extrinsic errors. For example:
+We could choose to implement our own version of the `SayName` function, for example like:
 
 ```rust
-eprintln!(
-	"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
-	block.header.block_number, i, e
-)
+impl SayName for Shawn {
+	fn say_name() {
+		println!("My name is {}!", Self::name());
+	}
+}
 ```
 
-This allows you to see the block number, extrinsic number, and the error message whenever there is an extrinsic error. This can be very helpful when you have many blocks being imported each with potentially many extrinsics.
+But we don't have to do this. What we do have to do is make sure that `GetName` is implemented for `Shawn` or you wont be able to use the `SayName` trait. Again, we won't be using this in our tutorial, but it is nice to see examples of how this can be used.
 
-To get the extrinsic number `i`, use you chain the [`enumerate()`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.enumerate) function after the `into_iter()`.
+### Associated Types
 
-## Build Your Execute Block Function
+Rather than redefining `type AccountId` in each Pallet that needs it, what if we just defined it in `system::Config`, and inherit that type in other Pallet configs?
 
-You should now have all the tools and information needed to successfully write your `execute_block` function.
+Let's see what that would look like:
 
-Follow the `TODO`s provided by the template, and make sure to include the `impl crate::support::Dispatch for Runtime` that we provided for you, and that we will implement in the next steps.
+```rust
+pub trait Config: crate::system::Config {
+	type Balance: Zero + CheckedSub + CheckedAdd + Copy;
+}
+```
+
+Here you can see our `balances::Config` trait is inheriting from our `crate::system::Config` trait. This means that all types defined by `system::Config`, including the `AccountId`, is accessible through the `balances::Config` trait. Because of this, we do not need to redefine the `AccountId` type in `balances::Config`.
+
+In the Polkadot SDK ecosystem, we call this "tight coupling" because a runtime which contains the Balances Pallet must also contain the System Pallet. In a sense these two pallets are tightly coupled to one another. In fact, with Substrate, all pallets are tightly coupled to the System Pallet, because the System Pallet provides all the meta-types for your blockchain system.
+
+## Tightly Couple Balances To System
+
+Let's remove the redundant `AccountId` definition from the Balances Pallet `Config`.
+
+1. Inherit the `crate::system::Config` trait in the `balances::Config` trait.
+2. Remove the `AccountId` type from your `balances::Config` definition.
+3. Implement `crate::system::Config` for `TestConfig`.
+4. In `main.rs`, simply remove `type AccountId` from `balances::Config`.

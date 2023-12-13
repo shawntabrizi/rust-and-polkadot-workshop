@@ -1,22 +1,51 @@
-# Integrate PoE Into Your Runtime
+# Nested Dispatch
 
-The Proof of Existence pallet is done, but we still need to integrate it into your Runtime.
+Now that we have defined Pallet level dispatch logic in the Pallet, we should update our Runtime to take advantage of that logic.
 
-Let's take a look at that process.
+After this, whenever the Pallet logic is updated, the Runtime dispatch logic will also automatically get updated and route calls directly. This makes our code easier to manage, and prevent potential errors or maintenance in the future.
 
-## Integration Steps
+## Nested Calls
 
-1. The first place to start is adding the `proof_of_existence` field to your `struct Runtime`.
-2. Next you need to update your `fn new()` to also initialize `proof_of_existence`.
-3. After, create a new concrete `type Content` which is a `&'static str`. As mentioned, normally this would be a hash, but for simplicity we are once again a simple static string.
+The Balances Pallet now exposes its own list of calls in `balances::Call`. Rather than list them all again in the Runtime, we can use a nested enum to route our calls correctly.
 
-	> If you want to use a hash now or in the future, it would be as simple as updating this one line to change all the types in your Runtime and Pallet. That is the kind of flexibility we have been working toward!
+Imagine the following construction:
 
-4. Then, implement `proof_of_existence::Config` for `Runtime`, using your `types::Content`.
-5. At this point, things should already compile successfully, so use this as a checkpoint.
-6. Introduce a new variant `ProofOfExistence` for the `RuntimeCall`.
-7. Finally, update your `fn dispatch` logic to handle re-dispatching `ProofOfExistence` calls to the `proof_of_existence::Pallet`.
+```rust
+pub enum RuntimeCall {
+	Balances(balances::Call<Runtime>),
+}
+```
 
-Hopefully from this process, you can see how all of the abstractions we have introduced has made integrating new Pallets into your runtime quite easy.
+In this case, we have a variant `RuntimeCall::Balances`, which itself contains a type `balances::Call`. This means we can access all the calls exposed by `balances:Call` under this variant. As we create more pallets or extend our calls, this nested structure will scale very well.
 
-We will make this process even easier in the near future using macros!
+We call the `RuntimeCall` an "outer enum", and the `balances::Call` an "inter enum". This construction of using outer and inter enums is very common in the Polkadot SDK.
+
+## Re-Dispatching to Pallet
+
+Our current `dispatch` logic directly calls the functions in the Pallet. As we mentioned, having this logic live outside of the Pallet can increase the burden of maintenance or errors.
+
+But now that we have defined Pallet level dispatch logic in the Pallet itself, we can use this to make the Runtime dispatch more extensible.
+
+To do this, rather than calling the Pallet function directly, we can extract the inner call from the `RuntimeCall`, and then use the `balances::Pallet` to dispatch that call to the appropriate logic.
+
+That would look something like:
+
+```rust
+match runtime_call {
+	RuntimeCall::Balances(call) => {
+		self.balances.dispatch(caller, call)?;
+	},
+}
+```
+
+Here you can see that the first thing we do is check that the call is a `Balances` variant, then we extract from it the `call` which is a `balances::Call` type, and then we use `self.balances` which is a `balances::Pallet` to dispatch the `balances::Call`.
+
+## Updating Your Block
+
+Since we have updated the construction of the `RuntimeCall` enum, we will also need to update our `Block` construction in `fn main`. Nothing magical here, just needing to construct a nested enum using both `RuntimeCall::Balances` and `balances::Call::Transfer`.
+
+## Enable Nested Dispatch
+
+Now is the time to complete this step and glue together Pallet level dispatch with the Runtime level dispatch logic.
+
+Follow the `TODO`s provided in the template to get your full end to end dispatch logic running.

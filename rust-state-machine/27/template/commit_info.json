@@ -1,6 +1,6 @@
 {
-  "commitHash": "e168695559bbb90e6d56d28f20c50a83339d2083",
-  "commitMessage": "template: introduce proof of existence module",
+  "commitHash": "dd2f600e76125f07ac66f043c70a6789652908a6",
+  "commitMessage": "template: implement basic dispatch for transfer",
   "files": [
     {
       "status": "M",
@@ -9,10 +9,6 @@
     {
       "status": "M",
       "file": "src/main.rs"
-    },
-    {
-      "status": "A",
-      "file": "src/proof_of_existence.rs"
     }
   ]
 }

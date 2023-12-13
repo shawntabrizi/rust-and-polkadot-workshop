@@ -1,5 +1,4 @@
 mod balances;
-mod support;
 mod system;
 
 // These are the concrete types we will use in our simple state machine.
@@ -10,15 +9,6 @@ mod types {
 	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
-	/* TODO: Define a concrete `Extrinsic` type using `AccountId` and `RuntimeCall`. */
-	/* TODO: Define a concrete `Header` type using `BlockNumber`. */
-	/* TODO: Define a concrete `Block` type using `Header` and `Extrinsic`. */
-}
-
-// These are all the calls which are exposed to the world.
-// Note that it is just an accumulation of the calls exposed by each module.
-pub enum RuntimeCall {
-	// TODO: Not implemented yet.
 }
 
 // This is our main Runtime.
@@ -26,7 +16,7 @@ pub enum RuntimeCall {
 #[derive(Debug)]
 pub struct Runtime {
 	system: system::Pallet<Self>,
-	balances: balances::Pallet<Self>,
+	balances: balances::Pallet<types::AccountId, types::Balance>,
 }
 
 impl system::Config for Runtime {
@@ -35,9 +25,11 @@ impl system::Config for Runtime {
 	type Nonce = types::Nonce;
 }
 
-impl balances::Config for Runtime {
-	type Balance = types::Balance;
-}
+/*
+	TODO:
+	Implement the `balances::Config` trait you created on your `Runtime`.
+	Use `Self` to satisfy the generic parameter required for `balances::Pallet`.
+*/
 
 impl Runtime {
 	// Create a new instance of the main Runtime, by creating a new instance of each pallet.

@@ -1,37 +1,54 @@
-diff --git a/src/main.rs b/src/main.rs
-index d2fffb8..815fd74 100644
---- a/src/main.rs
-+++ b/src/main.rs
-@@ -1,5 +1,5 @@
- mod balances;
--/* TODO: Import your new `system` module. */
-+mod system;
+diff --git a/src/balances.rs b/src/balances.rs
+index d221761..78f233d 100644
+--- a/src/balances.rs
++++ b/src/balances.rs
+@@ -34,16 +34,14 @@ impl Pallet {
+ 		to: String,
+ 		amount: u128,
+ 	) -> Result<(), &'static str> {
+-		/* TODO:
+-			- Get the balance of account `caller`.
+-			- Get the balance of account `to`.
++		let caller_balance = self.balance(&caller);
++		let to_balance = self.balance(&to);
  
- fn main() {
- 	println!("Hello, world!");
-diff --git a/src/system.rs b/src/system.rs
-index b4e6ef4..99d537c 100644
---- a/src/system.rs
-+++ b/src/system.rs
-@@ -1,17 +1,17 @@
--/* TODO: You might need to update your imports. */
-+use std::collections::BTreeMap;
+-			- Use safe math to calculate a `new_caller_balance`.
+-			- Use safe math to calculate a `new_to_balance`.
++		let new_caller_balance = caller_balance.checked_sub(amount).ok_or("Not enough funds.")?;
++		let new_to_balance = to_balance.checked_add(amount).ok_or("Overflow")?;
  
- /// This is the System Pallet.
- /// It handles low level state needed for your blockchain.
- pub struct Pallet {
- 	/// The current block number.
--	/* TODO: Create a field `block_number` that stores a `u32`. */
-+	block_number: u32,
- 	/// A map from an account to their nonce.
--	/* TODO: Create a field `nonce` that is a `BTreeMap` from `String` to `u32`. */
-+	nonce: BTreeMap<String, u32>,
- }
+-			- Insert the new balance of `caller`.
+-			- Insert the new balance of `to`.
+-		*/
++		self.balances.insert(caller, new_caller_balance);
++		self.balances.insert(to, new_to_balance);
  
- impl Pallet {
- 	/// Create a new instance of the System Pallet.
- 	pub fn new() -> Self {
--		/* TODO: Return a new instance of the `Pallet` struct. */
-+		Self { block_number: 0, nonce: BTreeMap::new() }
+ 		Ok(())
+ 	}
+@@ -63,10 +61,21 @@ mod tests {
+ 
+ 	#[test]
+ 	fn transfer_balance() {
+-		/* TODO: Create a test that checks the following:
+-			- That `alice` cannot transfer funds she does not have.
+-			- That `alice` can successfully transfer funds to `bob`.
+-			- That the balance of `alice` and `bob` is correctly updated.
+-		*/
++		let mut balances = super::Pallet::new();
++
++		assert_eq!(
++			balances.transfer("alice".to_string(), "bob".to_string(), 51),
++			Err("Not enough funds.")
++		);
++
++		balances.set_balance(&"alice".to_string(), 100);
++		assert_eq!(balances.transfer("alice".to_string(), "bob".to_string(), 51), Ok(()));
++		assert_eq!(balances.balance(&"alice".to_string()), 49);
++		assert_eq!(balances.balance(&"bob".to_string()), 51);
++
++		assert_eq!(
++			balances.transfer("alice".to_string(), "bob".to_string(), 51),
++			Err("Not enough funds.")
++		);
  	}
  }

@@ -1,6 +1,6 @@
 {
-  "commitHash": "e5d79ac552f8515a5fcaedc3dda77d0d1962c458",
-  "commitMessage": "solution: add set and get balances",
+  "commitHash": "a778227ec3e134d14fea969081622ceea466c183",
+  "commitMessage": "solution: add balances module state and initialization",
   "files": [
     {
       "status": "M",

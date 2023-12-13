@@ -1,14 +1,10 @@
 {
-  "commitHash": "c39f629e71195b502995743c4c0ebc0f310f790a",
-  "commitMessage": "solution: use call macro in proof of existence",
+  "commitHash": "692b3835338b8592b0942168bf69e9ecba519344",
+  "commitMessage": "solution: add proof of existence dispatch logic",
   "files": [
     {
       "status": "M",
       "file": "README.md"
-    },
-    {
-      "status": "M",
-      "file": "src/main.rs"
     },
     {
       "status": "M",

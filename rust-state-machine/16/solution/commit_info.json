@@ -1,6 +1,6 @@
 {
-  "commitHash": "a5fa88a95b90417dad3ccadfd751b91f03e0401d",
-  "commitMessage": "solution: make system module generic",
+  "commitHash": "e3fa75c73e696a7dadcc956f8a5a76911ade5ba8",
+  "commitMessage": "solution: define common types within modules",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/main.rs"
+      "file": "src/balances.rs"
     },
     {
       "status": "M",

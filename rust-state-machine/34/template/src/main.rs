@@ -16,14 +16,12 @@ mod types {
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
 	pub type Header = crate::support::Header<BlockNumber>;
 	pub type Block = crate::support::Block<Header, Extrinsic>;
-	pub type Content = &'static str;
 }
 
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
 	Balances(balances::Call<Runtime>),
-	ProofOfExistence(proof_of_existence::Call<Runtime>),
 }
 
 // This is our main Runtime.
@@ -32,7 +30,6 @@ pub enum RuntimeCall {
 pub struct Runtime {
 	system: system::Pallet<Self>,
 	balances: balances::Pallet<Self>,
-	proof_of_existence: proof_of_existence::Pallet<Self>,
 }
 
 impl system::Config for Runtime {
@@ -45,18 +42,10 @@ impl balances::Config for Runtime {
 	type Balance = types::Balance;
 }
 
-impl proof_of_existence::Config for Runtime {
-	type Content = types::Content;
-}
-
 impl Runtime {
 	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
 	fn new() -> Self {
-		Self {
-			system: system::Pallet::new(),
-			balances: balances::Pallet::new(),
-			proof_of_existence: proof_of_existence::Pallet::new(),
-		}
+		Self { system: system::Pallet::new(), balances: balances::Pallet::new() }
 	}
 
 	// Execute a block of extrinsics. Increments the block number.
@@ -99,9 +88,6 @@ impl crate::support::Dispatch for Runtime {
 			RuntimeCall::Balances(call) => {
 				self.balances.dispatch(caller, call)?;
 			},
-			RuntimeCall::ProofOfExistence(call) => {
-				self.proof_of_existence.dispatch(caller, call)?;
-			},
 		}
 		Ok(())
 	}
@@ -125,60 +111,18 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: alice.clone(),
-				call: RuntimeCall::Balances(balances::Call::transfer {
-					to: bob.clone(),
-					amount: 20,
-				}),
+				call: RuntimeCall::Balances(balances::Call::Transfer { to: bob, amount: 20 }),
 			},
-			support::Extrinsic {
-				caller: alice.clone(),
-				call: RuntimeCall::Balances(balances::Call::transfer { to: charlie, amount: 20 }),
-			},
-		],
-	};
-
-	/* TODO: Update the extrinsics below for the updated format after the macros. */
-	let block_2 = types::Block {
-		header: support::Header { block_number: 2 },
-		extrinsics: vec![
-			support::Extrinsic {
-				caller: alice.clone(),
-				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::CreateClaim {
-					claim: &"Hello, world!",
-				}),
-			},
-			support::Extrinsic {
-				caller: bob.clone(),
-				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::CreateClaim {
-					claim: &"Hello, world!",
-				}),
-			},
-		],
-	};
-
-	let block_3 = types::Block {
-		header: support::Header { block_number: 3 },
-		extrinsics: vec![
 			support::Extrinsic {
 				caller: alice,
-				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::RevokeClaim {
-					claim: &"Hello, world!",
-				}),
-			},
-			support::Extrinsic {
-				caller: bob,
-				call: RuntimeCall::ProofOfExistence(proof_of_existence::Call::CreateClaim {
-					claim: &"Hello, world!",
-				}),
+				call: RuntimeCall::Balances(balances::Call::Transfer { to: charlie, amount: 20 }),
 			},
 		],
 	};
 
-	// Execute the extrinsics which make up our blocks.
+	// Execute the extrinsics which make up our block.
 	// If there are any errors, our system panics, since we should not execute invalid blocks.
 	runtime.execute_block(block_1).expect("invalid block");
-	runtime.execute_block(block_2).expect("invalid block");
-	runtime.execute_block(block_3).expect("invalid block");
 
 	// Simply print the debug format of our runtime state.
 	println!("{:#?}", runtime);

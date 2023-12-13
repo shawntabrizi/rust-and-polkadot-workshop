@@ -1,21 +1,23 @@
-# Creating Our Runtime
+# Introduce the System Pallet
 
-We have now established two different Pallets for our blockchain: the System and Balances Pallet.
+We have basically completed the creation of a basic Balances Pallet. This is the pallet that most users will interact with.
 
-How do these pallets work together to create a unified blockchain system?
+However, your blockchain usually needs to keep track of many other pieces of data to function properly.
 
-For that, we will need to create a `Runtime`.
+For this, we will create a new pallet called the System Pallet.
 
-## What is the Runtime?
+## What is the System Pallet?
 
-Remember that there is a separation between the blockchain client and the state transition function of our blockchain.
+The System Pallet is a "meta"-pallet which stores all the metadata needed for your blockchain to function. For example, the current blocknumber or the nonce of users on your blockchain.
 
-You can think of the runtime as the accumulation of all logic which composes your state transition function. It will combine all of your pallets into a single object, and then expose that single object as the entry point for your users to interact with.
+This pallet does not need to expose any functions to end users, but can still play an important role in our overall state transition function.
 
-Certainly this sounds pretty abstract, but it will make more sense as we complete this tutorial.
+We will see the importance of the System Pallet evolve as you walk through the steps of building it.
 
-## Create the Runtime
+## Create the System Pallet
 
-Just like our Pallets, our Runtime will be represented with a simple `struct`, however in this case, the fields of our `struct` will be our Pallets!
+1. Create a new file `src/system.rs` in your project.
+2. Copy the starting template provided, then complete the steps outlined by the template code.
+3. Import the `system` module into your `main.rs` file.
 
-Complete the instructions for creating a new runtime which includes our System and Balances pallets. For this, you will need to take advantage of the `new()` functions we exposed for each of the Pallets.
+You will notice that the instructions here are quite brief. You have already done all of these steps before, so you should already be familiar with everything you need to complete this step.

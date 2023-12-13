@@ -1,52 +1,31 @@
-diff --git a/src/proof_of_existence.rs b/src/proof_of_existence.rs
-index 587dfc7..f9d9059 100644
---- a/src/proof_of_existence.rs
-+++ b/src/proof_of_existence.rs
-@@ -56,28 +56,31 @@ impl<T: Config> Pallet<T> {
+diff --git a/src/balances.rs b/src/balances.rs
+index 3970446..947ad84 100644
+--- a/src/balances.rs
++++ b/src/balances.rs
+@@ -61,12 +61,7 @@ impl<T: Config> Pallet<T> {
  // We should expect that the caller of each call will be provided by the dispatcher,
  // and not included as a parameter of the call.
  pub enum Call<T: Config> {
--	/*
--		TODO:
--		Create variants for:
--		- `CreateClaim`
--		- `RevokeClaim`
--
--		Remember that you only need to pass in the `claim` data, as `caller` information is passed
--		in through the `dispatch` logic.
+-	/* TODO: Create an enum variant `Transfer` which contains named fields:
+-		- `to`: a `T::AccountId`
+-		- `amount`: a `T::Balance`
 -	*/
+-	/* TODO: Remove the `RemoveMe` placeholder. */
 -	RemoveMe(core::marker::PhantomData<T>),
-+	CreateClaim { claim: T::Content },
-+	RevokeClaim { claim: T::Content },
++	Transfer { to: T::AccountId, amount: T::Balance },
  }
  
- /// Implementation of the dispatch logic, mapping from `POECall` to the appropriate underlying
- /// function we want to execute.
- impl<T: Config> crate::support::Dispatch for Pallet<T> {
--	/*
--		TODO:
--		Implement `crate::support::Dispatch` for `Pallet<T>`.
-+	type Caller = T::AccountId;
-+	type Call = Call<T>;
- 
--		In your `dispatch` logic, match on `call` and forward the `caller` and `claim` data to the
--		appropriate function.
--	*/
-+	fn dispatch(
-+		&mut self,
-+		caller: Self::Caller,
-+		call: Self::Call,
-+	) -> crate::support::DispatchResult {
+ /// Implementation of the dispatch logic, mapping from `BalancesCall` to the appropriate underlying
+@@ -80,7 +75,11 @@ impl<T: Config> crate::support::Dispatch for Pallet<T> {
+ 		caller: Self::Caller,
+ 		call: Self::Call,
+ 	) -> crate::support::DispatchResult {
+-		/* TODO: use a `match` statement to route the `Call` to the appropriate pallet function. */
 +		match call {
-+			Call::CreateClaim { claim } => {
-+				self.create_claim(caller, claim)?;
-+			},
-+			Call::RevokeClaim { claim } => {
-+				self.revoke_claim(caller, claim)?;
++			Call::Transfer { to, amount } => {
++				self.transfer(caller, to, amount)?;
 +			},
 +		}
-+		Ok(())
-+	}
+ 		Ok(())
+ 	}
  }
- 
- #[cfg(test)]

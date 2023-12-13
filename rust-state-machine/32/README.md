@@ -1,49 +1,37 @@
 
-[filename](./source/README.md ':include')
+[filename](./template/README.md ':include')
 
 <!-- slide:break -->
 
 <!-- tabs:start -->
 
-#### **source**
+#### **template**
 
 <!-- tabs:start -->
 
-#### **<span class="file-source file-modified">Cargo.toml</span>**
+#### **<span class="file-template file-modified">src/main.rs</span>**
 
-[./source/Cargo.toml](./source/Cargo.toml ':include :type=code toml')
+[./template/src/main.rs](./template/src/main.rs ':include :type=code rust')
 
-#### **<span class="file-source file-added">macros/Cargo.toml</span>**
+#### **<span class="file-template file-added">src/proof_of_existence.rs</span>**
 
-[./source/macros/Cargo.toml](./source/macros/Cargo.toml ':include :type=code toml')
+[./template/src/proof_of_existence.rs](./template/src/proof_of_existence.rs ':include :type=code rust')
 
-#### **<span class="file-source file-added">macros/src/call/expand.rs</span>**
 
-[./source/macros/src/call/expand.rs](./source/macros/src/call/expand.rs ':include :type=code rust')
 
-#### **<span class="file-source file-added">macros/src/call/mod.rs</span>**
+<!-- tabs:end -->
 
-[./source/macros/src/call/mod.rs](./source/macros/src/call/mod.rs ':include :type=code rust')
+#### **solution**
 
-#### **<span class="file-source file-added">macros/src/call/parse.rs</span>**
+<!-- tabs:start -->
 
-[./source/macros/src/call/parse.rs](./source/macros/src/call/parse.rs ':include :type=code rust')
+#### **<span class="file-solution file-modified">src/main.rs</span>**
 
-#### **<span class="file-source file-added">macros/src/lib.rs</span>**
+[./solution/src/main.rs](./solution/src/main.rs ':include :type=code rust')
 
-[./source/macros/src/lib.rs](./source/macros/src/lib.rs ':include :type=code rust')
+#### **<span class="file-solution file-modified">src/proof_of_existence.rs</span>**
 
-#### **<span class="file-source file-added">macros/src/runtime/expand.rs</span>**
-
-[./source/macros/src/runtime/expand.rs](./source/macros/src/runtime/expand.rs ':include :type=code rust')
-
-#### **<span class="file-source file-added">macros/src/runtime/mod.rs</span>**
-
-[./source/macros/src/runtime/mod.rs](./source/macros/src/runtime/mod.rs ':include :type=code rust')
-
-#### **<span class="file-source file-added">macros/src/runtime/parse.rs</span>**
-
-[./source/macros/src/runtime/parse.rs](./source/macros/src/runtime/parse.rs ':include :type=code rust')
+[./solution/src/proof_of_existence.rs](./solution/src/proof_of_existence.rs ':include :type=code rust')
 
 
 
@@ -53,9 +41,13 @@
 
 <!-- tabs:start -->
 
-#### **changes.diff**
+#### **template.diff**
 
-[./source/changes.diff](./source/changes.diff ':include :type=code diff')
+[./template/template.diff](./template/template.diff ':include :type=code diff')
+
+#### **solution.diff**
+
+[./solution/solution.diff](./solution/solution.diff ':include :type=code diff')
 
 
 

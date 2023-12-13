@@ -1,26 +1,33 @@
 diff --git a/src/main.rs b/src/main.rs
-index 815fd74..95b5760 100644
+index ea8024e..d2fffb8 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,6 +1,21 @@
+@@ -1,4 +1,5 @@
  mod balances;
- mod system;
++/* TODO: Import your new `system` module. */
  
-+// This is our main Runtime.
-+// It accumulates all of the different pallets we want to use.
-+pub struct Runtime {
-+	/* TODO: create a field `system` which is of type `system::Pallet`. */
-+	/* TODO: create a field `balances` which is of type `balances::Pallet`. */
-+}
-+
-+impl Runtime {
-+	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
-+	fn new() -> Self {
-+		/* TODO: Create a new `Runtime` by creating new instances of `system` and `balances`. */
-+		unimplemented!()
-+	}
-+}
-+
  fn main() {
  	println!("Hello, world!");
- }
+diff --git a/src/system.rs b/src/system.rs
+new file mode 100644
+index 0000000..b4e6ef4
+--- /dev/null
++++ b/src/system.rs
+@@ -0,0 +1,17 @@
++/* TODO: You might need to update your imports. */
++
++/// This is the System Pallet.
++/// It handles low level state needed for your blockchain.
++pub struct Pallet {
++	/// The current block number.
++	/* TODO: Create a field `block_number` that stores a `u32`. */
++	/// A map from an account to their nonce.
++	/* TODO: Create a field `nonce` that is a `BTreeMap` from `String` to `u32`. */
++}
++
++impl Pallet {
++	/// Create a new instance of the System Pallet.
++	pub fn new() -> Self {
++		/* TODO: Return a new instance of the `Pallet` struct. */
++	}
++}

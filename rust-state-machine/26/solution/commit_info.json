@@ -1,6 +1,6 @@
 {
-  "commitHash": "50b2a3045937b64b3c0724919fd2dfc7ea0f0279",
-  "commitMessage": "solution: implement nested dispatch",
+  "commitHash": "c4dcc9405dfa5ec9727f5806499770c90fd0cec6",
+  "commitMessage": "solution: create execute block and template for dispatch",
   "files": [
     {
       "status": "M",

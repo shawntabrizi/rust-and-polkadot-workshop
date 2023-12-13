@@ -1,6 +1,6 @@
 {
-  "commitHash": "0e53176b95fe908b1042d4bf6bb571399c8f2db7",
-  "commitMessage": "solution: introduce module level dispatch to balances",
+  "commitHash": "7cab926dc3d3d0218dfc7dbd0e28ca77ce717edb",
+  "commitMessage": "solution: construct concrete support types",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/balances.rs"
+      "file": "src/main.rs"
     }
   ]
 }

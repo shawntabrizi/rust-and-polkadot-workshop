@@ -1,10 +1,14 @@
 {
-  "commitHash": "3d73c9d8cd62e616a69866951cf88921a1b30b0a",
-  "commitMessage": "solution: use execute_block for main logic",
+  "commitHash": "1ecc46c4cddaafc015f7f304bb45594191421b2c",
+  "commitMessage": "solution: introduce support traits and types",
   "files": [
     {
       "status": "M",
       "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
     },
     {
       "status": "M",

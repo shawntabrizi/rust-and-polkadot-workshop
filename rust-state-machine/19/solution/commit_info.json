@@ -1,6 +1,6 @@
 {
-  "commitHash": "1dbe36a35f88c279d5511848b625e7391d121310",
-  "commitMessage": "solution: tightly couple balances to system",
+  "commitHash": "14f6caa65b7da9f62b66b92a1b1f8c702363834a",
+  "commitMessage": "solution: make system module generic",
   "files": [
     {
       "status": "M",
@@ -8,11 +8,11 @@
     },
     {
       "status": "M",
-      "file": "src/balances.rs"
+      "file": "src/main.rs"
     },
     {
       "status": "M",
-      "file": "src/main.rs"
+      "file": "src/system.rs"
     }
   ]
 }

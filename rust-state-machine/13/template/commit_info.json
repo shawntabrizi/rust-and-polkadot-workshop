@@ -1,6 +1,6 @@
 {
-  "commitHash": "85f0ba27ca036000c748e561f993f3eac4db1106",
-  "commitMessage": "template: define common types within modules",
+  "commitHash": "5315f2412487407ca506eefb566d3a79f4f8a906",
+  "commitMessage": "template: introduce basic runtime execution in main",
   "files": [
     {
       "status": "M",
@@ -8,11 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/balances.rs"
-    },
-    {
-      "status": "M",
-      "file": "src/system.rs"
+      "file": "src/main.rs"
     }
   ]
 }

@@ -1,3 +1,3 @@
-# Adding Call Macro to Balances
+# Proof Of Existence Functions
 
 You can find the solution to the previous step here.

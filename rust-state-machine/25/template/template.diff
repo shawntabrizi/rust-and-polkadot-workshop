@@ -1,39 +1,20 @@
-diff --git a/src/balances.rs b/src/balances.rs
-index 74e6f43..3970446 100644
---- a/src/balances.rs
-+++ b/src/balances.rs
-@@ -57,6 +57,34 @@ impl<T: Config> Pallet<T> {
- 	}
+diff --git a/src/main.rs b/src/main.rs
+index 597aca6..691aacc 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -10,6 +10,15 @@ mod types {
+ 	pub type Balance = u128;
+ 	pub type BlockNumber = u32;
+ 	pub type Nonce = u32;
++	/* TODO: Define a concrete `Extrinsic` type using `AccountId` and `RuntimeCall`. */
++	/* TODO: Define a concrete `Header` type using `BlockNumber`. */
++	/* TODO: Define a concrete `Block` type using `Header` and `Extrinsic`. */
++}
++
++// These are all the calls which are exposed to the world.
++// Note that it is just an accumulation of the calls exposed by each module.
++pub enum RuntimeCall {
++	// TODO: Not implemented yet.
  }
  
-+// A public enum which describes the calls we want to expose to the dispatcher.
-+// We should expect that the caller of each call will be provided by the dispatcher,
-+// and not included as a parameter of the call.
-+pub enum Call<T: Config> {
-+	/* TODO: Create an enum variant `Transfer` which contains named fields:
-+		- `to`: a `T::AccountId`
-+		- `amount`: a `T::Balance`
-+	*/
-+	/* TODO: Remove the `RemoveMe` placeholder. */
-+	RemoveMe(core::marker::PhantomData<T>),
-+}
-+
-+/// Implementation of the dispatch logic, mapping from `BalancesCall` to the appropriate underlying
-+/// function we want to execute.
-+impl<T: Config> crate::support::Dispatch for Pallet<T> {
-+	type Caller = T::AccountId;
-+	type Call = Call<T>;
-+
-+	fn dispatch(
-+		&mut self,
-+		caller: Self::Caller,
-+		call: Self::Call,
-+	) -> crate::support::DispatchResult {
-+		/* TODO: use a `match` statement to route the `Call` to the appropriate pallet function. */
-+		Ok(())
-+	}
-+}
-+
- #[cfg(test)]
- mod tests {
- 	struct TestConfig;
+ // This is our main Runtime.

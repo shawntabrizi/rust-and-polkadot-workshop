@@ -1,5 +1,4 @@
 mod balances;
-mod proof_of_existence;
 mod support;
 mod system;
 
@@ -21,7 +20,7 @@ mod types {
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
-	Balances(balances::Call<Runtime>),
+	BalancesTransfer { to: types::AccountId, amount: types::Balance },
 }
 
 // This is our main Runtime.
@@ -85,8 +84,8 @@ impl crate::support::Dispatch for Runtime {
 		// This match statement will allow us to correctly route `RuntimeCall`s
 		// to the appropriate pallet level function.
 		match runtime_call {
-			RuntimeCall::Balances(call) => {
-				self.balances.dispatch(caller, call)?;
+			RuntimeCall::BalancesTransfer { to, amount } => {
+				self.balances.transfer(caller, to, amount)?;
 			},
 		}
 		Ok(())
@@ -104,25 +103,34 @@ fn main() {
 	// Initialize the system with some initial balance.
 	runtime.balances.set_balance(&alice, 100);
 
-	// Here are the extrinsics in our block.
-	// You can add or remove these based on the modules and calls you have set up.
-	let block_1 = types::Block {
-		header: support::Header { block_number: 1 },
-		extrinsics: vec![
-			support::Extrinsic {
-				caller: alice.clone(),
-				call: RuntimeCall::Balances(balances::Call::Transfer { to: bob, amount: 20 }),
-			},
-			support::Extrinsic {
-				caller: alice,
-				call: RuntimeCall::Balances(balances::Call::Transfer { to: charlie, amount: 20 }),
-			},
-		],
-	};
+	// start emulating a block
+	runtime.system.inc_block_number();
+	assert_eq!(runtime.system.block_number(), 1);
 
-	// Execute the extrinsics which make up our block.
-	// If there are any errors, our system panics, since we should not execute invalid blocks.
-	runtime.execute_block(block_1).expect("invalid block");
+	// first transaction
+	runtime.system.inc_nonce(&alice);
+	let _res = runtime
+		.balances
+		.transfer(alice.clone(), bob, 30)
+		.map_err(|e| eprintln!("{}", e));
+
+	// second transaction
+	runtime.system.inc_nonce(&alice);
+	let _res = runtime.balances.transfer(alice, charlie, 20).map_err(|e| eprintln!("{}", e));
+
+	/*
+		TODO: Replace the logic above with a new `Block`.
+			- Set the block number to 1 in the `Header`.
+			- Move your existing transactions into extrinsic format, using the
+			  `Extrinsic` and `RuntimeCall`.
+	*/
+
+	/*
+		TODO:
+		Use your `runtime` to call the `execute_block` function with your new block.
+		If the `execute_block` function returns an error, you should panic!
+		We `expect` that all the blocks being executed must be valid.
+	*/
 
 	// Simply print the debug format of our runtime state.
 	println!("{:#?}", runtime);

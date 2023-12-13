@@ -1,51 +1,68 @@
-# Nested Dispatch
+# Executing Blocks
 
-Now that we have defined Pallet level dispatch logic in the Pallet, we should update our Runtime to take advantage of that logic.
+We will now start the process to replace the simple block simulation in our `main` function with a proper block execution pipeline.
 
-After this, whenever the Pallet logic is updated, the Runtime dispatch logic will also automatically get updated and route calls directly. This makes our code easier to manage, and prevent potential errors or maintenance in the future.
+## Execute Block
 
-## Nested Calls
+We have introduced a new function to our `Runtime` called `fn execute_block`.
 
-The Balances Pallet now exposes its own list of calls in `balances::Call`. Rather than list them all again in the Runtime, we can use a nested enum to route our calls correctly.
+The steps of this function is exactly the same as our current `main` function, but using the concrete `Block` type we defined to extract details like the expected block number and the extrinsics that we want to execute.
 
-Imagine the following construction:
+### Iterating Over a Vector
+
+In order to build our `execute_block` function, we will need to iterate over all the extrinsics in our block, and dispatch those calls. In rust, the common way to access the elements of a vector is to turn it into an iterator.
+
+There are two functions used for turning a vector into an interator, `iter` and `into_iter`, and their difference lies in ownership:
+
+- `iter`: This method creates an iterator that borrows each element from the vector, allowing you to read the values without taking ownership. It's useful when you want to iterate over the vector while keeping it intact.
+
+- `into_iter`: This method consumes the vector, transferring ownership of each element to the iterator. It's handy when you want to move or transfer ownership of the vector's elements to another part of your code. After using `into_iter`, the original vector can't be used anymore, as ownership has been transferred.
+
+In our context, we want to use `into_iter()`, so you will get something that looks like:
 
 ```rust
-pub enum RuntimeCall {
-	Balances(balances::Call<Runtime>),
+for support::Extrinsic { caller, call } in block.extrinsics.into_iter() {
+	// do stuff with `caller` and `call`
 }
 ```
 
-In this case, we have a variant `RuntimeCall::Balances`, which itself contains a type `balances::Call`. This means we can access all the calls exposed by `balances:Call` under this variant. As we create more pallets or extend our calls, this nested structure will scale very well.
+Here you can see we also do a trick to separate out the fields of the `Extrinsic` in a single line, since ultimately we want to work with `caller` and `call`. You can of course break this process up into multiple lines if you want.
 
-We call the `RuntimeCall` an "outer enum", and the `balances::Call` an "inter enum". This construction of using outer and inter enums is very common in the Polkadot SDK.
+### Dispatching a Call
 
-## Re-Dispatching to Pallet
+Once we have the `call` and `caller`, what should we do with them?
 
-Our current `dispatch` logic directly calls the functions in the Pallet. As we mentioned, having this logic live outside of the Pallet can increase the burden of maintenance or errors.
+This is where the `Dispatch` trait starts to come into play. You will see in our template, we included the shell of an `unimplemented()` `fn dispatch`. We will write this logic in the next step, but we need to already use the `dispatch` function in our `execute_block` logic.
 
-But now that we have defined Pallet level dispatch logic in the Pallet itself, we can use this to make the Runtime dispatch more extensible.
+Once we have the `call` and `caller`, we want to pass them to the `dispatch` logic, which you see is implemented on the `Runtime`.
 
-To do this, rather than calling the Pallet function directly, we can extract the inner call from the `RuntimeCall`, and then use the `balances::Pallet` to dispatch that call to the appropriate logic.
-
-That would look something like:
+That will look something like:
 
 ```rust
-match runtime_call {
-	RuntimeCall::Balances(call) => {
-		self.balances.dispatch(caller, call)?;
-	},
-}
+let _res = self.dispatch(caller, call).map_err(|e| eprintln!("{}", e));
 ```
 
-Here you can see that the first thing we do is check that the call is a `Balances` variant, then we extract from it the `call` which is a `balances::Call` type, and then we use `self.balances` which is a `balances::Pallet` to dispatch the `balances::Call`.
+Note that in Rust, if you want to access a function within a trait, like we do here with `dispatch`, you need to explicitly import that trait into your project.
 
-## Updating Your Block
+We left a `TODO` at the top of `main.rs` where we ask you to import `crate::support::Dispatch`, which will allow you access to calling `dispatch` on `Runtime`.
 
-Since we have updated the construction of the `RuntimeCall` enum, we will also need to update our `Block` construction in `fn main`. Nothing magical here, just needing to construct a nested enum using both `RuntimeCall::Balances` and `balances::Call::Transfer`.
+### Better Error Messages
 
-## Enable Nested Dispatch
+Since this is a more permanent function of our project, it also makes sense to expand the message being printed when there are extrinsic errors. For example:
 
-Now is the time to complete this step and glue together Pallet level dispatch with the Runtime level dispatch logic.
+```rust
+eprintln!(
+	"Extrinsic Error\n\tBlock Number: {}\n\tExtrinsic Number: {}\n\tError: {}",
+	block.header.block_number, i, e
+)
+```
 
-Follow the `TODO`s provided in the template to get your full end to end dispatch logic running.
+This allows you to see the block number, extrinsic number, and the error message whenever there is an extrinsic error. This can be very helpful when you have many blocks being imported each with potentially many extrinsics.
+
+To get the extrinsic number `i`, use you chain the [`enumerate()`](https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.enumerate) function after the `into_iter()`.
+
+## Build Your Execute Block Function
+
+You should now have all the tools and information needed to successfully write your `execute_block` function.
+
+Follow the `TODO`s provided by the template, and make sure to include the `impl crate::support::Dispatch for Runtime` that we provided for you, and that we will implement in the next steps.

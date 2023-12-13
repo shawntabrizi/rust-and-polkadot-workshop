@@ -9,10 +9,6 @@
 
 <!-- tabs:start -->
 
-#### **<span class="file-template file-modified">src/main.rs</span>**
-
-[./template/src/main.rs](./template/src/main.rs ':include :type=code rust')
-
 #### **<span class="file-template file-modified">src/proof_of_existence.rs</span>**
 
 [./template/src/proof_of_existence.rs](./template/src/proof_of_existence.rs ':include :type=code rust')
@@ -24,10 +20,6 @@
 #### **solution**
 
 <!-- tabs:start -->
-
-#### **<span class="file-solution file-modified">src/main.rs</span>**
-
-[./solution/src/main.rs](./solution/src/main.rs ':include :type=code rust')
 
 #### **<span class="file-solution file-modified">src/proof_of_existence.rs</span>**
 

@@ -1,17 +1,22 @@
-# Make System Pallet Generic
+# Using Named Types
 
-Now that you have some practice with the Balances Pallet, let's do the same task for the System Pallet.
+Up till now, we have just been hardcoding raw types into our structs and function definitions.
 
-1. In this case we need to make System generic over `AccountId`, `BlockNumber`, and `Nonce`.
+There are already examples where this can be confusing, for example if you see a function accept a `u32` parameter, is it a `blocknumber` or a `nonce`?
 
-2. You will also need to figure out the trait constraints needed for these types to be compatible with the logic you have previously written. The compiler is your friend here to help you navigate everything.
+To make our code more clear, let's extract all of our raw types and define custom named types for our structs and functions.
 
-3. Update your tests.
+Across the Balances and System Pallet, we need to define the following types:
 
-4. Finally move your type definitions to your `main.rs` file and update your `Runtime`.
+1. `type AccountId = String;`
+2. `type Balance = u128;`
+3. `type Nonce = u32;`
+4. `type BlockNumber = u32;`
 
-Make sure everything compiles and all tests pass after this step.
+Note that extracting these types into common type definitions also allows us to update the types more easily if we choose to.
 
-If you need help, I recommend to look at your Balances Pallet rather than the solution for this step. All of the patterns are the same as before, so it is better that you start to connect the dots yourself rather than relying on the solution.
+As we go further into this tutorial, we will show you how we can make these type definitions even more flexible and customizable in the context of building a blockchain SDK for developers like yourself.
 
-If you struggled here, it is a good opportunity to take a pause and re-review generic types from other examples across the Rust ecosystem.
+## Create Custom Types
+
+Follow the `TODO`s in the template to add these type definitions to each of your Pallets, and update all of your structs and functions to use these types.

@@ -1,18 +1,10 @@
 {
-  "commitHash": "c5c4504537d7a37622d652fa803909007cd52c42",
-  "commitMessage": "introduce balances module",
+  "commitHash": "c060a17362478efc6ee1f5a2ccb272c415c15f6a",
+  "commitMessage": "section: balances pallet",
   "files": [
     {
       "status": "M",
       "file": "README.md"
-    },
-    {
-      "status": "A",
-      "file": "src/balances.rs"
-    },
-    {
-      "status": "M",
-      "file": "src/main.rs"
     }
   ]
 }

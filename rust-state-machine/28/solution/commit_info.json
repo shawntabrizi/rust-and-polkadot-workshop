@@ -1,6 +1,6 @@
 {
-  "commitHash": "18d412667b8400ba36ef2402da79cdb8e848e129",
-  "commitMessage": "solution: add proof of existence functions with tests",
+  "commitHash": "20c0275e5e6b07417971fc72b643045eacc7cfd7",
+  "commitMessage": "solution: use execute_block for main logic",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/proof_of_existence.rs"
+      "file": "src/main.rs"
     }
   ]
 }

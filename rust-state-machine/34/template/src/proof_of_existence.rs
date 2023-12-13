@@ -18,7 +18,6 @@ pub struct Pallet<T: Config> {
 	claims: BTreeMap<T::Content, T::AccountId>,
 }
 
-/* TODO: Add the `#[macros::call]` attribute here too. Make the changes needed to this pallet. */
 impl<T: Config> Pallet<T> {
 	/// Create a new instance of the Proof of Existence Module.
 	pub fn new() -> Self {
@@ -57,31 +56,28 @@ impl<T: Config> Pallet<T> {
 // We should expect that the caller of each call will be provided by the dispatcher,
 // and not included as a parameter of the call.
 pub enum Call<T: Config> {
-	CreateClaim { claim: T::Content },
-	RevokeClaim { claim: T::Content },
+	/*
+		TODO:
+		Create variants for:
+		- `CreateClaim`
+		- `RevokeClaim`
+
+		Remember that you only need to pass in the `claim` data, as `caller` information is passed
+		in through the `dispatch` logic.
+	*/
+	RemoveMe(core::marker::PhantomData<T>),
 }
 
 /// Implementation of the dispatch logic, mapping from `POECall` to the appropriate underlying
 /// function we want to execute.
 impl<T: Config> crate::support::Dispatch for Pallet<T> {
-	type Caller = T::AccountId;
-	type Call = Call<T>;
+	/*
+		TODO:
+		Implement `crate::support::Dispatch` for `Pallet<T>`.
 
-	fn dispatch(
-		&mut self,
-		caller: Self::Caller,
-		call: Self::Call,
-	) -> crate::support::DispatchResult {
-		match call {
-			Call::CreateClaim { claim } => {
-				self.create_claim(caller, claim)?;
-			},
-			Call::RevokeClaim { claim } => {
-				self.revoke_claim(caller, claim)?;
-			},
-		}
-		Ok(())
-	}
+		In your `dispatch` logic, match on `call` and forward the `caller` and `claim` data to the
+		appropriate function.
+	*/
 }
 
 #[cfg(test)]

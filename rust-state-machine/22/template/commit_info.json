@@ -1,10 +1,14 @@
 {
-  "commitHash": "8fd80a1492dcefc1597f8efdafd7f262ba5681b6",
-  "commitMessage": "template: create execute block and template for dispatch",
+  "commitHash": "1890662082646bba02c53aac04294527b135ae4b",
+  "commitMessage": "template: tightly couple balances to system",
   "files": [
     {
       "status": "M",
       "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
     },
     {
       "status": "M",

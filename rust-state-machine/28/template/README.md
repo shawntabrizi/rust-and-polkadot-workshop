@@ -1,50 +1,45 @@
-# Proof Of Existence Functions
+# Using Execute Block
 
-The Proof of Existence Pallet is quite simple, so let's build out the logic needed.
+We have now successfully implemented the `execute_block` and `dispatch` logic needed to build and execute real `Blocks`.
 
-## Get Claim
+Let's bring that logic into our `main` function.
 
-Our Pallet has a simple storage map from some claim content to the owner of that claim.
+## Creating a Block
 
-The `get_claim` function should act as a simple read function returning the `T::AccountId` of the owner, if there is any. In the case we query a claim which has no owner, we should return `None`.
+You can create a new `Block` by filling out all the fields of the struct and assigning it to a variable.
 
-This is not a function that a user would call from an extrinsic, but is useful for other parts of your state machine to access the data in this Pallet.
-
-## Create Claim
-
-Any user can add a new claim to the Proof of Existence Pallet.
-
-The only thing that is important is that we check that the claim has not already been made by another user.
-
-Each claim should only have one owner, and whoever makes the claim first gets priority.
-
-You can check if some claim is already in the `claims` storage using the `contains_key` api:
+For example:
 
 ```rust
-if self.claims.contains_key(&claim) {
-	return Err(&"this content is already claimed");
-}
+let block_1 = types::Block {
+	header: support::Header { block_number: 1 },
+	extrinsics: vec![
+		support::Extrinsic {
+			caller: &"alice",
+			call: RuntimeCall::BalancesTransfer { to: &"bob", amount: 69 },
+		},
+	],
+};
 ```
 
-## Revoke Claim
+It is important that you set the block number correctly since we verify this in our `execute_block` function. The first block in our state machine will have the number `1`.
 
-Data on the blockchain is not free, and in fact is very expensive to maintain. Giving users the ability to clean up their data is not only good, but encouraged. If a user no longer has a need to store their claim on chain, they should clean it up.
+Also remember that you can add multiple extrinsics in a single block by extending the vector.
 
-Furthermore, the history of the blockchain is immutable. Even if the data about a claim does not exist in the "current state", it can be shown to have existed in the past.
+## Executing a Block
 
-Keeping things in the current state just makes querying for information easier.
+Once you have constructed your `Block`, you can pass it to the `execute_block` function implemented on your `runtime`.
 
-To revoke a claim, we need to check two things:
+```rust
+runtime.execute_block(block_1).expect("invalid block");
+```
 
-1. The the claim exists.
-2. That the person who wants to revoke the claim is the owner of that claim.
+Note how we panic with the message `"invalid block"` if the `execute_block` function returns an error. This should only happen when something is seriously wrong with your block, for example the block number is incorrect for what we expect.
 
-You should be able to handle all of this logic by calling the `get_claim` function and using `ok_or` to return an error when the claim does not exist. If the claim does exist, you should be able to directly extract the owner from the state query.
+This panic will NOT be triggered if there is an error in an extrinsic, as we "swallow" those errors in the `execute_block` function. This is the behavior we want.
 
-## Build Your Functions
+## Update Your Main Function
 
-Complete the `TODO`s outlined in the template.
+Go ahead and use the `Block` type and `execute_block` function to update the logic of your `main` function.
 
-Afterward, create a `basic_proof_of_existence` test to check that all your functions are working as expected.
-
-This includes both the success and possible error conditions of your Pallet.
+Follow the `TODO`s provided in the template to complete this step

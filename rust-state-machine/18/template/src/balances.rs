@@ -1,29 +1,38 @@
-use num::traits::{CheckedAdd, CheckedSub, Zero};
+/* TODO: You might need to import some stuff for this step. */
 use std::collections::BTreeMap;
 
+type AccountId = String;
+type Balance = u128;
+
 /*
-	TODO: Combine all generic types and their trait bounds into a single `pub trait Config`.
-	When you are done, your `Pallet` can simply be defined with `Pallet<T: Config>`.
+	TODO:
+	Update the `Pallet` struct to be generic over the `AccountId` and `Balance` type.
+
+	You won't need the type definitions above after you are done.
+	Types will now be defined in `main.rs`. See the TODOs there.
 */
 
 /// This is the Balances Module.
 /// It is a simple module which keeps track of how much balance each account has in this state
 /// machine.
 #[derive(Debug)]
-pub struct Pallet<AccountId, Balance> {
+pub struct Pallet {
 	// A simple storage mapping from accounts to their balances.
 	balances: BTreeMap<AccountId, Balance>,
 }
 
 /*
-	TODO: Update all of these functions to use your new configuration trait.
+	TODO:
+	The generic types need to satisfy certain traits in order to be used in the functions below.
+		- AccountId: Ord
+		- Balance: Zero + CheckedSub + CheckedAdd + Copy
+
+	You could figure these traits out yourself by letting the compiler tell you what you're missing.
+
+	NOTE: You might need to adjust some of the functions below to satisfy the borrow checker.
 */
 
-impl<AccountId, Balance> Pallet<AccountId, Balance>
-where
-	AccountId: Ord + Clone,
-	Balance: Zero + CheckedSub + CheckedAdd + Copy,
-{
+impl Pallet {
 	/// Create a new instance of the balances module.
 	pub fn new() -> Self {
 		Self { balances: BTreeMap::new() }
@@ -37,7 +46,7 @@ where
 	/// Get the balance of an account `who`.
 	/// If the account has no stored balance, we return zero.
 	pub fn balance(&self, who: &AccountId) -> Balance {
-		*self.balances.get(who).unwrap_or(&Balance::zero())
+		*self.balances.get(who).unwrap_or(&0)
 	}
 
 	/// Transfer `amount` from one account to another.
@@ -52,8 +61,8 @@ where
 		let caller_balance = self.balance(&caller);
 		let to_balance = self.balance(&to);
 
-		let new_caller_balance = caller_balance.checked_sub(&amount).ok_or("Not enough funds.")?;
-		let new_to_balance = to_balance.checked_add(&amount).ok_or("Overflow")?;
+		let new_caller_balance = caller_balance.checked_sub(amount).ok_or("Not enough funds.")?;
+		let new_to_balance = to_balance.checked_add(amount).ok_or("Overflow")?;
 
 		self.balances.insert(caller, new_caller_balance);
 		self.balances.insert(to, new_to_balance);
@@ -64,14 +73,13 @@ where
 
 #[cfg(test)]
 mod tests {
-	/*
-		TODO: Create a `struct TestConfig`, and implement `super::Config` on it with concrete types.
-		Use this struct to instantiate your `Pallet`.
-	*/
-
 	#[test]
 	fn init_balances() {
-		let mut balances = super::Pallet::<String, u128>::new();
+		/*
+			TODO:
+			When creating an instance of `Pallet`, you should explicitly define the types you use.
+		*/
+		let mut balances = super::Pallet::new();
 
 		assert_eq!(balances.balance(&"alice".to_string()), 0);
 		balances.set_balance(&"alice".to_string(), 100);
@@ -81,7 +89,11 @@ mod tests {
 
 	#[test]
 	fn transfer_balance() {
-		let mut balances = super::Pallet::<String, u128>::new();
+		/*
+			TODO:
+			When creating an instance of `Pallet`, you should explicitly define the types you use.
+		*/
+		let mut balances = super::Pallet::new();
 
 		assert_eq!(
 			balances.transfer("alice".to_string(), "bob".to_string(), 51),

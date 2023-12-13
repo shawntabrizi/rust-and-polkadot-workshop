@@ -1,17 +1,7 @@
 use std::collections::BTreeMap;
 
-/*
-	TODO: Define the common types used in this pallet:
-		- `AccountID`
-		- `BlockNumber`
-		- `Nonce`
-
-	Then update this pallet to use these common types.
-*/
-
 /// This is the System Pallet.
 /// It handles low level state needed for your blockchain.
-#[derive(Debug)]
 pub struct Pallet {
 	/// The current block number.
 	block_number: u32,

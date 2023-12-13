@@ -1,0 +1,14 @@
+{
+  "commitHash": "6c4c0f19a91d374b95accff1da3140066d8a4d12",
+  "commitMessage": "solution: add blocks which execute proof of existence",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

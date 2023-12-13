@@ -1,6 +1,6 @@
 {
-  "commitHash": "67ae609713d3be672ef9e487ac069d4492bf545f",
-  "commitMessage": "solution: add basic balances test",
+  "commitHash": "861c3fe8fa36e83896a0d7b1aa925f345245de70",
+  "commitMessage": "solution: add set and get balances",
   "files": [
     {
       "status": "M",

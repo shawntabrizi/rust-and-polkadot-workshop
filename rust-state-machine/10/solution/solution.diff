@@ -1,23 +1,37 @@
 diff --git a/src/main.rs b/src/main.rs
-index 95b5760..2d9887b 100644
+index d2fffb8..815fd74 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -4,15 +4,14 @@ mod system;
- // This is our main Runtime.
- // It accumulates all of the different pallets we want to use.
- pub struct Runtime {
--	/* TODO: create a field `system` which is of type `system::Pallet`. */
--	/* TODO: create a field `balances` which is of type `balances::Pallet`. */
-+	system: system::Pallet,
-+	balances: balances::Pallet,
+@@ -1,5 +1,5 @@
+ mod balances;
+-/* TODO: Import your new `system` module. */
++mod system;
+ 
+ fn main() {
+ 	println!("Hello, world!");
+diff --git a/src/system.rs b/src/system.rs
+index b4e6ef4..99d537c 100644
+--- a/src/system.rs
++++ b/src/system.rs
+@@ -1,17 +1,17 @@
+-/* TODO: You might need to update your imports. */
++use std::collections::BTreeMap;
+ 
+ /// This is the System Pallet.
+ /// It handles low level state needed for your blockchain.
+ pub struct Pallet {
+ 	/// The current block number.
+-	/* TODO: Create a field `block_number` that stores a `u32`. */
++	block_number: u32,
+ 	/// A map from an account to their nonce.
+-	/* TODO: Create a field `nonce` that is a `BTreeMap` from `String` to `u32`. */
++	nonce: BTreeMap<String, u32>,
  }
  
- impl Runtime {
- 	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
- 	fn new() -> Self {
--		/* TODO: Create a new `Runtime` by creating new instances of `system` and `balances`. */
--		unimplemented!()
-+		Self { system: system::Pallet::new(), balances: balances::Pallet::new() }
+ impl Pallet {
+ 	/// Create a new instance of the System Pallet.
+ 	pub fn new() -> Self {
+-		/* TODO: Return a new instance of the `Pallet` struct. */
++		Self { block_number: 0, nonce: BTreeMap::new() }
  	}
  }
- 

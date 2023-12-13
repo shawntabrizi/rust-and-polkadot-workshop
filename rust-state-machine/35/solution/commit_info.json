@@ -1,6 +1,6 @@
 {
-  "commitHash": "e1fa25fc90cec2d0931c0ac72fa49783c3028f24",
-  "commitMessage": "solution: use runtime macro in main",
+  "commitHash": "05482c1e0c63430b1faa7adc754f9cc25cf72bb7",
+  "commitMessage": "solution: integrate proof of existence into the runtime",
   "files": [
     {
       "status": "M",

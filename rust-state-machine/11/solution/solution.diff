@@ -1,42 +1,51 @@
-diff --git a/src/main.rs b/src/main.rs
-index 6c117f6..808d673 100644
---- a/src/main.rs
-+++ b/src/main.rs
-@@ -16,22 +16,25 @@ impl Runtime {
+diff --git a/src/system.rs b/src/system.rs
+index de474ba..4689438 100644
+--- a/src/system.rs
++++ b/src/system.rs
+@@ -17,22 +17,21 @@ impl Pallet {
+ 
+ 	/// Get the current block number.
+ 	pub fn block_number(&self) -> u32 {
+-		/* TODO: Return the current block number. */
+-		unimplemented!()
++		self.block_number
+ 	}
+ 
+ 	// This function can be used to increment the block number.
+ 	// Increases the block number by one.
+ 	pub fn inc_block_number(&mut self) {
+-		/* TODO: Increment the current block number by one. */
+-		unimplemented!()
++		self.block_number += 1;
+ 	}
+ 
+ 	// Increment the nonce of an account. This helps us keep track of how many transactions each
+ 	// account has made.
+ 	pub fn inc_nonce(&mut self, who: &String) {
+-		/* TODO: Get the current nonce of `who`, and increment it by one. */
+-		unimplemented!()
++		let nonce = *self.nonce.get(who).unwrap_or(&0);
++		let new_nonce = nonce + 1;
++		self.nonce.insert(who.clone(), new_nonce);
+ 	}
  }
  
- fn main() {
--	/* TODO: Create a mutable variable `runtime`, which is a new instance of `Runtime`. */
--	/* TODO: Set the balance of `alice` to 100, allowing us to execute other transactions. */
-+	let mut runtime = Runtime::new();
-+	let alice = "alice".to_string();
-+	let bob = "bob".to_string();
-+	let charlie = "charlie".to_string();
+@@ -40,11 +39,12 @@ impl Pallet {
+ mod test {
+ 	#[test]
+ 	fn init_system() {
+-		/* TODO: Create a test which checks the following:
+-			- Increment the current block number.
+-			- Increment the nonce of `alice`.
+-			- Check the block number is what we expect.
+-			- Check the nonce of `alice` is what we expect.
+-		*/
++		let mut system = super::Pallet::new();
++		system.inc_block_number();
++		system.inc_nonce(&"alice".to_string());
 +
-+	runtime.balances.set_balance(&alice, 100);
- 
- 	// start emulating a block
--	/* TODO: Increment the block number in system. */
--	/* TODO: Assert the block number is what we expect. */
-+	runtime.system.inc_block_number();
-+	assert_eq!(runtime.system.block_number(), 1);
- 
- 	// first transaction
--	/* TODO: Increment the nonce of `alice`. */
--	/* TODO: Execute a transfer from `alice` to `bob` for 30 tokens.
--		- The transfer _could_ return an error. We should use `map_err` to print
--		  the error if there is one.
--		- We should capture the result of the transfer in an unused variable like `_res`.
--	*/
-+	runtime.system.inc_nonce(&alice);
-+	let _res = runtime
-+		.balances
-+		.transfer(alice.clone(), bob, 30)
-+		.map_err(|e| eprintln!("{}", e));
- 
- 	// second transaction
--	/* TODO: Increment the nonce of `alice` again. */
--	/* TODO: Execute another balance transfer, this time from `alice` to `charlie` for 20. */
-+	runtime.system.inc_nonce(&alice);
-+	let _res = runtime.balances.transfer(alice, charlie, 20).map_err(|e| eprintln!("{}", e));
++		assert_eq!(system.block_number(), 1);
++		assert_eq!(system.nonce.get(&"alice".to_string()), Some(&1));
++		assert_eq!(system.nonce.get(&"bob".to_string()), None);
+ 	}
  }

@@ -1,6 +1,6 @@
 {
-  "commitHash": "e849f01be66af4f2801fce537884cf17789974b9",
-  "commitMessage": "solution: add transfer and test",
+  "commitHash": "061f392b636620df9c6b5d7b301fa6a9971499af",
+  "commitMessage": "solution: add basic balances test",
   "files": [
     {
       "status": "M",

@@ -1,5 +1,4 @@
 mod balances;
-mod proof_of_existence;
 mod support;
 mod system;
 
@@ -16,14 +15,13 @@ mod types {
 	pub type Extrinsic = crate::support::Extrinsic<AccountId, crate::RuntimeCall>;
 	pub type Header = crate::support::Header<BlockNumber>;
 	pub type Block = crate::support::Block<Header, Extrinsic>;
-	/* TODO: Add the concrete `Content` type for your runtime. */
 }
 
 // These are all the calls which are exposed to the world.
 // Note that it is just an accumulation of the calls exposed by each module.
 pub enum RuntimeCall {
-	Balances(balances::Call<Runtime>),
-	/* TODO: Add a `ProofOfExistence` variant to access `proof_of_existence::Call`. */
+	/* TODO: Turn this into a nested enum where variant `Balances` contains a `balances::Call`. */
+	BalancesTransfer { to: types::AccountId, amount: types::Balance },
 }
 
 // This is our main Runtime.
@@ -32,7 +30,6 @@ pub enum RuntimeCall {
 pub struct Runtime {
 	system: system::Pallet<Self>,
 	balances: balances::Pallet<Self>,
-	/* TODO: Add `proof_of_existence` field to your `Runtime`. */
 }
 
 impl system::Config for Runtime {
@@ -45,16 +42,10 @@ impl balances::Config for Runtime {
 	type Balance = types::Balance;
 }
 
-/* TODO: Implement proof_of_existence::Config` for `Runtime`. */
-
 impl Runtime {
 	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
 	fn new() -> Self {
-		Self {
-			system: system::Pallet::new(),
-			balances: balances::Pallet::new(),
-			/* TODO: Initialize the `proof_of_existence` pallet. */
-		}
+		Self { system: system::Pallet::new(), balances: balances::Pallet::new() }
 	}
 
 	// Execute a block of extrinsics. Increments the block number.
@@ -94,10 +85,14 @@ impl crate::support::Dispatch for Runtime {
 		// This match statement will allow us to correctly route `RuntimeCall`s
 		// to the appropriate pallet level function.
 		match runtime_call {
-			RuntimeCall::Balances(call) => {
-				self.balances.dispatch(caller, call)?;
+			/*
+				TODO:
+				Adjust this logic to handle the nested enums, and simply call the `dispatch` logic
+				on the balances call, rather than the function directly.
+			*/
+			RuntimeCall::BalancesTransfer { to, amount } => {
+				self.balances.transfer(caller, to, amount)?;
 			},
-			/* TODO: Dispatch `calls` to the `ProofOfExistence` pallet. */
 		}
 		Ok(())
 	}
@@ -119,13 +114,14 @@ fn main() {
 	let block_1 = types::Block {
 		header: support::Header { block_number: 1 },
 		extrinsics: vec![
+			/* TODO: Update your extrinsics to use the nested enum. */
 			support::Extrinsic {
 				caller: alice.clone(),
-				call: RuntimeCall::Balances(balances::Call::Transfer { to: bob, amount: 20 }),
+				call: RuntimeCall::BalancesTransfer { to: bob, amount: 20 },
 			},
 			support::Extrinsic {
 				caller: alice,
-				call: RuntimeCall::Balances(balances::Call::Transfer { to: charlie, amount: 20 }),
+				call: RuntimeCall::BalancesTransfer { to: charlie, amount: 20 },
 			},
 		],
 	};

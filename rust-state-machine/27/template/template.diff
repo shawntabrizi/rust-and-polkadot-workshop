@@ -1,41 +1,36 @@
 diff --git a/src/main.rs b/src/main.rs
-index 199f7de..a01adfd 100644
+index 52343a3..8c36355 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -1,4 +1,5 @@
- mod balances;
-+/* TODO: Import the `proof_of_existence` module. */
- mod support;
- mod system;
+@@ -20,7 +20,10 @@ mod types {
+ // These are all the calls which are exposed to the world.
+ // Note that it is just an accumulation of the calls exposed by each module.
+ pub enum RuntimeCall {
+-	// TODO: Not implemented yet.
++	/* TODO: Create an enum variant `BalancesTransfer` which contains named fields:
++		- `to`: an `AccountId`
++		- `amount`: a `Balance`
++	*/
+ }
  
-diff --git a/src/proof_of_existence.rs b/src/proof_of_existence.rs
-new file mode 100644
-index 0000000..87ea242
---- /dev/null
-+++ b/src/proof_of_existence.rs
-@@ -0,0 +1,25 @@
-+use core::fmt::Debug;
-+use std::collections::BTreeMap;
+ // This is our main Runtime.
+@@ -81,7 +84,18 @@ impl crate::support::Dispatch for Runtime {
+ 		caller: Self::Caller,
+ 		runtime_call: Self::Call,
+ 	) -> support::DispatchResult {
+-		unimplemented!();
++		/*
++			TODO:
++			Use a match statement to route the `runtime_call` to call the appropriate function in
++			our pallet. In this case, there is only `self.balances.transfer`.
 +
-+pub trait Config: crate::system::Config {
-+	/// The type which represents the content that can be claimed using this pallet.
-+	/// Could be the content directly as bytes, or better yet the hash of that content.
-+	/// We leave that decision to the runtime developer.
-+	type Content: Debug + Ord;
-+}
++			Your `runtime_call` won't contain the caller information which is needed to make the
++			`transfer` call, but you have that information from the arguments to the `dispatch`
++			function.
 +
-+/// This is the Proof of Existence Module.
-+/// It is a simple module that allows accounts to claim existence of some data.
-+#[derive(Debug)]
-+pub struct Pallet<T: Config> {
-+	/// A simple storage map from content to the owner of that content.
-+	/// Accounts can make multiple different claims, but each claim can only have one owner.
-+	/* TODO: Add a field `claims` which is a `BTreeMap` fom `T::Content` to `T::AccountId`. */
-+}
-+
-+impl<T: Config> Pallet<T> {
-+	/// Create a new instance of the Proof of Existence Module.
-+	pub fn new() -> Self {
-+		/* TODO: Return a new instance of the `Pallet` struct. */
-+	}
-+}
++			You should propagate any errors from the call back up this function.
++		*/
++		Ok(())
+ 	}
+ }
+ 

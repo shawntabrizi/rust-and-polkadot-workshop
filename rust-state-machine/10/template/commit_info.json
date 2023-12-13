@@ -1,6 +1,6 @@
 {
-  "commitHash": "ee92f7ab4a2b0e596b08bfa0d64ce7f300978689",
-  "commitMessage": "template: introduce the runtime to main",
+  "commitHash": "3526cf0542efdeeb677ab5acaf27901d78b68b91",
+  "commitMessage": "template: introduce system module",
   "files": [
     {
       "status": "M",
@@ -9,6 +9,10 @@
     {
       "status": "M",
       "file": "src/main.rs"
+    },
+    {
+      "status": "A",
+      "file": "src/system.rs"
     }
   ]
 }

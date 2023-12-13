@@ -1,10 +1,14 @@
 {
-  "commitHash": "8b1452e86e306931924ce0a2b9cbda6133ff80c9",
-  "commitMessage": "solution: construct concrete support types",
+  "commitHash": "c712c4b5764ecd7586aca39f713d24575009d96d",
+  "commitMessage": "solution: make balances module configurable",
   "files": [
     {
       "status": "M",
       "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
     },
     {
       "status": "M",

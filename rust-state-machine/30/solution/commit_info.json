@@ -1,6 +1,6 @@
 {
-  "commitHash": "4597810aeb8d3b0be8c091e1363215e47b8a7eb7",
-  "commitMessage": "solution: integrate proof of existence into the runtime",
+  "commitHash": "df3bde19149e4743a9dcd8416daf689893623929",
+  "commitMessage": "solution: implement nested dispatch",
   "files": [
     {
       "status": "M",

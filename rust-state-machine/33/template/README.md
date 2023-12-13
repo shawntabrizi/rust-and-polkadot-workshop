@@ -1,75 +1,50 @@
-# Adding Call Macro to Balances
+# Proof Of Existence Functions
 
-Let's start by adding the `#[macros::call]` macro to our Balances Pallet.
+The Proof of Existence Pallet is quite simple, so let's build out the logic needed.
 
-## The Call Macro
+## Get Claim
 
-The purpose of the `#[macros::call]` macro is to automatically generate the `enum Call` from the functions of the pallet and the pallet level `Dispatch` logic found in each Pallet.
+Our Pallet has a simple storage map from some claim content to the owner of that claim.
 
-We can place the `#[macros::call]` attribute over our `impl<T: Config> Pallet<T>` where the callable functions are implemented. From there, the macro can parse the whole object, and extract the data it needs. Not all of your functions are intended to be callable, so you can isolate the functions which should be in their own `impl<T: Config> Pallet<T>` as the template does.
+The `get_claim` function should act as a simple read function returning the `T::AccountId` of the owner, if there is any. In the case we query a claim which has no owner, we should return `None`.
 
-### Parse
+This is not a function that a user would call from an extrinsic, but is useful for other parts of your state machine to access the data in this Pallet.
 
-In order to generate the code that we want, we need to keep track of:
+## Create Claim
 
-1. Each callable function that the developer wants to expose through the Runtime.
-	1. The name of that function.
-	2. The argument names and types of that function.
-2. The name of the `struct` where those functions are implemented. Normally this is `Pallet`, but we can allow the developer flexibility in their naming.
+Any user can add a new claim to the Proof of Existence Pallet.
 
-These things are tracked with `CallDef` and `CallVariantDef`.
+The only thing that is important is that we check that the claim has not already been made by another user.
 
-Also, during the parsing process, we might want to check for certain consistencies in the code being parsed. In this case, we require that every callable function muse have `caller` as their first parameter with type `T::AccountId`. This should make sense to you since you have designed a number of different callable functions, and they all follow this pattern.
+Each claim should only have one owner, and whoever makes the claim first gets priority.
 
-This checking logic is handled by `fn check_caller_arg`.
-
-### Expand
-
-Once we have parsed all the data we need, generating the code is pretty straight forward.
-
-If you jump down to `let dispatch_impl = quote!` you will see a bunch of code that looks like the templates we used earlier in the tutorial. We just left markers where the macro generation logic should place all the information to write the code we need.
-
-## Macro Quirks
-
-Macros are often very "quirky" when you use them. Since all of the input going into the macro is other code, sometimes the format of that code might not match what you expect.
-
-For example, the original `Call` enum we have constructed looks like:
+You can check if some claim is already in the `claims` storage using the `contains_key` api:
 
 ```rust
-pub enum Call<T: Config> {
-	Transfer { to: T::AccountId, amount: T::Balance },
+if self.claims.contains_key(&claim) {
+	return Err(&"this content is already claimed");
 }
 ```
 
-The variant is called `Transfer` because the function it represents is named `fn transfer`.
+## Revoke Claim
 
-However, if we want to generate the `Call` enum, and we only have `fn transfer`, where will we get the specific string `Transfer` with a capital `T`?
+Data on the blockchain is not free, and in fact is very expensive to maintain. Giving users the ability to clean up their data is not only good, but encouraged. If a user no longer has a need to store their claim on chain, they should clean it up.
 
-It is possible to do string manipulation and adjust everything to make it consistent to what Rust expects, but in this case it is better for our macros to make minimal modifications to user written code.
+Furthermore, the history of the blockchain is immutable. Even if the data about a claim does not exist in the "current state", it can be shown to have existed in the past.
 
-What does this mean?
+Keeping things in the current state just makes querying for information easier.
 
-When the `#[macros::call]` macro generates our `enum Call`, it will actually look like this:
+To revoke a claim, we need to check two things:
 
-```rust
-#[allow(non_camel_case_types)]
-pub enum Call<T: Config> {
-	transfer { to: T::AccountId, amount: T::Balance },
-}
-```
+1. The the claim exists.
+2. That the person who wants to revoke the claim is the owner of that claim.
 
-Here you see that `transfer` is exactly the string which comes from the name of the function. Normally all enum variants should be `CamelCase`, but since rust functions are `snake_case`, our enum will have variants which are also `snake_case`. We won't see any warnings about this because we enabled `#[allow(non_camel_case_types)]`.
+You should be able to handle all of this logic by calling the `get_claim` function and using `ok_or` to return an error when the claim does not exist. If the claim does exist, you should be able to directly extract the owner from the state query.
 
-Ultimately, this has no significant impact on your underlying code. It is just ergonomics and expectations.
+## Build Your Functions
 
-Indeed, macros can be quirky, but the amount of time they save you makes them worth it.
+Complete the `TODO`s outlined in the template.
 
-## Time to Add Your Call Macro
+Afterward, create a `basic_proof_of_existence` test to check that all your functions are working as expected.
 
-1. If you haven't, move your `transfer` function into its own `impl<T: Config> Pallet<T>`. We only want to apply the macro to this one function, so we need to isolate it from the other functions which are not meant to be callable.
-2. Add the `#[macros::call]` attribute over this new `impl<T: Config> Pallet<T>`.
-3. Delete your existing `enum Call`.
-4. Delete your existing implementation of `Dispatch for Pallet`.
-5. Then, in your `main.rs` file, change instances of `balances::Call::Transfer` to `balances::Call::transfer` with a lowercase `t`.
-
-At this point, everything should compile just like before! We are witnessing the power of macros to generate code for us auto-magically!
+This includes both the success and possible error conditions of your Pallet.

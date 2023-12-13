@@ -1,6 +1,6 @@
 {
-  "commitHash": "250050dfab0412bf2b0d25cf2f73fc9093d31d0f",
-  "commitMessage": "template: introduce system module",
+  "commitHash": "405849cdf44128e8223892bd14f9b2f972b92bfa",
+  "commitMessage": "template: add transfer and test",
   "files": [
     {
       "status": "M",
@@ -8,11 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/main.rs"
-    },
-    {
-      "status": "A",
-      "file": "src/system.rs"
+      "file": "src/balances.rs"
     }
   ]
 }

@@ -1,63 +1,54 @@
-# Using Our Runtime
+# Making Your System Functional
 
-Until now, we have just been scaffolding parts of our blockchain. Tests have ensured that the code we have written so far make sense, but we haven't actually USED any of the logic we have written for our `main` program.
+We have again established the basis of a new Pallet.
 
-Let's change that by using our Runtime and actually executing logic on our blockchain.
+Let's add functions which make it useful.
 
-## Simulating a Block
+## Block Number
 
-The input to any blockchain state transition function is a block of transactions.
+Your blockchain's blocknumber is stored in the System Pallet, and the System Pallet needs to expose functions which allow us to access and modify the block number.
 
-Later in the tutorial we will actually spend more time to build proper blocks and execute them, but for now, we can "simulate" all the basics of what a block would do by individually calling the functions our Pallets expose.
+For this we need two simple functions:
 
-### Genesis State
+- `fn block_number` - a function that returns the currently stored blocknumber.
+- `fn inc_block_number` - a function that increments the current block number by one.
 
-The state of your blockchain will propagate from block to block. This means if Alice received 100 tokens on block 4, that she can transfer at least 100 tokens on block 5, and so on.
+This should be everything that a basic blockchain needs to function.
 
-But how do users get any balance to begin with?
+## Nonce
 
-The answer to this question can be different for different blockchains, but in general most modern blockchains start with a Genesis State. This is the starting state of your blockchain on "block 0".
+The `nonce` represents "a number used once".
 
-This means anything set in the genesis state can be used on block 1, and can bootstrap your blockchain to being functional.
+In this context, each user on your blockchain has a `nonce` which gives a unique value to each transaction the user submits to the blockchain.
 
-In our situation, you can simply call low level functions like `set_balance` before we simulate our first block to establish our genesis state.
+Remember that blockchains are decentralized and distributed systems, and transactions do not inherently have a deterministic order. For a user, we can assign an order to different transactions by using this nonce to keep track of how many transactions the user has executed on the blockchain.
 
-### Steps of a Basic Block
+For this, we again use a `BTreeMap` to give each user their own `nonce` counter.
 
-Let's quickly break down the steps of executing a basic block:
+Our simple blockchain won't use this value, but for the sake of example, we will keep track of it by creating an `inc_nonce` function. If you were creating a more complex blockchain, the user `nonce` would become an important part of your system.
 
-1. First we increment the blocknumber, since each new block will have a new blocknumber.
-2. Then we go through an execute each transaction in that block:
-	1. Each transaction for our blockchain will come from a user, thus we will increment the users nonce as we process their transaction.
-	2. Then we will attempt to execute the function they want to call, for example `transfer`.
-	3. Repeat this process for every transaction.
+## Safe Math?
 
-### Handling Errors
+We just explained the importance of using safe math when writing the Balances Pallet.
 
-The `main()` function in Rust cannot propagate or handle errors itself. Either everything inside of it is handled, or you will have to trigger a `panic`.
+In that context, it is easy to see how a user could provide malicious inputs, and cause simple underflows or overflows if our system did not check the math.
 
-As you have already learned, triggering a `panic` is generally not good, but may be the only thing you can do if something is seriously wrong. For our blockchain, the only thing which can really cause a panic is importing a block which does not match the expected blocknumber. There is nothing in this case we can do to "handle" this error. If someone is telling us to execute the wrong block, then we have some larger problem with our overall system that needs to be fixed.
+However, you will see in the templates provided, that these new functions in the System Pallet do not return a result, and thus do not provide error handling.
 
-However, users can also submit transactions which result in an error. For example, Alice trying to send more funds than she has in her account.
+Is this okay?
 
-Should we panic?
+As you will notice, the `blocknumber` and `nonce` storage items only provide APIs to increment by one. In our System, both of these numbers are represented by `u32`, which means that over 4.2 billion calls to those functions need to occur before an overflow would happen.
 
-Absolutely not! This is the kind of error that our runtime should be able to handle since it is expected that such errors would occur. **A block can be valid even if transactions in the block are invalid!**
+Assuming a user does one transaction every block, and a new block is generated every 6 seconds, it would take over 800 years for an overflow to occur. So in this situation, we are preferring an API which requires no error handling rather than one which does.
 
-When a transaction returns an error we should show that error to the user, and then "swallow" the result. For example:
+End of the day, this is a design decision and a preference which is left to the developer. This tutorial chooses this API because this is exactly the API exposed by Substrate and the Polkadot SDK. There is nothing wrong with making these functions handle errors, so feel free to do this if you choose.
 
-```rust
-let _res = i_can_return_error().map_err(|e| eprintln!("{}", e));
-```
+## Build Your System Pallet
 
-In this case, you can see that any error that `i_can_return_error` would return gets printed to the console, but otherwise, the `Result` of that function gets placed in an unused variable `_res`.
+Follow the instructions in the template to complete:
 
-You should be VERY CAREFUL when you do this. Swallowing an error is exactly the opposite of proper error handling that Rust provides to developers. However, we really do not have a choice here in our `main` function, and we fully understand what we are doing here.
+1. `fn block_number`
+2. `fn inc_block_number`
+3. `fn inc_nonce`
 
-On real blockchain systems, users are still charged a transaction fee, even when their transaction results in an `Err`. This ensures that users are still paying a cost for triggering logic on the blockchain, even when the function fails. This is an important part of keeping our blockchain resilient to DDOS and sybil attacks.
-
-## Simulate Your First Block
-
-Do you think you understand everything it takes to simulate your first block?
-
-Follow the instructions provided by the template to turn your `main` function from "Hello, World!" to actually executing your blockchain's runtime.
+Then write tests which verify that these functions work as expected, and that your state is correctly updated.

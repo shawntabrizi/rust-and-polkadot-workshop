@@ -1,6 +1,6 @@
 {
-  "commitHash": "c5a6ef52551b24d19700a4ddd1273436d53758be",
-  "commitMessage": "template: make balances module configurable",
+  "commitHash": "b01f942f5a729ecb72c1aac046d61ec920c1d0fd",
+  "commitMessage": "template: make balances module generic",
   "files": [
     {
       "status": "M",

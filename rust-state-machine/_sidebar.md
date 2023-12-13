@@ -2,7 +2,6 @@
 
 ---
 
-- Introduction
 - [0. Introduction to the Rust State Machine](rust-state-machine/0/README.md)
     - [1. Initialize your Rust Project](rust-state-machine/1/README.md)
     - [2. Rust Tooling](rust-state-machine/2/README.md)
@@ -40,8 +39,8 @@
     - [34. Add Proof of Existence Dispatch](rust-state-machine/34/README.md)
     - [35. Integrate PoE Into Your Runtime](rust-state-machine/35/README.md)
     - [36. Add PoE Extrinsics to Blocks](rust-state-machine/36/README.md)
-- [37. Introducing Macros](rust-state-machine/37/README.md)
-    - [38. Adding Call Macro to Balances](rust-state-machine/38/README.md)
-    - [39. Adding Call Macro to PoE](rust-state-machine/39/README.md)
-    - [40. Use the Runtime Macro](rust-state-machine/40/README.md)
-    - [41. Rust State Machine](rust-state-machine/41/README.md)
+- [37. Rust Macros](rust-state-machine/37/README.md)
+    - [38. Introducing Macros](rust-state-machine/38/README.md)
+    - [39. Adding Call Macro to Balances](rust-state-machine/39/README.md)
+    - [40. Adding Call Macro to PoE](rust-state-machine/40/README.md)
+    - [41. Use the Runtime Macro](rust-state-machine/41/README.md)

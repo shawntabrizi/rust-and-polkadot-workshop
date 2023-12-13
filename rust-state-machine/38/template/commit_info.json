@@ -1,18 +1,18 @@
 {
-  "commitHash": "f4377d99cf0961c68b80897f638227e0a220e0ff",
-  "commitMessage": "template: use call macro in balances",
+  "commitHash": "f19033652be40cb98fd330cfdcacea03bee8969c",
+  "commitMessage": "template: introduce macros",
   "files": [
+    {
+      "status": "M",
+      "file": "Cargo.toml"
+    },
     {
       "status": "M",
       "file": "README.md"
     },
     {
-      "status": "M",
-      "file": "src/balances.rs"
-    },
-    {
-      "status": "M",
-      "file": "src/main.rs"
+      "status": "A",
+      "file": "macros/src/lib.rs"
     }
   ]
 }

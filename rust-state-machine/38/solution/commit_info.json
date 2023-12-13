@@ -1,18 +1,50 @@
 {
-  "commitHash": "f7d5044d95327441ee95fbb3e78956b129d882e4",
-  "commitMessage": "solution: use call macro in balances",
+  "commitHash": "9ba5f3cedfc18bda8c2d4e6179e97b8ba1ae732b",
+  "commitMessage": "solution: introduce macros",
   "files": [
+    {
+      "status": "M",
+      "file": "Cargo.lock"
+    },
+    {
+      "status": "M",
+      "file": "Cargo.toml"
+    },
     {
       "status": "M",
       "file": "README.md"
     },
     {
-      "status": "M",
-      "file": "src/balances.rs"
+      "status": "A",
+      "file": "macros/Cargo.toml"
+    },
+    {
+      "status": "A",
+      "file": "macros/src/call/expand.rs"
+    },
+    {
+      "status": "A",
+      "file": "macros/src/call/mod.rs"
+    },
+    {
+      "status": "A",
+      "file": "macros/src/call/parse.rs"
     },
     {
       "status": "M",
-      "file": "src/main.rs"
+      "file": "macros/src/lib.rs"
+    },
+    {
+      "status": "A",
+      "file": "macros/src/runtime/expand.rs"
+    },
+    {
+      "status": "A",
+      "file": "macros/src/runtime/mod.rs"
+    },
+    {
+      "status": "A",
+      "file": "macros/src/runtime/parse.rs"
     }
   ]
 }

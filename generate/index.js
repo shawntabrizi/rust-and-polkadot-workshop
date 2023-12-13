@@ -47,7 +47,7 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 	// Reverse to make the oldest commit first
 	commitHashes.reverse().forEach((commitInfo, index) => {
 		const [commitHash, commitMessage] = commitInfo.split("::");
-		const isMeta = commitMessage.toLowerCase().startsWith("meta: ");
+		const isReadme = commitMessage.toLowerCase().startsWith("readme: ");
 		const isTemplate = commitMessage.toLowerCase().startsWith("template: ");
 		const isSolution = commitMessage.toLowerCase().startsWith("solution: ");
 		const isSection = commitMessage.toLowerCase().startsWith("section: ");
@@ -157,10 +157,7 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 			sourceFiles = commitInfoObject.files;
 		}
 
-		fs.writeFileSync(
-			jsonFilePath,
-			JSON.stringify(commitInfoObject, null, 2)
-		);
+		fs.writeFileSync(jsonFilePath, JSON.stringify(commitInfoObject, null, 2));
 
 		// Reset sanity check and increment step
 		// Handle when both template and solution is found,
@@ -169,7 +166,9 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 			(templateFound && solutionFound) ||
 			(!templateFound && !solutionFound)
 		) {
-			if (isSection) {
+			if (isReadme) {
+				markdownContent = sectionMarkdown;
+			} else if (isSection) {
 				markdownContent = sectionMarkdown;
 				stepNames.push({
 					name: getStepName(sourceFolder),
@@ -177,14 +176,8 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 				});
 			} else if (templateFound) {
 				markdownContent = templateMarkdown;
-				let templateFileText = generateFileMarkdown(
-					"template",
-					templateFiles
-				);
-				let solutionFileText = generateFileMarkdown(
-					"solution",
-					solutionFiles
-				);
+				let templateFileText = generateFileMarkdown("template", templateFiles);
+				let solutionFileText = generateFileMarkdown("solution", solutionFiles);
 				markdownContent = markdownContent.replace(
 					"<!-- insert_template_files -->",
 					templateFileText
@@ -206,10 +199,7 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 				});
 			} else {
 				markdownContent = sourceMarkdown;
-				let sourceFileText = generateFileMarkdown(
-					"source",
-					sourceFiles
-				);
+				let sourceFileText = generateFileMarkdown("source", sourceFiles);
 				markdownContent = markdownContent.replace(
 					"<!-- insert_source_files -->",
 					sourceFileText
@@ -399,7 +389,6 @@ function getStepName(folder) {
 function generateSidebar(steps) {
 	const sidebarFilePath = path.join(repoPath, "_sidebar.md");
 	let output = "- [Home](/)\n\n---\n\n";
-	output += "- Introduction\n";
 	steps.forEach(({ name, is_section }, index) => {
 		if (!is_section) {
 			output += `    `;

@@ -1,19 +1,17 @@
-# Make Balances Configurable
+# Make System Pallet Generic
 
-There is nothing new to learn in this step, just repeating the same process we did for our System Pallet for the Balances pallet.
+Now that you have some practice with the Balances Pallet, let's do the same task for the System Pallet.
 
-In this case, our `Config` trait will only have two associated types: `AccountId` and `Balance`.
+1. In this case we need to make System generic over `AccountId`, `BlockNumber`, and `Nonce`.
 
-For this step, try to avoid looking at the solution, and instead refer to the changes you made to get the System Pallet configurable.
+2. You will also need to figure out the trait constraints needed for these types to be compatible with the logic you have previously written. The compiler is your friend here to help you navigate everything.
 
-1. Define the `Config` trait which will have your associated types.
-2. Make sure these types have their trait constraints defined in `Config`.
-3. Update your `struct Pallet` to use `T: Config` and reference your types using the `T::` syntax.
-4. Update all of your functions to use the `T::` syntax.
-5. Update your test, creating a struct `TestConfig`, and implementing `Config` for it, and using it to instantiate your `Pallet` struct.
-6. Go to your `main.rs` file, and implement `balances::Config` for the `Runtime` struct.
-7. Update your `Runtime` definition to instantiate `balances::Pallet` with `Self`.
+3. Update your tests.
 
-If you have made it this far, I think it is fair to say you have made it over the hardest part of this tutorial, and the hardest part of using Rust in Substrate.
+4. Finally move your type definitions to your `main.rs` file and update your `Runtime`.
 
-It is important to take a step back and remember that while these abstractions make your code a bit more complicated to fully understand, it also makes your code extremely flexible, at zero cost to performance and safety thanks to the Rust compiler.
+Make sure everything compiles and all tests pass after this step.
+
+If you need help, I recommend to look at your Balances Pallet rather than the solution for this step. All of the patterns are the same as before, so it is better that you start to connect the dots yourself rather than relying on the solution.
+
+If you struggled here, it is a good opportunity to take a pause and re-review generic types from other examples across the Rust ecosystem.

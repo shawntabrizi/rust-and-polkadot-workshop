@@ -1,6 +1,6 @@
 {
-  "commitHash": "a6c73d1111656c06ca396e1cf09b279a4b28984e",
-  "commitMessage": "solution: add debug and print the runtime state",
+  "commitHash": "6f7c60a0d586dd14111bd17a316fe577e663111f",
+  "commitMessage": "solution: introduce basic runtime execution in main",
   "files": [
     {
       "status": "M",
@@ -8,15 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/balances.rs"
-    },
-    {
-      "status": "M",
       "file": "src/main.rs"
-    },
-    {
-      "status": "M",
-      "file": "src/system.rs"
     }
   ]
 }

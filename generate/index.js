@@ -169,7 +169,13 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 			(templateFound && solutionFound) ||
 			(!templateFound && !solutionFound)
 		) {
-			if (templateFound) {
+			if (isSection) {
+				markdownContent = sectionMarkdown;
+				stepNames.push({
+					name: getStepName(sourceFolder),
+					is_section: true,
+				});
+			} else if (templateFound) {
 				markdownContent = templateMarkdown;
 				let templateFileText = generateFileMarkdown(
 					"template",
@@ -196,7 +202,7 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 
 				stepNames.push({
 					name: getStepName(templateFolder),
-					is_section: isSection,
+					is_section: false,
 				});
 			} else {
 				markdownContent = sourceMarkdown;
@@ -217,7 +223,7 @@ simpleGit().clone(repoUrl, sourcePath, (err, _) => {
 
 				stepNames.push({
 					name: getStepName(sourceFolder),
-					is_section: isSection,
+					is_section: false,
 				});
 			}
 			// Create a Markdown file in the commit folder
@@ -372,6 +378,10 @@ let sourceMarkdown = `
 <!-- tabs:end -->
 
 <!-- tabs:end -->
+`;
+
+let sectionMarkdown = `
+[filename](./source/README.md ':include')
 `;
 
 function getStepName(folder) {

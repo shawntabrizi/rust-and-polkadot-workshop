@@ -1,51 +1,45 @@
-# Nested Dispatch
+# Using Execute Block
 
-Now that we have defined Pallet level dispatch logic in the Pallet, we should update our Runtime to take advantage of that logic.
+We have now successfully implemented the `execute_block` and `dispatch` logic needed to build and execute real `Blocks`.
 
-After this, whenever the Pallet logic is updated, the Runtime dispatch logic will also automatically get updated and route calls directly. This makes our code easier to manage, and prevent potential errors or maintenance in the future.
+Let's bring that logic into our `main` function.
 
-## Nested Calls
+## Creating a Block
 
-The Balances Pallet now exposes its own list of calls in `balances::Call`. Rather than list them all again in the Runtime, we can use a nested enum to route our calls correctly.
+You can create a new `Block` by filling out all the fields of the struct and assigning it to a variable.
 
-Imagine the following construction:
-
-```rust
-pub enum RuntimeCall {
-	Balances(balances::Call<Runtime>),
-}
-```
-
-In this case, we have a variant `RuntimeCall::Balances`, which itself contains a type `balances::Call`. This means we can access all the calls exposed by `balances:Call` under this variant. As we create more pallets or extend our calls, this nested structure will scale very well.
-
-We call the `RuntimeCall` an "outer enum", and the `balances::Call` an "inter enum". This construction of using outer and inter enums is very common in the Polkadot SDK.
-
-## Re-Dispatching to Pallet
-
-Our current `dispatch` logic directly calls the functions in the Pallet. As we mentioned, having this logic live outside of the Pallet can increase the burden of maintenance or errors.
-
-But now that we have defined Pallet level dispatch logic in the Pallet itself, we can use this to make the Runtime dispatch more extensible.
-
-To do this, rather than calling the Pallet function directly, we can extract the inner call from the `RuntimeCall`, and then use the `balances::Pallet` to dispatch that call to the appropriate logic.
-
-That would look something like:
+For example:
 
 ```rust
-match runtime_call {
-	RuntimeCall::Balances(call) => {
-		self.balances.dispatch(caller, call)?;
-	},
-}
+let block_1 = types::Block {
+	header: support::Header { block_number: 1 },
+	extrinsics: vec![
+		support::Extrinsic {
+			caller: &"alice",
+			call: RuntimeCall::BalancesTransfer { to: &"bob", amount: 69 },
+		},
+	],
+};
 ```
 
-Here you can see that the first thing we do is check that the call is a `Balances` variant, then we extract from it the `call` which is a `balances::Call` type, and then we use `self.balances` which is a `balances::Pallet` to dispatch the `balances::Call`.
+It is important that you set the block number correctly since we verify this in our `execute_block` function. The first block in our state machine will have the number `1`.
 
-## Updating Your Block
+Also remember that you can add multiple extrinsics in a single block by extending the vector.
 
-Since we have updated the construction of the `RuntimeCall` enum, we will also need to update our `Block` construction in `fn main`. Nothing magical here, just needing to construct a nested enum using both `RuntimeCall::Balances` and `balances::Call::Transfer`.
+## Executing a Block
 
-## Enable Nested Dispatch
+Once you have constructed your `Block`, you can pass it to the `execute_block` function implemented on your `runtime`.
 
-Now is the time to complete this step and glue together Pallet level dispatch with the Runtime level dispatch logic.
+```rust
+runtime.execute_block(block_1).expect("invalid block");
+```
 
-Follow the `TODO`s provided in the template to get your full end to end dispatch logic running.
+Note how we panic with the message `"invalid block"` if the `execute_block` function returns an error. This should only happen when something is seriously wrong with your block, for example the block number is incorrect for what we expect.
+
+This panic will NOT be triggered if there is an error in an extrinsic, as we "swallow" those errors in the `execute_block` function. This is the behavior we want.
+
+## Update Your Main Function
+
+Go ahead and use the `Block` type and `execute_block` function to update the logic of your `main` function.
+
+Follow the `TODO`s provided in the template to complete this step

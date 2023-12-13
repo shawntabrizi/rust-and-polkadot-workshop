@@ -1,41 +1,34 @@
 use num::traits::{CheckedAdd, CheckedSub, Zero};
 use std::collections::BTreeMap;
 
-/// The configuration trait for the Balances Module.
-/// Contains the basic types needed for handling balances.
-pub trait Config {
-	/// A type which can identify an account in our state machine.
-	/// On a real blockchain, you would want this to be a cryptographic public key.
-	type AccountId: Ord + Clone;
-	/// A type which can represent the balance of an account.
-	/// Usually this is a large unsigned integer.
-	type Balance: Zero + CheckedSub + CheckedAdd + Copy;
-}
-
 /// This is the Balances Module.
 /// It is a simple module which keeps track of how much balance each account has in this state
 /// machine.
 #[derive(Debug)]
-pub struct Pallet<T: Config> {
+pub struct Pallet<AccountId, Balance> {
 	// A simple storage mapping from accounts to their balances.
-	balances: BTreeMap<T::AccountId, T::Balance>,
+	balances: BTreeMap<AccountId, Balance>,
 }
 
-impl<T: Config> Pallet<T> {
-	// Create a new instance of the balances module.
+impl<AccountId, Balance> Pallet<AccountId, Balance>
+where
+	AccountId: Ord + Clone,
+	Balance: Zero + CheckedSub + CheckedAdd + Copy,
+{
+	/// Create a new instance of the balances module.
 	pub fn new() -> Self {
 		Self { balances: BTreeMap::new() }
 	}
 
 	/// Set the balance of an account `who` to some `amount`.
-	pub fn set_balance(&mut self, who: &T::AccountId, amount: T::Balance) {
+	pub fn set_balance(&mut self, who: &AccountId, amount: Balance) {
 		self.balances.insert(who.clone(), amount);
 	}
 
 	/// Get the balance of an account `who`.
 	/// If the account has no stored balance, we return zero.
-	pub fn balance(&self, who: &T::AccountId) -> T::Balance {
-		*self.balances.get(who).unwrap_or(&T::Balance::zero())
+	pub fn balance(&self, who: &AccountId) -> Balance {
+		*self.balances.get(who).unwrap_or(&Balance::zero())
 	}
 
 	/// Transfer `amount` from one account to another.
@@ -43,9 +36,9 @@ impl<T: Config> Pallet<T> {
 	/// and that no mathematical overflows occur.
 	pub fn transfer(
 		&mut self,
-		caller: T::AccountId,
-		to: T::AccountId,
-		amount: T::Balance,
+		caller: AccountId,
+		to: AccountId,
+		amount: Balance,
 	) -> Result<(), &'static str> {
 		let caller_balance = self.balance(&caller);
 		let to_balance = self.balance(&to);
@@ -62,15 +55,9 @@ impl<T: Config> Pallet<T> {
 
 #[cfg(test)]
 mod tests {
-	struct TestConfig;
-	impl super::Config for TestConfig {
-		type AccountId = String;
-		type Balance = u128;
-	}
-
 	#[test]
 	fn init_balances() {
-		let mut balances = super::Pallet::<TestConfig>::new();
+		let mut balances = super::Pallet::<String, u128>::new();
 
 		assert_eq!(balances.balance(&"alice".to_string()), 0);
 		balances.set_balance(&"alice".to_string(), 100);
@@ -80,7 +67,7 @@ mod tests {
 
 	#[test]
 	fn transfer_balance() {
-		let mut balances = super::Pallet::<TestConfig>::new();
+		let mut balances = super::Pallet::<String, u128>::new();
 
 		assert_eq!(
 			balances.transfer("alice".to_string(), "bob".to_string(), 51),

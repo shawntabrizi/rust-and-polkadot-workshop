@@ -1,40 +1,54 @@
 diff --git a/src/main.rs b/src/main.rs
-index c8e03cc..ff6022a 100644
+index 5b6e139..2d9c38b 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -93,11 +93,14 @@ impl crate::support::Dispatch for Runtime {
+@@ -2,6 +2,8 @@ mod balances;
+ mod support;
+ mod system;
+ 
++/* TODO: Import `crate::support::Dispatch` so that you can access the `dispatch` function. */
++
+ // These are the concrete types we will use in our simple state machine.
+ // Modules are configured for these types directly, and they satisfy all of our
+ // trait requirements.
+@@ -44,6 +46,40 @@ impl Runtime {
+ 	fn new() -> Self {
+ 		Self { system: system::Pallet::new(), balances: balances::Pallet::new() }
+ 	}
++
++	// Execute a block of extrinsics. Increments the block number.
++	fn execute_block(&mut self, block: types::Block) -> support::DispatchResult {
++		/* TODO:
++			- Increment the system's block number.
++			- Check that the block number of the incoming block matches the current block number,
++			  or return an error.
++			- Iterate over the extrinsics in the block...
++				- Increment the nonce of the caller.
++				- Dispatch the extrinsic using the `caller` and the `call` contained in the extrinsic.
++				- Handle errors from `dispatch` same as we did for individual calls: printing any
++				  error and capturing the result.
++				- You can extend the error message to include information like the block number and
++				  extrinsic number.
++		*/
++		Ok(())
++	}
++}
++
++impl crate::support::Dispatch for Runtime {
++	type Caller = <Runtime as system::Config>::AccountId;
++	type Call = RuntimeCall;
++	// Dispatch a call on behalf of a caller. Increments the caller's nonce.
++	//
++	// Dispatch allows us to identify which underlying module call we want to execute.
++	// Note that we extract the `caller` from the extrinsic, and use that information
++	// to determine who we are executing the call on behalf of.
++	fn dispatch(
++		&mut self,
++		caller: Self::Caller,
++		runtime_call: Self::Call,
++	) -> support::DispatchResult {
++		unimplemented!();
++	}
  }
  
  fn main() {
-+	// Create a new instance of the Runtime.
-+	// It will instantiate with it all the modules it uses.
- 	let mut runtime = Runtime::new();
- 	let alice = "alice".to_string();
- 	let bob = "bob".to_string();
- 	let charlie = "charlie".to_string();
- 
-+	// Initialize the system with some initial balance.
- 	runtime.balances.set_balance(&alice, 100);
- 
- 	// start emulating a block
-@@ -115,5 +118,20 @@ fn main() {
- 	runtime.system.inc_nonce(&alice);
- 	let _res = runtime.balances.transfer(alice, charlie, 20).map_err(|e| eprintln!("{}", e));
- 
-+	/*
-+		TODO: Replace the logic above with a new `Block`.
-+			- Set the block number to 1 in the `Header`.
-+			- Move your existing transactions into extrinsic format, using the
-+			  `Extrinsic` and `RuntimeCall`.
-+	*/
-+
-+	/*
-+		TODO:
-+		Use your `runtime` to call the `execute_block` function with your new block.
-+		If the `execute_block` function returns an error, you should panic!
-+		We `expect` that all the blocks being executed must be valid.
-+	*/
-+
-+	// Simply print the debug format of our runtime state.
- 	println!("{:#?}", runtime);
- }

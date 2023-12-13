@@ -1,38 +1,56 @@
-diff --git a/src/balances.rs b/src/balances.rs
-index 43b4926..25256ba 100644
---- a/src/balances.rs
-+++ b/src/balances.rs
-@@ -3,6 +3,11 @@ use std::collections::BTreeMap;
- 
- /// The configuration trait for the Balances Module.
- /// Contains the basic types needed for handling balances.
-+/*
-+	TODO:
-+	Tightly couple balances to the system pallet by inheriting the `system::Config` trait.
-+	After this, you won't need the `AccountId` type redefined here.
-+*/
- pub trait Config {
- 	/// A type which can identify an account in our state machine.
- 	/// On a real blockchain, you would want this to be a cryptographic public key.
-@@ -63,6 +68,9 @@ impl<T: Config> Pallet<T> {
- #[cfg(test)]
- mod tests {
- 	struct TestConfig;
-+
-+	/* TODO: Implement `crate::system::Config` for `TestConfig` to make your tests work again. */
-+
- 	impl super::Config for TestConfig {
- 		type AccountId = String;
- 		type Balance = u128;
 diff --git a/src/main.rs b/src/main.rs
-index fe677ae..c5a98c4 100644
+index 8d30b1b..d681065 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -26,6 +26,7 @@ impl system::Config for Runtime {
+@@ -11,6 +11,12 @@ mod types {
+ 	pub type Nonce = u32;
  }
  
- impl balances::Config for Runtime {
-+	/* TODO: After inheriting from the `system::Config` trait, you won't need `AccountId` here. */
- 	type AccountId = types::AccountId;
- 	type Balance = types::Balance;
++/*
++	TODO:
++	Implement the `system::Config` trait you created on your `Runtime`.
++	Use `Self` to satisfy the generic parameter required for `system::Pallet`.
++*/
++
+ // This is our main Runtime.
+ // It accumulates all of the different pallets we want to use.
+ #[derive(Debug)]
+diff --git a/src/system.rs b/src/system.rs
+index b496b5b..5c2a7f5 100644
+--- a/src/system.rs
++++ b/src/system.rs
+@@ -2,6 +2,11 @@ use core::ops::AddAssign;
+ use num::traits::{One, Zero};
+ use std::collections::BTreeMap;
+ 
++/*
++	TODO: Combine all generic types and their trait bounds into a single `pub trait Config`.
++	When you are done, your `Pallet` can simply be defined with `Pallet<T: Config>`.
++*/
++
+ /// This is the System Pallet.
+ /// It handles low level state needed for your blockchain.
+ #[derive(Debug)]
+@@ -12,6 +17,10 @@ pub struct Pallet<AccountId, BlockNumber, Nonce> {
+ 	nonce: BTreeMap<AccountId, Nonce>,
  }
+ 
++/*
++	TODO: Update all of these functions to use your new configuration trait.
++*/
++
+ impl<AccountId, BlockNumber, Nonce> Pallet<AccountId, BlockNumber, Nonce>
+ where
+ 	AccountId: Ord + Clone,
+@@ -45,6 +54,11 @@ where
+ 
+ #[cfg(test)]
+ mod test {
++	/*
++		TODO: Create a `struct TestConfig`, and implement `super::Config` on it with concrete types.
++		Use this struct to instantiate your `Pallet`.
++	*/
++
+ 	#[test]
+ 	fn init_system() {
+ 		let mut system = super::Pallet::<String, u32, u32>::new();

@@ -1,14 +1,10 @@
 {
-  "commitHash": "d282d56118d259307871c38dd08a7c865e6af7cf",
-  "commitMessage": "solution: use call macro in balances",
+  "commitHash": "ca3e6d3a995d2d0b0ee91b849cf5411e5d9a9b40",
+  "commitMessage": "solution: add blocks which execute proof of existence",
   "files": [
     {
       "status": "M",
       "file": "README.md"
-    },
-    {
-      "status": "M",
-      "file": "src/balances.rs"
     },
     {
       "status": "M",

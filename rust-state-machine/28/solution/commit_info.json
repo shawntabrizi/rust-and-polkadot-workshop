@@ -1,6 +1,6 @@
 {
-  "commitHash": "a2f358273cdf3013f343cd7cfebdc0f96dc70a14",
-  "commitMessage": "solution: add proof of existence functions with tests",
+  "commitHash": "559d64c64b06a2e8c02cc532f0d2230ebe6ebfb1",
+  "commitMessage": "solution: implement nested dispatch",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/proof_of_existence.rs"
+      "file": "src/main.rs"
     }
   ]
 }

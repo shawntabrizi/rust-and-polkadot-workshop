@@ -1,162 +1,101 @@
-# Make System Configurable
+# Make Balances Pallet Generic
 
-We have one more step to take to make our Runtime as generic and configurable as possible.
+Our goal over the next few steps will be to continually make our runtime more generic and configurable over the types we use in our Pallets.
 
-To do it, we will need to take advantage of traits.
+## Why Generic?
 
-## Custom Traits
+The flexibility of generic runtime means that we can write code which works for multiple different configurations and types.
 
-We have already used traits provided to us in order to make our types generic.
+For example, up until now, we have been using `&'static str` to represent the accounts of users. This is obviously not the right thing to do, but is easy to implement for a basic blockchain tutorial like this.
 
-Let's take a quick look at how you can define a custom trait:
+What would you need to change in order to use more traditional cryptographic public keys?
 
-```rust
-pub trait Config {}
-```
+Well, currently there are definitions of the account type in both the Balances Pallet and the System Pallet. Imagine if you had many more Pallets too! Such refactoring could be very difficult, but also totally avoided if we used generic types to begin with.
 
-Traits can contain within it two things:
+Truthfully, the advantage of generic types will not be super obvious in this tutorial, but when building a blockchain SDK like the Substrate, this kind of flexibility will allow ecosystem developers to reach their full potential.
 
-1. functions which must be implemented by the type
-2. associated types
+For example, teams have used Substrate to build fully compatible Ethereum blockchains, while other teams have experimented with cutting edge cryptographic primitives. This generic framework allows both teams to be successful.
 
-### Custom Functions
+## Generic Types
 
-The more obvious use of traits is to define custom functions
+You have already been lightly exposed to generic types with the `Result` type. Remember that this type is flexible to allow for you to configure what type is returned when there is `Ok` or `Err`.
 
-Let's say we want to expose a function which returns the name of something.
-
-You could a trait `GetName`:
+If we wanted to make our `Pallet` generic, it would look something like:
 
 ```rust
-pub trait GetName {
-	fn name() -> String;
+pub struct Pallet<AccountId, Balance> {
+ 	balances: BTreeMap<AccountId, Balance>,
 }
 ```
 
-Then you could implement this trait for any object.
+And implementing functions on `Pallet` would look like:
 
 ```rust
-struct Shawn;
-impl GetName for Shawn {
-	fn name() -> String {
-		return "shawn".to_string();
-	}
+impl<AccountId, Balance> Pallet<AccountId, Balance> {
+	// functions which use these types
 }
 ```
 
-And then call that function on the object which implements it.
+In this case, we have not defined what the `AccountId` and `Balance` type are concretely, just that we will be storing a `BTreeMap` where the `AccountId` type is a key and `Balance` type is a value.
+
+### Trait Constraints
+
+The `Result` generic type is extremely flexible because there are no constraints on what the `Ok` or `Err` type has to be. Every type will work for this situation.
+
+However, our Pallets are not that flexible. The `Balance` type cannot literally be any type. Because we have functions like `fn transfer`, we must require that the `Balance` type at least has access to the function `checked_sub`, `checked_add`, and has some representation of `zero`.
+
+This is where the `num` crate will come in hand. From the `num` crate, you can import traits which define types which expose these functions:
 
 ```rust
-fn main() {
-	println!("{}", Shawn::name());
+use num::traits::{CheckedAdd, CheckedSub, Zero};
+```
+
+Then, where applicable, you need to constrain your generic types to have these traits.
+
+That will look like:
+
+```rust
+impl<AccountId, Balance> Pallet<AccountId, Balance>
+where
+	AccountId: Ord,
+	Balance: Zero + CheckedSub + CheckedAdd + Copy,
+{
+	// functions which use these types and have access to the traits specified
 }
 ```
 
-We won't actually use this feature of traits in our simple blockchain, but there are plenty of use cases for this when developing more complex blockchain systems.
+You will notice other types like `Copy` and `Ord` that have been added. These constrains come from using structures like the `BTreeMap`, which requires that the key type is "orderable".
 
-### Associated Types
+You can actually try compiling your code without these type constraints, and the compiler will tell you which traits you are missing, and what you need to include.
 
-The other thing you can do with traits is define Associated Types.
+### Instantiating a Generic Type
 
-This is covered in [chapter 19 of the Rust Book](https://doc.rust-lang.org/book/ch19-03-advanced-traits.html) under "Advance Traits".
+The final piece of the puzzle is instantiating our generic types.
 
-Let's learn this concept by first looking at the problem we are trying to solve.
-
-So far our simple blockchain code looks perfectly fine with generic types. However, let's imagine that our blockchain becomes more and more complex, requiring more and more generic types.
-
-For example:
+Previously we could simply write:
 
 ```rust
-pub struct Pallet<AccountId, BlockNumber, BlockLength, BlockWeight, Hash, Nonce, Runtime, Version, ...> {
-	// a bunch of stuff
-}
+let mut balances = super::Pallet::new();
 ```
 
-Imagine every time you wanted to instantiate this struct, you would need to fill out each and every one of those types. Well systems do get this complex, and more, and the ability to abstract these types one level further can really simplify your code and make it much more readable.
+But now that `Pallet` is generic, we need to concretely define those types when we instantiate it.
 
-For this we will use a trait with a bunch of associated types:
+That syntax looks like:
 
 ```rust
-pub trait Config {
-	type AccountId: Ord;
-	type BlockNumber: Zero + One + AddAssign + Copy;
-	type Nonce: Zero + One + Copy;
-	// and more if needed
-}
+let mut balances = super::Pallet::<&'static str, u128>::new();
 ```
 
-Then we can define our generic type using a single generic parameter!
+You will notice that now the types are defined wherever the generic `struct Pallet` is being instantiated. This means that you can extract the types out of your Pallets, and move them into the Runtime.
 
-```rust
-pub struct Pallet<T: Config> {
-	block_number: T::BlockNumber,
-	nonce: BTreeMap<T::AccountId, T::Nonce>,
-}
-```
+## Get Generic!
 
-and implement functions using:
+Its time to turn your balances pallet generic.
 
-```rust
-impl<T: Config> Pallet<T> {
-	// functions using types from T here
-}
-```
+1. Follow the `TODO`s in the `balances.rs` file to make `Pallet` generic.
+2. Move the type definitions for `AccountId` and `Balance` to your `main.rs`.
+3. Update your `struct Runtime` to use these types when defining the `balances::Pallet`.
 
-Let's try to understand this syntax real quick.
+To be honest, this is one of the places that developers most frequently have problems when learning Rust, which is why there is such an emphasis on teaching you and having you learn by doing these steps yourself.
 
-1. There is a generic type `T`. `T` has no meaningful name because it represents a bunch of stuff, and this is the convention most commonly used in Rust.
-2. `T` is required to implement the trait `Config`, which we previously defined.
-3. Because `T` implements `Config`, and `Config` has the associated types `AccountId`, `BlockNumber`, and `Nonce`, we can access those types like so:
-	- `T::AccountId`
-	- `T::BlockNumber`
-	- `T::Nonce`
-
-There is no meaningful difference between what we had before with 3 generic parameters, and a single generic parameter represented by a `Config` trait, but it certainly makes everything more scalable, easy to read, and easy to configure.
-
-In this context, we call the trait `Config` because it is used to configure all the types for our Pallet.
-
-### Implementing the Config Trait
-
-Let's round this out with showing how you can actually implement and use the `Config` trait.
-
-Just like before, we need some object which will implement this trait. In our case, we can use the `Runtime` struct itself.
-
-```rust
-impl system::Config for Runtime {
-	type AccountId = String;
-	type BlockNumber = u32;
-	type Nonce = u32;
-}
-```
-
-Then, when defining the `system::Pallet` within the `Runtime`, we can use the following syntax:
-
-```rust
-pub struct Runtime {
-	system: system::Pallet<Self>,
-}
-```
-
-Here we are basically saying that `Pallet` will use `Runtime` as its generic type, but this is defined within the `Runtime`, so we refer to it as `Self`.
-
-## Make Your System Configurable
-
-Phew. That was a lot.
-
-Let's practice all you have learned to create `Config` trait for your System Pallet, and then configure the pallet for the `Runtime` in `main.rs`.
-
-1. Define the `Config` trait which will have your 3 associated types `AccountId`, `BlockNumber`, and `Nonce`.
-2. Make sure these types have their trait constraints defined in `Config`.
-3. Update your `struct Pallet` to use `T: Config` and reference your types using the `T::` syntax.
-4. Update all of your functions to use the `T::` syntax.
-5. Update your test, creating a struct `TestConfig`, and implementing `Config` for it, and using it to instantiate your `Pallet` struct.
-6. Go to your `main.rs` file, and implement `system::Config` for the `Runtime` struct.
-7. Update your `Runtime` definition to instantiate `system::Pallet` with `Self`.
-
-Again, this is a big step for new Rust developers, and a common place that people can get very confused.
-
-You will have the opportunity to do this whole process again for the Balances Pallet, so don't be afraid to peek at the solution this time around if you cannot get your code working.
-
-Really take time to understand this step, what is happening, and what all of this syntax means to Rust.
-
-Remember that Rust is a language which is completely type safe, so end of the day, all of these generic types and configurations need to make sense to the Rust compiler.
+Don't be afraid in this step to peek at the solution if you get stuck, but do try and learn the patterns of using generic types, and what all the syntax means in terms of what the compiler is trying to guarantee about type safety.

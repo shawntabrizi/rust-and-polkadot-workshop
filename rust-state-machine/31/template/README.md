@@ -1,11 +1,14 @@
-# Add PoE Extrinsics to Blocks
+# Add Proof of Existence Dispatch
 
-The Proof Of Existence Pallet is fully integrated into your runtime at this point, but we aren't really using it.
+We have already established the nested dispatch pipeline for Pallets in the `Runtime`.
 
-Create some new `Block`s in your `fn main()` to test out the functionality of the Proof of Existence Pallet.
+Let's build Pallet level dispatch logic for the Proof of Existence to take advantage of that.
 
-Be creative, and even feel free to introduce some extrinsics which will trigger errors based on the logic of your pallets.
+## Create Pallet Level Dispatch
 
-Don't forget to increment your block number and actually call `execute_block` for each of those blocks.
+There is nothing new here, but we have left more for you to fill out than before.
 
-Take a look at the final output and check that the state of your machine makes sense!
+1. Create the variants for `CreateClaim` and `RevokeClaim` for your `Call` enum.
+2. Implement the `Dispatch` trait for your `Pallet`.
+
+If you get stuck, try not to look at the solution provided here, but instead look at what you did in the Balances Pallet. Everything we have done here, we have already done in the past. This is an opportunity to catch where you may have outstanding questions or misunderstandings.

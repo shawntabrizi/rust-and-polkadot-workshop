@@ -9,9 +9,9 @@
 
 <!-- tabs:start -->
 
-#### **<span class="file-template file-modified">src/main.rs</span>**
+#### **<span class="file-template file-modified">src/proof_of_existence.rs</span>**
 
-[./template/src/main.rs](./template/src/main.rs ':include :type=code rust')
+[./template/src/proof_of_existence.rs](./template/src/proof_of_existence.rs ':include :type=code rust')
 
 
 
@@ -21,9 +21,9 @@
 
 <!-- tabs:start -->
 
-#### **<span class="file-solution file-modified">src/main.rs</span>**
+#### **<span class="file-solution file-modified">src/proof_of_existence.rs</span>**
 
-[./solution/src/main.rs](./solution/src/main.rs ':include :type=code rust')
+[./solution/src/proof_of_existence.rs](./solution/src/proof_of_existence.rs ':include :type=code rust')
 
 
 

@@ -1,6 +1,6 @@
 {
-  "commitHash": "9961808d5e6b9d44f933183f91f565dea4c154dd",
-  "commitMessage": "solution: introduce proof of existence module",
+  "commitHash": "265f4a462ca08e3e4d361457edcc60cb3e9a19c2",
+  "commitMessage": "solution: introduce module level dispatch to balances",
   "files": [
     {
       "status": "M",
@@ -8,11 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/main.rs"
-    },
-    {
-      "status": "M",
-      "file": "src/proof_of_existence.rs"
+      "file": "src/balances.rs"
     }
   ]
 }

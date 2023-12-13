@@ -11,24 +11,18 @@ mod types {
 	pub type Nonce = u32;
 }
 
+/*
+	TODO:
+	Implement the `system::Config` trait you created on your `Runtime`.
+	Use `Self` to satisfy the generic parameter required for `system::Pallet`.
+*/
+
 // This is our main Runtime.
 // It accumulates all of the different pallets we want to use.
 #[derive(Debug)]
 pub struct Runtime {
-	system: system::Pallet<Self>,
-	balances: balances::Pallet<Self>,
-}
-
-impl system::Config for Runtime {
-	type AccountId = types::AccountId;
-	type BlockNumber = types::BlockNumber;
-	type Nonce = types::Nonce;
-}
-
-impl balances::Config for Runtime {
-	/* TODO: After inheriting from the `system::Config` trait, you won't need `AccountId` here. */
-	type AccountId = types::AccountId;
-	type Balance = types::Balance;
+	system: system::Pallet<types::AccountId, types::BlockNumber, types::Nonce>,
+	balances: balances::Pallet<types::AccountId, types::Balance>,
 }
 
 impl Runtime {

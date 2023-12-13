@@ -1,5 +1,4 @@
 mod balances;
-mod support;
 mod system;
 
 // These are the concrete types we will use in our simple state machine.
@@ -10,15 +9,6 @@ mod types {
 	pub type Balance = u128;
 	pub type BlockNumber = u32;
 	pub type Nonce = u32;
-	/* TODO: Define a concrete `Extrinsic` type using `AccountId` and `RuntimeCall`. */
-	/* TODO: Define a concrete `Header` type using `BlockNumber`. */
-	/* TODO: Define a concrete `Block` type using `Header` and `Extrinsic`. */
-}
-
-// These are all the calls which are exposed to the world.
-// Note that it is just an accumulation of the calls exposed by each module.
-pub enum RuntimeCall {
-	// TODO: Not implemented yet.
 }
 
 // This is our main Runtime.
@@ -36,6 +26,8 @@ impl system::Config for Runtime {
 }
 
 impl balances::Config for Runtime {
+	/* TODO: After inheriting from the `system::Config` trait, you won't need `AccountId` here. */
+	type AccountId = types::AccountId;
 	type Balance = types::Balance;
 }
 

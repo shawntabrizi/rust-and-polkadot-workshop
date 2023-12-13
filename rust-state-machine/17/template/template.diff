@@ -1,56 +1,88 @@
-diff --git a/src/main.rs b/src/main.rs
-index 8d30b1b..d681065 100644
---- a/src/main.rs
-+++ b/src/main.rs
-@@ -11,6 +11,12 @@ mod types {
- 	pub type Nonce = u32;
+diff --git a/src/balances.rs b/src/balances.rs
+index 543111e..1effef7 100644
+--- a/src/balances.rs
++++ b/src/balances.rs
+@@ -1,8 +1,17 @@
++/* TODO: You might need to import some stuff for this step. */
+ use std::collections::BTreeMap;
+ 
+ type AccountId = String;
+ type Balance = u128;
+ 
++/*
++	TODO:
++	Update the `Pallet` struct to be generic over the `AccountId` and `Balance` type.
++
++	You won't need the type definitions above after you are done.
++	Types will now be defined in `main.rs`. See the TODOs there.
++*/
++
+ /// This is the Balances Module.
+ /// It is a simple module which keeps track of how much balance each account has in this state
+ /// machine.
+@@ -12,6 +21,17 @@ pub struct Pallet {
+ 	balances: BTreeMap<AccountId, Balance>,
  }
  
 +/*
 +	TODO:
-+	Implement the `system::Config` trait you created on your `Runtime`.
-+	Use `Self` to satisfy the generic parameter required for `system::Pallet`.
++	The generic types need to satisfy certain traits in order to be used in the functions below.
++		- AccountId: Ord
++		- Balance: Zero + CheckedSub + CheckedAdd + Copy
++
++	You could figure these traits out yourself by letting the compiler tell you what you're missing.
++
++	NOTE: You might need to adjust some of the functions below to satisfy the borrow checker.
 +*/
++
+ impl Pallet {
+ 	/// Create a new instance of the balances module.
+ 	pub fn new() -> Self {
+@@ -55,6 +75,10 @@ impl Pallet {
+ mod tests {
+ 	#[test]
+ 	fn init_balances() {
++		/*
++			TODO:
++			When creating an instance of `Pallet`, you should explicitly define the types you use.
++		*/
+ 		let mut balances = super::Pallet::new();
+ 
+ 		assert_eq!(balances.balance(&"alice".to_string()), 0);
+@@ -65,6 +89,10 @@ mod tests {
+ 
+ 	#[test]
+ 	fn transfer_balance() {
++		/*
++			TODO:
++			When creating an instance of `Pallet`, you should explicitly define the types you use.
++		*/
+ 		let mut balances = super::Pallet::new();
+ 
+ 		assert_eq!(
+diff --git a/src/main.rs b/src/main.rs
+index 1ebef92..1cfc058 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,11 +1,21 @@
+ mod balances;
+ mod system;
+ 
++// These are the concrete types we will use in our simple state machine.
++// Modules are configured for these types directly, and they satisfy all of our
++// trait requirements.
++mod types {
++	/*
++		TODO: Move your type definitions for `AccountId` and `Balance` here.
++	*/
++}
 +
  // This is our main Runtime.
  // It accumulates all of the different pallets we want to use.
  #[derive(Debug)]
-diff --git a/src/system.rs b/src/system.rs
-index b496b5b..5c2a7f5 100644
---- a/src/system.rs
-+++ b/src/system.rs
-@@ -2,6 +2,11 @@ use core::ops::AddAssign;
- use num::traits::{One, Zero};
- use std::collections::BTreeMap;
- 
-+/*
-+	TODO: Combine all generic types and their trait bounds into a single `pub trait Config`.
-+	When you are done, your `Pallet` can simply be defined with `Pallet<T: Config>`.
-+*/
-+
- /// This is the System Pallet.
- /// It handles low level state needed for your blockchain.
- #[derive(Debug)]
-@@ -12,6 +17,10 @@ pub struct Pallet<AccountId, BlockNumber, Nonce> {
- 	nonce: BTreeMap<AccountId, Nonce>,
+ pub struct Runtime {
+ 	system: system::Pallet,
++	/* TODO: Use your type definitions for your new generic `balances::Pallet`. */
+ 	balances: balances::Pallet,
  }
  
-+/*
-+	TODO: Update all of these functions to use your new configuration trait.
-+*/
-+
- impl<AccountId, BlockNumber, Nonce> Pallet<AccountId, BlockNumber, Nonce>
- where
- 	AccountId: Ord + Clone,
-@@ -45,6 +54,11 @@ where
- 
- #[cfg(test)]
- mod test {
-+	/*
-+		TODO: Create a `struct TestConfig`, and implement `super::Config` on it with concrete types.
-+		Use this struct to instantiate your `Pallet`.
-+	*/
-+
- 	#[test]
- 	fn init_system() {
- 		let mut system = super::Pallet::<String, u32, u32>::new();

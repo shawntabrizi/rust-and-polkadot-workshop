@@ -93,36 +93,27 @@ impl crate::support::Dispatch for Runtime {
 }
 
 fn main() {
-	// Create a new instance of the Runtime.
-	// It will instantiate with it all the modules it uses.
 	let mut runtime = Runtime::new();
 	let alice = "alice".to_string();
 	let bob = "bob".to_string();
 	let charlie = "charlie".to_string();
 
-	// Initialize the system with some initial balance.
 	runtime.balances.set_balance(&alice, 100);
 
-	// Here are the extrinsics in our block.
-	// You can add or remove these based on the modules and calls you have set up.
-	let block_1 = types::Block {
-		header: support::Header { block_number: 1 },
-		extrinsics: vec![
-			support::Extrinsic {
-				caller: alice.clone(),
-				call: RuntimeCall::BalancesTransfer { to: bob, amount: 20 },
-			},
-			support::Extrinsic {
-				caller: alice,
-				call: RuntimeCall::BalancesTransfer { to: charlie, amount: 20 },
-			},
-		],
-	};
+	// start emulating a block
+	runtime.system.inc_block_number();
+	assert_eq!(runtime.system.block_number(), 1);
 
-	// Execute the extrinsics which make up our block.
-	// If there are any errors, our system panics, since we should not execute invalid blocks.
-	runtime.execute_block(block_1).expect("invalid block");
+	// first transaction
+	runtime.system.inc_nonce(&alice);
+	let _res = runtime
+		.balances
+		.transfer(alice.clone(), bob, 30)
+		.map_err(|e| eprintln!("{}", e));
 
-	// Simply print the debug format of our runtime state.
+	// second transaction
+	runtime.system.inc_nonce(&alice);
+	let _res = runtime.balances.transfer(alice, charlie, 20).map_err(|e| eprintln!("{}", e));
+
 	println!("{:#?}", runtime);
 }

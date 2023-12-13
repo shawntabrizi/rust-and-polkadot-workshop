@@ -1,63 +1,47 @@
-diff --git a/src/proof_of_existence.rs b/src/proof_of_existence.rs
-index b85acdf..20255b9 100644
---- a/src/proof_of_existence.rs
-+++ b/src/proof_of_existence.rs
-@@ -26,15 +26,16 @@ impl<T: Config> Pallet<T> {
- 
- 	/// Get the owner (if any) of a claim.
- 	pub fn get_claim(&self, claim: &T::Content) -> Option<&T::AccountId> {
--		/* TODO: `get` the `claim` */
--		unimplemented!()
-+		self.claims.get(&claim)
- 	}
- 
- 	/// Create a new claim on behalf of the `caller`.
- 	/// This function will return an error if someone already has claimed that content.
- 	pub fn create_claim(&mut self, caller: T::AccountId, claim: T::Content) -> DispatchResult {
--		/* TODO: Check that a `claim` does not already exist. If so, return an error. */
--		/* TODO: `insert` the claim on behalf of `caller`. */
-+		if self.claims.contains_key(&claim) {
-+			return Err(&"this content is already claimed");
-+		}
-+		self.claims.insert(claim, caller);
- 		Ok(())
- 	}
- 
-@@ -42,9 +43,11 @@ impl<T: Config> Pallet<T> {
- 	/// This function should only succeed if the caller is the owner of an existing claim.
- 	/// It will return an error if the claim does not exist, or if the caller is not the owner.
- 	pub fn revoke_claim(&mut self, caller: T::AccountId, claim: T::Content) -> DispatchResult {
--		/* TODO: Get the owner of the `claim` to be revoked. */
--		/* TODO: Check that the `owner` matches the `caller`. */
--		/* TODO: If all checks pass, then `remove` the `claim`. */
-+		let owner = self.get_claim(&claim).ok_or("claim does not exist")?;
-+		if caller != *owner {
-+			return Err(&"this content is owned by someone else");
-+		}
-+		self.claims.remove(&claim);
- 		Ok(())
- 	}
+diff --git a/src/main.rs b/src/main.rs
+index f0257a6..199f7de 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -20,8 +20,7 @@ mod types {
+ // These are all the calls which are exposed to the world.
+ // Note that it is just an accumulation of the calls exposed by each module.
+ pub enum RuntimeCall {
+-	/* TODO: Turn this into a nested enum where variant `Balances` contains a `balances::Call`. */
+-	BalancesTransfer { to: types::AccountId, amount: types::Balance },
++	Balances(balances::Call<Runtime>),
  }
-@@ -65,12 +68,15 @@ mod test {
  
- 	#[test]
- 	fn basic_proof_of_existence() {
--		/*
--			TODO:
--			Create an end to end test verifying the basic functionality of this pallet.
--				- Check the initial state is as you expect.
--				- Check that all functions work successfully.
--				- Check that all error conditions error as expected.
--		*/
-+		let mut poe = super::Pallet::<TestConfig>::new();
-+		assert_eq!(poe.get_claim(&"Hello, world!"), None);
-+		assert_eq!(poe.create_claim(&"alice", &"Hello, world!"), Ok(()));
-+		assert_eq!(poe.get_claim(&"Hello, world!"), Some(&"alice"));
-+		assert_eq!(
-+			poe.create_claim(&"bob", &"Hello, world!"),
-+			Err("this content is already claimed")
-+		);
-+		assert_eq!(poe.revoke_claim(&"alice", &"Hello, world!"), Ok(()));
-+		assert_eq!(poe.create_claim(&"bob", &"Hello, world!"), Ok(()));
- 	}
- }
+ // This is our main Runtime.
+@@ -85,13 +84,8 @@ impl crate::support::Dispatch for Runtime {
+ 		// This match statement will allow us to correctly route `RuntimeCall`s
+ 		// to the appropriate pallet level function.
+ 		match runtime_call {
+-			/*
+-				TODO:
+-				Adjust this logic to handle the nested enums, and simply call the `dispatch` logic
+-				on the balances call, rather than the function directly.
+-			*/
+-			RuntimeCall::BalancesTransfer { to, amount } => {
+-				self.balances.transfer(caller, to, amount)?;
++			RuntimeCall::Balances(call) => {
++				self.balances.dispatch(caller, call)?;
+ 			},
+ 		}
+ 		Ok(())
+@@ -114,14 +108,13 @@ fn main() {
+ 	let block_1 = types::Block {
+ 		header: support::Header { block_number: 1 },
+ 		extrinsics: vec![
+-			/* TODO: Update your extrinsics to use the nested enum. */
+ 			support::Extrinsic {
+ 				caller: alice.clone(),
+-				call: RuntimeCall::BalancesTransfer { to: bob, amount: 20 },
++				call: RuntimeCall::Balances(balances::Call::Transfer { to: bob, amount: 20 }),
+ 			},
+ 			support::Extrinsic {
+ 				caller: alice,
+-				call: RuntimeCall::BalancesTransfer { to: charlie, amount: 20 },
++				call: RuntimeCall::Balances(balances::Call::Transfer { to: charlie, amount: 20 }),
+ 			},
+ 		],
+ 	};

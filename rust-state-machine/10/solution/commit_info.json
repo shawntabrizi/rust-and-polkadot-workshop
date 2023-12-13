@@ -1,6 +1,6 @@
 {
-  "commitHash": "2519e936a213e84ec6e15586d091d9394c6f2ca0",
-  "commitMessage": "solution: introduce the runtime to main",
+  "commitHash": "b3c9f5ce32f433575cf4a95a9ffb9f2ff6772181",
+  "commitMessage": "solution: introduce increment block number and nonce with test",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/main.rs"
+      "file": "src/system.rs"
     }
   ]
 }

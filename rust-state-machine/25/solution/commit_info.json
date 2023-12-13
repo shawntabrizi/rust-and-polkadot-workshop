@@ -1,6 +1,6 @@
 {
-  "commitHash": "9569559d9c105e5a52159ed52125854796140a65",
-  "commitMessage": "solution: introduce module level dispatch to balances",
+  "commitHash": "30a2bc47102695c8572f0f72161c69437114954d",
+  "commitMessage": "solution: implement basic dispatch for transfer",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,7 @@
     },
     {
       "status": "M",
-      "file": "src/balances.rs"
+      "file": "src/main.rs"
     }
   ]
 }

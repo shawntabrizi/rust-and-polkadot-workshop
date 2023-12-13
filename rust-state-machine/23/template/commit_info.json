@@ -1,6 +1,6 @@
 {
-  "commitHash": "26574312bfd148f75690d8becd528260d93a4a1f",
-  "commitMessage": "template: implement basic dispatch for transfer",
+  "commitHash": "b6d0a356900970ae32c4f912b69e0347ef8c4470",
+  "commitMessage": "template: construct concrete support types",
   "files": [
     {
       "status": "M",

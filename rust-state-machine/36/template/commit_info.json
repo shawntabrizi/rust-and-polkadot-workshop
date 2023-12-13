@@ -1,0 +1,18 @@
+{
+  "commitHash": "65ea86e97e45c39ddce7e98d4cc2af108420f264",
+  "commitMessage": "template: use call macro in proof of existence",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/proof_of_existence.rs"
+    }
+  ]
+}

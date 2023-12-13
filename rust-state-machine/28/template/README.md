@@ -1,50 +1,51 @@
-# Proof Of Existence Functions
+# Nested Dispatch
 
-The Proof of Existence Pallet is quite simple, so let's build out the logic needed.
+Now that we have defined Pallet level dispatch logic in the Pallet, we should update our Runtime to take advantage of that logic.
 
-## Get Claim
+After this, whenever the Pallet logic is updated, the Runtime dispatch logic will also automatically get updated and route calls directly. This makes our code easier to manage, and prevent potential errors or maintenance in the future.
 
-Our Pallet has a simple storage map from some claim content to the owner of that claim.
+## Nested Calls
 
-The `get_claim` function should act as a simple read function returning the `T::AccountId` of the owner, if there is any. In the case we query a claim which has no owner, we should return `None`.
+The Balances Pallet now exposes its own list of calls in `balances::Call`. Rather than list them all again in the Runtime, we can use a nested enum to route our calls correctly.
 
-This is not a function that a user would call from an extrinsic, but is useful for other parts of your state machine to access the data in this Pallet.
-
-## Create Claim
-
-Any user can add a new claim to the Proof of Existence Pallet.
-
-The only thing that is important is that we check that the claim has not already been made by another user.
-
-Each claim should only have one owner, and whoever makes the claim first gets priority.
-
-You can check if some claim is already in the `claims` storage using the `contains_key` api:
+Imagine the following construction:
 
 ```rust
-if self.claims.contains_key(&claim) {
-	return Err(&"this content is already claimed");
+pub enum RuntimeCall {
+	Balances(balances::Call<Runtime>),
 }
 ```
 
-## Revoke Claim
+In this case, we have a variant `RuntimeCall::Balances`, which itself contains a type `balances::Call`. This means we can access all the calls exposed by `balances:Call` under this variant. As we create more pallets or extend our calls, this nested structure will scale very well.
 
-Data on the blockchain is not free, and in fact is very expensive to maintain. Giving users the ability to clean up their data is not only good, but encouraged. If a user no longer has a need to store their claim on chain, they should clean it up.
+We call the `RuntimeCall` an "outer enum", and the `balances::Call` an "inter enum". This construction of using outer and inter enums is very common in the Polkadot SDK.
 
-Furthermore, the history of the blockchain is immutable. Even if the data about a claim does not exist in the "current state", it can be shown to have existed in the past.
+## Re-Dispatching to Pallet
 
-Keeping things in the current state just makes querying for information easier.
+Our current `dispatch` logic directly calls the functions in the Pallet. As we mentioned, having this logic live outside of the Pallet can increase the burden of maintenance or errors.
 
-To revoke a claim, we need to check two things:
+But now that we have defined Pallet level dispatch logic in the Pallet itself, we can use this to make the Runtime dispatch more extensible.
 
-1. The the claim exists.
-2. That the person who wants to revoke the claim is the owner of that claim.
+To do this, rather than calling the Pallet function directly, we can extract the inner call from the `RuntimeCall`, and then use the `balances::Pallet` to dispatch that call to the appropriate logic.
 
-You should be able to handle all of this logic by calling the `get_claim` function and using `ok_or` to return an error when the claim does not exist. If the claim does exist, you should be able to directly extract the owner from the state query.
+That would look something like:
 
-## Build Your Functions
+```rust
+match runtime_call {
+	RuntimeCall::Balances(call) => {
+		self.balances.dispatch(caller, call)?;
+	},
+}
+```
 
-Complete the `TODO`s outlined in the template.
+Here you can see that the first thing we do is check that the call is a `Balances` variant, then we extract from it the `call` which is a `balances::Call` type, and then we use `self.balances` which is a `balances::Pallet` to dispatch the `balances::Call`.
 
-Afterward, create a `basic_proof_of_existence` test to check that all your functions are working as expected.
+## Updating Your Block
 
-This includes both the success and possible error conditions of your Pallet.
+Since we have updated the construction of the `RuntimeCall` enum, we will also need to update our `Block` construction in `fn main`. Nothing magical here, just needing to construct a nested enum using both `RuntimeCall::Balances` and `balances::Call::Transfer`.
+
+## Enable Nested Dispatch
+
+Now is the time to complete this step and glue together Pallet level dispatch with the Runtime level dispatch logic.
+
+Follow the `TODO`s provided in the template to get your full end to end dispatch logic running.

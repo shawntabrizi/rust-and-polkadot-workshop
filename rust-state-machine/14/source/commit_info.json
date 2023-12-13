@@ -1,15 +1,7 @@
 {
-  "commitHash": "e505c885e140f63a757c00b0061a63d29c8a3fe7",
-  "commitMessage": "action: cargo add num",
+  "commitHash": "5c8253517b68cb7fe11b4d51e40ad05035a300e7",
+  "commitMessage": "section: generic and configurable types",
   "files": [
-    {
-      "status": "M",
-      "file": "Cargo.lock"
-    },
-    {
-      "status": "M",
-      "file": "Cargo.toml"
-    },
     {
       "status": "M",
       "file": "README.md"

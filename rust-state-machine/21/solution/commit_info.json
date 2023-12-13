@@ -1,10 +1,14 @@
 {
-  "commitHash": "4adc2cfb9a5ea3520dc4c9c159f3f4a62a6ab1f1",
-  "commitMessage": "solution: construct concrete support types",
+  "commitHash": "6035d9a5a4757ce69a95681a6eef88e1be34015d",
+  "commitMessage": "solution: tightly couple balances to system",
   "files": [
     {
       "status": "M",
       "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
     },
     {
       "status": "M",

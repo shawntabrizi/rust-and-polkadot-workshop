@@ -1,6 +1,6 @@
 {
-  "commitHash": "cae7a88171b2942c264f40bf2ca64787a61db022",
-  "commitMessage": "template: make balances module generic",
+  "commitHash": "61d41d89fb41dcd06863f4f3292a62ba9391e0d1",
+  "commitMessage": "template: define common types within modules",
   "files": [
     {
       "status": "M",
@@ -12,7 +12,7 @@
     },
     {
       "status": "M",
-      "file": "src/main.rs"
+      "file": "src/system.rs"
     }
   ]
 }

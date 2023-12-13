@@ -1,6 +1,6 @@
 {
-  "commitHash": "b535339af08682e478976889bd787d78594467fd",
-  "commitMessage": "template: make balances module configurable",
+  "commitHash": "636736c76dc0bea812392df040c7ca7d91b7eab3",
+  "commitMessage": "template: make system module generic",
   "files": [
     {
       "status": "M",
@@ -8,11 +8,11 @@
     },
     {
       "status": "M",
-      "file": "src/balances.rs"
+      "file": "src/main.rs"
     },
     {
       "status": "M",
-      "file": "src/main.rs"
+      "file": "src/system.rs"
     }
   ]
 }

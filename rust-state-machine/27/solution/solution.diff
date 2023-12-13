@@ -1,30 +1,31 @@
-diff --git a/src/main.rs b/src/main.rs
-index a01adfd..2737873 100644
---- a/src/main.rs
-+++ b/src/main.rs
-@@ -1,5 +1,5 @@
- mod balances;
--/* TODO: Import the `proof_of_existence` module. */
-+mod proof_of_existence;
- mod support;
- mod system;
- 
-diff --git a/src/proof_of_existence.rs b/src/proof_of_existence.rs
-index 87ea242..5e7de2a 100644
---- a/src/proof_of_existence.rs
-+++ b/src/proof_of_existence.rs
-@@ -14,12 +14,12 @@ pub trait Config: crate::system::Config {
- pub struct Pallet<T: Config> {
- 	/// A simple storage map from content to the owner of that content.
- 	/// Accounts can make multiple different claims, but each claim can only have one owner.
--	/* TODO: Add a field `claims` which is a `BTreeMap` fom `T::Content` to `T::AccountId`. */
-+	claims: BTreeMap<T::Content, T::AccountId>,
+diff --git a/src/balances.rs b/src/balances.rs
+index 3970446..947ad84 100644
+--- a/src/balances.rs
++++ b/src/balances.rs
+@@ -61,12 +61,7 @@ impl<T: Config> Pallet<T> {
+ // We should expect that the caller of each call will be provided by the dispatcher,
+ // and not included as a parameter of the call.
+ pub enum Call<T: Config> {
+-	/* TODO: Create an enum variant `Transfer` which contains named fields:
+-		- `to`: a `T::AccountId`
+-		- `amount`: a `T::Balance`
+-	*/
+-	/* TODO: Remove the `RemoveMe` placeholder. */
+-	RemoveMe(core::marker::PhantomData<T>),
++	Transfer { to: T::AccountId, amount: T::Balance },
  }
  
- impl<T: Config> Pallet<T> {
- 	/// Create a new instance of the Proof of Existence Module.
- 	pub fn new() -> Self {
--		/* TODO: Return a new instance of the `Pallet` struct. */
-+		Self { claims: BTreeMap::new() }
+ /// Implementation of the dispatch logic, mapping from `BalancesCall` to the appropriate underlying
+@@ -80,7 +75,11 @@ impl<T: Config> crate::support::Dispatch for Pallet<T> {
+ 		caller: Self::Caller,
+ 		call: Self::Call,
+ 	) -> crate::support::DispatchResult {
+-		/* TODO: use a `match` statement to route the `Call` to the appropriate pallet function. */
++		match call {
++			Call::Transfer { to, amount } => {
++				self.transfer(caller, to, amount)?;
++			},
++		}
+ 		Ok(())
  	}
  }

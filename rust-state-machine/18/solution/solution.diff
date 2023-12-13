@@ -1,137 +1,107 @@
-diff --git a/src/balances.rs b/src/balances.rs
-index 9f5c453..43b4926 100644
---- a/src/balances.rs
-+++ b/src/balances.rs
-@@ -1,43 +1,41 @@
- use num::traits::{CheckedAdd, CheckedSub, Zero};
- use std::collections::BTreeMap;
- 
--/*
--	TODO: Combine all generic types and their trait bounds into a single `pub trait Config`.
--	When you are done, your `Pallet` can simply be defined with `Pallet<T: Config>`.
--*/
-+/// The configuration trait for the Balances Module.
-+/// Contains the basic types needed for handling balances.
-+pub trait Config {
-+	/// A type which can identify an account in our state machine.
-+	/// On a real blockchain, you would want this to be a cryptographic public key.
-+	type AccountId: Ord + Clone;
-+	/// A type which can represent the balance of an account.
-+	/// Usually this is a large unsigned integer.
-+	type Balance: Zero + CheckedSub + CheckedAdd + Copy;
-+}
- 
- /// This is the Balances Module.
- /// It is a simple module which keeps track of how much balance each account has in this state
- /// machine.
- #[derive(Debug)]
--pub struct Pallet<AccountId, Balance> {
-+pub struct Pallet<T: Config> {
- 	// A simple storage mapping from accounts to their balances.
--	balances: BTreeMap<AccountId, Balance>,
-+	balances: BTreeMap<T::AccountId, T::Balance>,
- }
- 
--/*
--	TODO: Update all of these functions to use your new configuration trait.
--*/
--
--impl<AccountId, Balance> Pallet<AccountId, Balance>
--where
--	AccountId: Ord + Clone,
--	Balance: Zero + CheckedSub + CheckedAdd + Copy,
--{
--	/// Create a new instance of the balances module.
-+impl<T: Config> Pallet<T> {
-+	// Create a new instance of the balances module.
- 	pub fn new() -> Self {
- 		Self { balances: BTreeMap::new() }
- 	}
- 
- 	/// Set the balance of an account `who` to some `amount`.
--	pub fn set_balance(&mut self, who: &AccountId, amount: Balance) {
-+	pub fn set_balance(&mut self, who: &T::AccountId, amount: T::Balance) {
- 		self.balances.insert(who.clone(), amount);
- 	}
- 
- 	/// Get the balance of an account `who`.
- 	/// If the account has no stored balance, we return zero.
--	pub fn balance(&self, who: &AccountId) -> Balance {
--		*self.balances.get(who).unwrap_or(&Balance::zero())
-+	pub fn balance(&self, who: &T::AccountId) -> T::Balance {
-+		*self.balances.get(who).unwrap_or(&T::Balance::zero())
- 	}
- 
- 	/// Transfer `amount` from one account to another.
-@@ -45,9 +43,9 @@ where
- 	/// and that no mathematical overflows occur.
- 	pub fn transfer(
- 		&mut self,
--		caller: AccountId,
--		to: AccountId,
--		amount: Balance,
-+		caller: T::AccountId,
-+		to: T::AccountId,
-+		amount: T::Balance,
- 	) -> Result<(), &'static str> {
- 		let caller_balance = self.balance(&caller);
- 		let to_balance = self.balance(&to);
-@@ -64,14 +62,15 @@ where
- 
- #[cfg(test)]
- mod tests {
--	/*
--		TODO: Create a `struct TestConfig`, and implement `super::Config` on it with concrete types.
--		Use this struct to instantiate your `Pallet`.
--	*/
-+	struct TestConfig;
-+	impl super::Config for TestConfig {
-+		type AccountId = String;
-+		type Balance = u128;
-+	}
- 
- 	#[test]
- 	fn init_balances() {
--		let mut balances = super::Pallet::<String, u128>::new();
-+		let mut balances = super::Pallet::<TestConfig>::new();
- 
- 		assert_eq!(balances.balance(&"alice".to_string()), 0);
- 		balances.set_balance(&"alice".to_string(), 100);
-@@ -81,7 +80,7 @@ mod tests {
- 
- 	#[test]
- 	fn transfer_balance() {
--		let mut balances = super::Pallet::<String, u128>::new();
-+		let mut balances = super::Pallet::<TestConfig>::new();
- 
- 		assert_eq!(
- 			balances.transfer("alice".to_string(), "bob".to_string(), 51),
 diff --git a/src/main.rs b/src/main.rs
-index 343797e..fe677ae 100644
+index df9057a..8d30b1b 100644
 --- a/src/main.rs
 +++ b/src/main.rs
-@@ -16,7 +16,7 @@ mod types {
- #[derive(Debug)]
- pub struct Runtime {
- 	system: system::Pallet<Self>,
--	balances: balances::Pallet<types::AccountId, types::Balance>,
-+	balances: balances::Pallet<Self>,
+@@ -7,15 +7,15 @@ mod system;
+ mod types {
+ 	pub type AccountId = String;
+ 	pub type Balance = u128;
+-	/* TODO: Move your type definitions for `BlockNumber` and `Nonce` here. */
++	pub type BlockNumber = u32;
++	pub type Nonce = u32;
  }
  
- impl system::Config for Runtime {
-@@ -25,11 +25,10 @@ impl system::Config for Runtime {
- 	type Nonce = types::Nonce;
+ // This is our main Runtime.
+ // It accumulates all of the different pallets we want to use.
+ #[derive(Debug)]
+ pub struct Runtime {
+-	/* TODO: Use your type definitions for your new generic `system::Pallet`. */
+-	system: system::Pallet,
++	system: system::Pallet<types::AccountId, types::BlockNumber, types::Nonce>,
+ 	balances: balances::Pallet<types::AccountId, types::Balance>,
+ }
+ 
+diff --git a/src/system.rs b/src/system.rs
+index e0a0a92..b496b5b 100644
+--- a/src/system.rs
++++ b/src/system.rs
+@@ -1,38 +1,26 @@
++use core::ops::AddAssign;
++use num::traits::{One, Zero};
+ use std::collections::BTreeMap;
+ 
+-type AccountId = String;
+-type BlockNumber = u32;
+-type Nonce = u32;
+-
+-/*
+-	TODO:
+-	Update the `Pallet` struct to be generic over the `AccountId`, `BlockNumber`, and `Nonce` type.
+-	You won't need the type definitions above after you are done.
+-	Types will now be defined in `main.rs`. See the TODOs there.
+-*/
+-
+ /// This is the System Pallet.
+ /// It handles low level state needed for your blockchain.
+ #[derive(Debug)]
+-pub struct Pallet {
++pub struct Pallet<AccountId, BlockNumber, Nonce> {
+ 	/// The current block number.
+ 	block_number: BlockNumber,
+ 	/// A map from an account to their nonce.
+ 	nonce: BTreeMap<AccountId, Nonce>,
  }
  
 -/*
 -	TODO:
--	Implement the `balances::Config` trait you created on your `Runtime`.
--	Use `Self` to satisfy the generic parameter required for `balances::Pallet`.
+-	The generic types need to satisfy certain traits in order to be used in the functions below.
+-	See if you can figure them out yourself.
+-
+-	NOTE: You might need to adjust some of the functions below to satisfy the borrow checker.
 -*/
-+impl balances::Config for Runtime {
-+	type AccountId = types::AccountId;
-+	type Balance = types::Balance;
-+}
+-
+-impl Pallet {
++impl<AccountId, BlockNumber, Nonce> Pallet<AccountId, BlockNumber, Nonce>
++where
++	AccountId: Ord + Clone,
++	BlockNumber: Zero + One + AddAssign + Copy,
++	Nonce: Zero + One + Copy,
++{
+ 	/// Create a new instance of the System Pallet.
+ 	pub fn new() -> Self {
+-		Self { block_number: 0, nonce: BTreeMap::new() }
++		Self { block_number: BlockNumber::zero(), nonce: BTreeMap::new() }
+ 	}
  
- impl Runtime {
- 	// Create a new instance of the main Runtime, by creating a new instance of each pallet.
+ 	/// Get the current block number.
+@@ -43,14 +31,14 @@ impl Pallet {
+ 	// This function can be used to increment the block number.
+ 	// Increases the block number by one.
+ 	pub fn inc_block_number(&mut self) {
+-		self.block_number += 1;
++		self.block_number += BlockNumber::one();
+ 	}
+ 
+ 	// Increment the nonce of an account. This helps us keep track of how many transactions each
+ 	// account has made.
+ 	pub fn inc_nonce(&mut self, who: &AccountId) {
+-		let nonce = *self.nonce.get(who).unwrap_or(&0);
+-		let new_nonce = nonce + 1;
++		let nonce = *self.nonce.get(&who).unwrap_or(&Nonce::zero());
++		let new_nonce = nonce + Nonce::one();
+ 		self.nonce.insert(who.clone(), new_nonce);
+ 	}
+ }
+@@ -59,11 +47,7 @@ impl Pallet {
+ mod test {
+ 	#[test]
+ 	fn init_system() {
+-		/*
+-			TODO:
+-			When creating an instance of `Pallet`, you should explicitly define the types you use.
+-		*/
+-		let mut system = super::Pallet::new();
++		let mut system = super::Pallet::<String, u32, u32>::new();
+ 		system.inc_block_number();
+ 		system.inc_nonce(&"alice".to_string());
+ 

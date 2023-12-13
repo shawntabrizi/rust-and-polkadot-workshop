@@ -1,3 +1,3 @@
-# Add PoE Extrinsics to Blocks
+# Add Proof of Existence Dispatch
 
-You can find the solution to the previous step here.
+Find the solution to the previous step here.

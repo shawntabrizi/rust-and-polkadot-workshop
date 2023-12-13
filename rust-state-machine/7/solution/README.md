@@ -1,3 +1,3 @@
-# Enable Balance Transfers
+# Basic Balance Test
 
-You can find the solution for the previous step here.
+You can find the solution to the previous step here.

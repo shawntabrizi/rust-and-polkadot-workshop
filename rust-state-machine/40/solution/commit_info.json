@@ -1,0 +1,14 @@
+{
+  "commitHash": "6f6a81d4df3c7bb2d77a89c273ce5ffbd942324b",
+  "commitMessage": "solution: use runtime macro in main",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
-  "commitHash": "6035d9a5a4757ce69a95681a6eef88e1be34015d",
-  "commitMessage": "solution: tightly couple balances to system",
+  "commitHash": "c712c4b5764ecd7586aca39f713d24575009d96d",
+  "commitMessage": "solution: make balances module configurable",
   "files": [
     {
       "status": "M",

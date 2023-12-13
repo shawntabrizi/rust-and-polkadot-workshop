@@ -1,6 +1,6 @@
 {
-  "commitHash": "7c297432d642ce6b67320f46f6145fc3075bc278",
-  "commitMessage": "template: add blocks which execute proof of existence",
+  "commitHash": "4ba8557acee0ebc4167f09e13accd7fefe1a2d3e",
+  "commitMessage": "template: integrate proof of existence into the runtime",
   "files": [
     {
       "status": "M",

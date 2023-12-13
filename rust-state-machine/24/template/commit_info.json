@@ -1,6 +1,6 @@
 {
-  "commitHash": "571803fa6df14b5c8747a718e7b1d7c7ef51f1f1",
-  "commitMessage": "template: construct concrete support types",
+  "commitHash": "70c27b370201f78224a6a52e56eed8b9dd75584d",
+  "commitMessage": "template: introduce support traits and types",
   "files": [
     {
       "status": "M",
@@ -8,7 +8,15 @@
     },
     {
       "status": "M",
+      "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
       "file": "src/main.rs"
+    },
+    {
+      "status": "A",
+      "file": "src/support.rs"
     }
   ]
 }

@@ -1,3 +1,3 @@
-# Adding State to Our Pallet
+# Creating a Balances Pallet
 
-You can find the solution for the previous step here.
+You can find the solution to the previous step here.

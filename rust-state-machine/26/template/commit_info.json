@@ -1,6 +1,6 @@
 {
-  "commitHash": "149c78ed56eba7ae8ceea23c5d5a9346619e820a",
-  "commitMessage": "template: implement basic dispatch for transfer",
+  "commitHash": "e2b51599df4f2341ec4bd4e1f6f14e02524ac44f",
+  "commitMessage": "template: create execute block and template for dispatch",
   "files": [
     {
       "status": "M",

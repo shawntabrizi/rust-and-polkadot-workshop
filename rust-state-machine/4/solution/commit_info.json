@@ -1,6 +1,6 @@
 {
-  "commitHash": "1fcc79a7b9e659078d7d0299f65bf2ca04e21170",
-  "commitMessage": "solution: add balances module state and initialization",
+  "commitHash": "298cc05659af214ce125d34e39ed6b74c1ef4999",
+  "commitMessage": "solution: introduce balances module",
   "files": [
     {
       "status": "M",
@@ -9,6 +9,10 @@
     {
       "status": "M",
       "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
     }
   ]
 }

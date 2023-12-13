@@ -125,19 +125,19 @@ fn main() {
 		extrinsics: vec![
 			support::Extrinsic {
 				caller: alice.clone(),
-				call: RuntimeCall::Balances(balances::Call::transfer {
+				/* TODO: Update the enum name to match what is generated with the macro. */
+				call: RuntimeCall::Balances(balances::Call::Transfer {
 					to: bob.clone(),
 					amount: 20,
 				}),
 			},
 			support::Extrinsic {
 				caller: alice.clone(),
-				call: RuntimeCall::Balances(balances::Call::transfer { to: charlie, amount: 20 }),
+				call: RuntimeCall::Balances(balances::Call::Transfer { to: charlie, amount: 20 }),
 			},
 		],
 	};
 
-	/* TODO: Update the extrinsics below for the updated format after the macros. */
 	let block_2 = types::Block {
 		header: support::Header { block_number: 2 },
 		extrinsics: vec![

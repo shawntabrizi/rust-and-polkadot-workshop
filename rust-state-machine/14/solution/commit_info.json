@@ -1,0 +1,22 @@
+{
+  "commitHash": "1356686033d2564f036fa55bb469b67045244538",
+  "commitMessage": "solution: add debug and print the runtime state",
+  "files": [
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "M",
+      "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/system.rs"
+    }
+  ]
+}

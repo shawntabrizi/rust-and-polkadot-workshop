@@ -1,23 +1,17 @@
 diff --git a/src/balances.rs b/src/balances.rs
-index b184c3e..f2f602c 100644
+index dae1c4f..4a1da04 100644
 --- a/src/balances.rs
 +++ b/src/balances.rs
-@@ -4,15 +4,13 @@ use std::collections::BTreeMap;
- /// It is a simple module which keeps track of how much balance each account has in this state
- /// machine.
- pub struct Pallet {
--	// A simple storage mapping from accounts (`String`) to their balances (`u128`).
--	/* TODO: Add a field `balances` which is a `BTreeMap` fom `String` to `u128`. */
-+	// A simple storage mapping from accounts (`&'static str`) to their balances (`u128`).
-+	balances: BTreeMap<String, u128>,
- }
+@@ -1 +1 @@
+-/* TODO: create a new public struct named `Pallet`. */
++pub struct Pallet {}
+diff --git a/src/main.rs b/src/main.rs
+index 2b4f767..ea8024e 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,4 +1,4 @@
+-/* TODO: use your new module `balances` */
++mod balances;
  
- impl Pallet {
- 	/// Create a new instance of the balances module.
- 	pub fn new() -> Self {
--		/* TODO: Return a new instance of the `Pallet` struct. */
--		/* TODO: Remove `unimplemented!()`. */
--		unimplemented!()
-+		Self { balances: BTreeMap::new() }
- 	}
- }
+ fn main() {
+ 	println!("Hello, world!");

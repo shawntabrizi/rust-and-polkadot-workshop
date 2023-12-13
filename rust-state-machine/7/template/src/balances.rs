@@ -24,49 +24,17 @@ impl Pallet {
 	pub fn balance(&self, who: &String) -> u128 {
 		*self.balances.get(who).unwrap_or(&0)
 	}
-
-	/// Transfer `amount` from one account to another.
-	/// This function verifies that `from` has at least `amount` balance to transfer,
-	/// and that no mathematical overflows occur.
-	pub fn transfer(
-		&mut self,
-		caller: String,
-		to: String,
-		amount: u128,
-	) -> Result<(), &'static str> {
-		/* TODO:
-			- Get the balance of account `caller`.
-			- Get the balance of account `to`.
-
-			- Use safe math to calculate a `new_caller_balance`.
-			- Use safe math to calculate a `new_to_balance`.
-
-			- Insert the new balance of `caller`.
-			- Insert the new balance of `to`.
-		*/
-
-		Ok(())
-	}
 }
 
 #[cfg(test)]
 mod tests {
 	#[test]
 	fn init_balances() {
-		let mut balances = super::Pallet::new();
+		/* TODO: Create a mutable variable `balances`, which is a new instance of `Pallet`. */
 
-		assert_eq!(balances.balance(&"alice".to_string()), 0);
-		balances.set_balance(&"alice".to_string(), 100);
-		assert_eq!(balances.balance(&"alice".to_string()), 100);
-		assert_eq!(balances.balance(&"bob".to_string()), 0);
-	}
-
-	#[test]
-	fn transfer_balance() {
-		/* TODO: Create a test that checks the following:
-			- That `alice` cannot transfer funds she does not have.
-			- That `alice` can successfully transfer funds to `bob`.
-			- That the balance of `alice` and `bob` is correctly updated.
-		*/
+		/* TODO: Assert that the balance of `alice` starts at zero. */
+		/* TODO: Set the balance of `alice` to 100. */
+		/* TODO: Assert the balance of `alice` is now 100. */
+		/* TODO: Assert the balance of `bob` has not changed and is 0. */
 	}
 }

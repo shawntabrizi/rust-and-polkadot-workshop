@@ -1,14 +1,18 @@
 {
-  "commitHash": "b7a462f658b61bbb282ca5f55f2e49a397c17a83",
-  "commitMessage": "template: add balances module state and initialization",
+  "commitHash": "7f3f8d0201dbf3736bbc6d232a33277b8ee12f19",
+  "commitMessage": "template: introduce balances module",
   "files": [
     {
       "status": "M",
       "file": "README.md"
     },
     {
-      "status": "M",
+      "status": "A",
       "file": "src/balances.rs"
+    },
+    {
+      "status": "M",
+      "file": "src/main.rs"
     }
   ]
 }

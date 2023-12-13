@@ -1,50 +1,50 @@
-# Proof Of Existence Functions
+# Proof of Existence Pallet
 
-The Proof of Existence Pallet is quite simple, so let's build out the logic needed.
+We have gone a long way since we built our very first Balances Pallet.
 
-## Get Claim
+The structure of our Runtime and Pallets have evolved quite a bit since.
 
-Our Pallet has a simple storage map from some claim content to the owner of that claim.
+- Generic Types
+- Config Trait
+- Nested Dispatch
+- and more...
 
-The `get_claim` function should act as a simple read function returning the `T::AccountId` of the owner, if there is any. In the case we query a claim which has no owner, we should return `None`.
+This will be the last pallet we build for this tutorial, but we will build it knowing all of the tips and tricks we have learned so far.
 
-This is not a function that a user would call from an extrinsic, but is useful for other parts of your state machine to access the data in this Pallet.
+The goal here is for you to ensure that all of the intricacies of Pallet development is well understood and that you are able to navigate all of the Rust code.
 
-## Create Claim
+## What is Proof of Existence?
 
-Any user can add a new claim to the Proof of Existence Pallet.
+The Proof of Existence Pallet uses the blockchain to provide a secure and immutable ledger that can be used to verify the existence of a particular document, file, or piece of data at a specific point in time.
 
-The only thing that is important is that we check that the claim has not already been made by another user.
+Because the blockchain acts as an immutable ledger whose history cannot be changed, when some data is placed on the blockchain, it can be referenced at a future time to show that some data already existed in the past.
 
-Each claim should only have one owner, and whoever makes the claim first gets priority.
+For example, imagine you knew the outcome of the next Presidential Election., but before you reveal it, you want to make sure that you prove that you had discovered it at a certain time. You could put some sort of data on the blockchain which represents the cure you found, and then later, when you get your research reviewed and published,
 
-You can check if some claim is already in the `claims` storage using the `contains_key` api:
+Normally, you would not put the raw contents of your claim on the blockchain but a [hash](https://en.wikipedia.org/wiki/Cryptographic_hash_function) of the data, which is both smaller and obfuscates the data in your claim before you are ready to reveal it.
 
-```rust
-if self.claims.contains_key(&claim) {
-	return Err(&"this content is already claimed");
-}
-```
+However, for the purposes of this tutorial, we won't introduce hash functions yet.
 
-## Revoke Claim
+## Pallet Structure
 
-Data on the blockchain is not free, and in fact is very expensive to maintain. Giving users the ability to clean up their data is not only good, but encouraged. If a user no longer has a need to store their claim on chain, they should clean it up.
+The `BTreeMap` is again the best tool to use for storing data in this Pallet. However, you will notice that the construction of the storage is a bit different than before. Rather than having a map from accounts to some data, we will actually map the content we want to claim to the user who owns it.
 
-Furthermore, the history of the blockchain is immutable. Even if the data about a claim does not exist in the "current state", it can be shown to have existed in the past.
+This construction of `content -> account` allows an account to be the owner of multiple different claims, but having each claim only be owned by one user.
 
-Keeping things in the current state just makes querying for information easier.
+## Create Your Pallet
 
-To revoke a claim, we need to check two things:
+Let's start to create this pallet:
 
-1. The the claim exists.
-2. That the person who wants to revoke the claim is the owner of that claim.
+1. Create a new file for your Proof of Existence Pallet.
 
-You should be able to handle all of this logic by calling the `get_claim` function and using `ok_or` to return an error when the claim does not exist. If the claim does exist, you should be able to directly extract the owner from the state query.
+	```bash
+	touch src/proof_of_existence.rs
+	```
 
-## Build Your Functions
+2. Copy the contents from the template into your new file.
 
-Complete the `TODO`s outlined in the template.
+3. Complete the `TODO`s to add a storage to your new pallet and allow it to be initialized.
 
-Afterward, create a `basic_proof_of_existence` test to check that all your functions are working as expected.
+4. In your `main.rs` file, import the `proof_of_existence` module.
 
-This includes both the success and possible error conditions of your Pallet.
+Make sure that everything compiles after you complete these steps.

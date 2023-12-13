@@ -1,6 +1,6 @@
 {
-  "commitHash": "2ef0249c7e9e0fbd7c180c16a240281ca24df881",
-  "commitMessage": "template: introduce basic runtime execution in main",
+  "commitHash": "41ea687533c98ac27d69e3f9c8189d327630a00f",
+  "commitMessage": "template: introduce the runtime to main",
   "files": [
     {
       "status": "M",

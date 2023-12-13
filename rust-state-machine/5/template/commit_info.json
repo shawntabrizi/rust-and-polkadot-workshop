@@ -1,6 +1,6 @@
 {
-  "commitHash": "39994c0abd987521e4dfc8810e31ade3970d345c",
-  "commitMessage": "template: add set and get balances",
+  "commitHash": "d21cce9501f637d5c4f8b11b9949234b751eae48",
+  "commitMessage": "template: add balances module state and initialization",
   "files": [
     {
       "status": "M",

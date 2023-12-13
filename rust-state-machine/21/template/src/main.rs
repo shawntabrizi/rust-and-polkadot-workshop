@@ -16,7 +16,7 @@ mod types {
 #[derive(Debug)]
 pub struct Runtime {
 	system: system::Pallet<Self>,
-	balances: balances::Pallet<Self>,
+	balances: balances::Pallet<types::AccountId, types::Balance>,
 }
 
 impl system::Config for Runtime {
@@ -25,11 +25,11 @@ impl system::Config for Runtime {
 	type Nonce = types::Nonce;
 }
 
-impl balances::Config for Runtime {
-	/* TODO: After inheriting from the `system::Config` trait, you won't need `AccountId` here. */
-	type AccountId = types::AccountId;
-	type Balance = types::Balance;
-}
+/*
+	TODO:
+	Implement the `balances::Config` trait you created on your `Runtime`.
+	Use `Self` to satisfy the generic parameter required for `balances::Pallet`.
+*/
 
 impl Runtime {
 	// Create a new instance of the main Runtime, by creating a new instance of each pallet.

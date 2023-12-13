@@ -1,6 +1,6 @@
 {
-  "commitHash": "900e73d72b2d9bc37302113841b357739c80d457",
-  "commitMessage": "solution: make system module configurable",
+  "commitHash": "14f6caa65b7da9f62b66b92a1b1f8c702363834a",
+  "commitMessage": "solution: make system module generic",
   "files": [
     {
       "status": "M",

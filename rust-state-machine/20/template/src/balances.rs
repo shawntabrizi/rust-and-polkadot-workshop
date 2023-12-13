@@ -1,11 +1,6 @@
 use num::traits::{CheckedAdd, CheckedSub, Zero};
 use std::collections::BTreeMap;
 
-/*
-	TODO: Combine all generic types and their trait bounds into a single `pub trait Config`.
-	When you are done, your `Pallet` can simply be defined with `Pallet<T: Config>`.
-*/
-
 /// This is the Balances Module.
 /// It is a simple module which keeps track of how much balance each account has in this state
 /// machine.
@@ -14,10 +9,6 @@ pub struct Pallet<AccountId, Balance> {
 	// A simple storage mapping from accounts to their balances.
 	balances: BTreeMap<AccountId, Balance>,
 }
-
-/*
-	TODO: Update all of these functions to use your new configuration trait.
-*/
 
 impl<AccountId, Balance> Pallet<AccountId, Balance>
 where
@@ -64,11 +55,6 @@ where
 
 #[cfg(test)]
 mod tests {
-	/*
-		TODO: Create a `struct TestConfig`, and implement `super::Config` on it with concrete types.
-		Use this struct to instantiate your `Pallet`.
-	*/
-
 	#[test]
 	fn init_balances() {
 		let mut balances = super::Pallet::<String, u128>::new();

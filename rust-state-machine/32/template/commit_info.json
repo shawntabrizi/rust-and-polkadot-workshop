@@ -1,6 +1,6 @@
 {
-  "commitHash": "87932b620604af6d7e5a3e462d35b52d1ca1cbdc",
-  "commitMessage": "template: add proof of existence functions with tests",
+  "commitHash": "231e139648c334be4e0d650e8a1b329ade2c1b8e",
+  "commitMessage": "template: introduce proof of existence module",
   "files": [
     {
       "status": "M",
@@ -8,6 +8,10 @@
     },
     {
       "status": "M",
+      "file": "src/main.rs"
+    },
+    {
+      "status": "A",
       "file": "src/proof_of_existence.rs"
     }
   ]

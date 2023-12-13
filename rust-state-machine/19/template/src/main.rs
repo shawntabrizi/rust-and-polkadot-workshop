@@ -7,21 +7,15 @@ mod system;
 mod types {
 	pub type AccountId = String;
 	pub type Balance = u128;
-	pub type BlockNumber = u32;
-	pub type Nonce = u32;
+	/* TODO: Move your type definitions for `BlockNumber` and `Nonce` here. */
 }
-
-/*
-	TODO:
-	Implement the `system::Config` trait you created on your `Runtime`.
-	Use `Self` to satisfy the generic parameter required for `system::Pallet`.
-*/
 
 // This is our main Runtime.
 // It accumulates all of the different pallets we want to use.
 #[derive(Debug)]
 pub struct Runtime {
-	system: system::Pallet<types::AccountId, types::BlockNumber, types::Nonce>,
+	/* TODO: Use your type definitions for your new generic `system::Pallet`. */
+	system: system::Pallet,
 	balances: balances::Pallet<types::AccountId, types::Balance>,
 }
 

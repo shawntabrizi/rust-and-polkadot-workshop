@@ -1,0 +1,18 @@
+{
+  "commitHash": "f8c27204e05e2d4fb04e9a3d338d34da3a3b807a",
+  "commitMessage": "readme: create public readme content",
+  "files": [
+    {
+      "status": "M",
+      "file": ".gitignore"
+    },
+    {
+      "status": "M",
+      "file": "README.md"
+    },
+    {
+      "status": "A",
+      "file": "export_tutorial.sh"
+    }
+  ]
+}

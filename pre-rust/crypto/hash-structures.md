@@ -56,7 +56,7 @@ This scales to any amount of data since the final merkle root is always of the s
 
 ### Merkle Proofs
 
-Using the merkle tree structure, we can identify the existence of a specific piece of data in the tree without needing all of the data.
+Using the merkle tree structure, we can prove the existence of a specific piece of data in the tree without needing all of the data.
 
 Let's say for example I have a merkle tree which is identifiable by its unique merkle root hash.
 In that merkle tree, I want to prove to you there is node with the message "Hello, World!".

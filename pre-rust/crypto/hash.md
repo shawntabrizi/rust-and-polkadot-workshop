@@ -43,9 +43,9 @@ There is a subset of hash functions which are called "cryptographic hash functio
 - Collision resistance (attacker controls both inputs)
 	- It should be difficult to find two different messages `m1` and `m2` such that `hash(m1) = hash(m2)`.
 		- Such a pair is called a cryptographic hash collision.
-	- This property is sometimes referred to as strong collision resistance. It requires a hash value at least twice as long as that required for pre-image resistance; otherwise collisions may be found by a birthday attack.
+	- This property is sometimes referred to as strong collision resistance. It requires a hash value at least twice as long as that required for pre-image resistance; otherwise collisions may be found by a [birthday attack](https://en.wikipedia.org/wiki/Birthday_attack).
 
-An example of a cryptographic hash function is Blake2_256.
+An example of a cryptographic hash function is [Blake2_256](https://en.wikipedia.org/wiki/BLAKE_(hash_function)), which takes a binary input of an arbitrary size and outputs 256 bits.
 
 Learn more at: https://en.wikipedia.org/wiki/Cryptographic_hash_function
 
@@ -53,7 +53,7 @@ Learn more at: https://en.wikipedia.org/wiki/Cryptographic_hash_function
 
 Non-cryptographic hash functions provide weaker guarantees in exchange for performance. They are OK to use in specific scenarios and when you know that the input is not malicious.
 
-An example of a cryptographic hash function is XXHash. Note the performance increase for XXHash over Blake2:
+An example of a non-cryptographic hash function is XXHash. Note the performance increase for XXHash over Blake2:
 
 | Hash Name | Width | Bandwidth (GB/s) | Small Data Velocity | Quality |    Comment    |
 |:---------:|:-----:|:----------------:|:-------------------:|:-------:|:-------------:|

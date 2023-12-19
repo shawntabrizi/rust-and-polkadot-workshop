@@ -13,4 +13,4 @@ Instead, this content is intended to introduce concepts in cryptography which ar
 
 We will not attempt to explain HOW these different primitives work, but instead just explain the properties of these primitives and how these properties can be used to achieve our desired outcomes.
 
-There are more crypto topics that could be covered to get a deeper understanding of blockchains, but consider this the minimal baseline knowledge needed for this workshop.
+More crypto topics could be covered to understand blockchains better, but consider this the minimal baseline knowledge needed for this workshop.

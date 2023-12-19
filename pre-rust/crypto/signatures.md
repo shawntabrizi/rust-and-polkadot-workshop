@@ -52,7 +52,7 @@ In the digital world, we have to assume that all channels are insecure, and all 
 
 Replay attacks can occur when someone intercepts and resends a copy of a valid message. The receiver may carry out the instructions since the message contains a valid signature, especially in an automated setup (like in many digital applications). An example scenario would be to cash in a check at a bank multiple times by presenting multiple copies of the original check with the authentic signature. Of course, the banks use various mechanisms to avoid this scenario.
 
-To prevent replay attacks, signing payloads should be designed so that they can only be used one time and in one context.
+To prevent replay attacks, signing digital payloads should be designed so that they can only be used one time and in one context.
 
 For example using:
 

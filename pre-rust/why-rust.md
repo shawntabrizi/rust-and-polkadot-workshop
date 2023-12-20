@@ -37,7 +37,7 @@ Rust also emphasizes that you should be able to easily write code without undefi
 
 Rust provides types like `Result` and `Option` allowing you to be able to easily handle errors and never deal with `null` values.
 
-In blockchain systems, undefined behavior can lead to bugs which could result in billions of dollars at risk or lost. While at first it may seem cumbersome to explicitly handle all these conditions, many developers say that they become better programmers after working with Rust as it changes the way you think about designing functions and systems.
+In blockchain systems, undefined behavior can lead to bugs which could put billions of dollars at risk, potentially even losing them. While at first it may seem cumbersome to explicitly handle all these conditions, many developers say that they become better programmers after working with Rust as it changes the way you think about designing functions and systems.
 
 ## Alternative Execution Environments
 
@@ -54,7 +54,7 @@ Rust is often at the center of languages that these environments support, and th
 
 - Rust's deterministic execution model makes it predictable and easy to reason about, which is important for blockchain development where security and reliability are paramount.
 - Rust's support for generics and patterns makes it a versatile and expressive language that can be used to solve a wide variety of problems in blockchain development.
-- Rust's macro system allows ecosystems to to extend the Rust language with custom domain specific languages and automatic code generation.
+- Rust's macro system allows ecosystems to extend the Rust language with custom domain specific languages and automatic code generation.
 
 ## Additional Content
 

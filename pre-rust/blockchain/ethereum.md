@@ -64,6 +64,6 @@ Ethereum also introduced a wave of Layer-2 scaling solutions to address the inhe
 
 Layer-2 solutions are "off-chain" protocols that operate alongside the main blockchain. Many Layer-2 solutions are blockchains themselves, but execute their transactions on their own network, which is usually much cheaper than executing them on Ethereum itself.
 
-Eventually, the Layer-2 solutions will submit their blockchain data back to Ethereum in a "rollup", which is a small and cheap to execute summary of the events and transactions that happened on the Layer-2 chain. This reduced the congestion and fees on Ethereum.
+Eventually, the Layer-2 solutions will submit their blockchain data back to Ethereum in a "rollup", which is a small and cheap to execute summary of the events and transactions that happened on the Layer-2 chain. This reduces the congestion and fees on Ethereum.
 
 Two popular types of rollups are: optimistic rollups and zk-rollups. These rollups are beyond the scope of this workshop.

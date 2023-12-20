@@ -6,7 +6,7 @@ Let's now look at blockchains in a more technical and architectural way to set u
 
 ## Context: Node
 
-A blockchain node is a single instance of the blockchain software. If you run the Bitcoin client on your computer, you will act as a one of many nodes on the network. The decentralized and permissionless nature of nodes keep blockchain systems resilient to attack.
+A blockchain node is a single instance of the blockchain software. If you run the Bitcoin client on your computer, you will act as one of many nodes on the network. The decentralized and permissionless nature of nodes makes blockchain systems resilient to attacks.
 
 In these next subsections, we will review architectural concepts which exist within the view of your single node.
 
@@ -68,7 +68,7 @@ The transaction format can differ greatly depending on the details of the blockc
 - Chain ID: Some unique identifier for the chain the transaction is intended for. This prevents replay attacks across different forks.
 - Payload: Some data which identifies what the transaction is intending to do.
 
-Later in this course you will see the term "extrinsic". This is a more general term referring to any kind of outside data coming into the blockchain. A transaction is one type of extrinsic, but you can imagine messages which are not signed by normal users, or might have elevated privileges to the blockchain system.
+Later in this course you will see the term "extrinsic". This is a more general term referring to any kind of external data coming into the blockchain. A transaction is one type of extrinsic, but you can imagine them to be messages which are not signed by normal users, or might have elevated privileges to the blockchain system.
 
 ### State Machine
 
@@ -79,7 +79,7 @@ The internals of a blockchain is a simple state machine. It defines:
 
 ![State Transition](./assets/state-machine-general.svg)
 
-We can turn a blockchain into a state machine by using the payload in a transaction the state machine transition.
+We can turn a blockchain into a state machine by using the payload in a transaction and the state machine transition function.
 
 Given some initial "genesis state", we can apply transactions to transition the state from block to block.
 
@@ -87,7 +87,7 @@ Given some initial "genesis state", we can apply transactions to transition the 
 
 It is important to note that the "blockchain" does not contain the state of the chain. This is a common misconception.
 
-The blockchain, as you can see from the definition of the blocks and transactions just contain the information for HOW the state should change.
+The blockchain, as you can see from the definition of the blocks and transactions just contains the information for HOW the state should change.
 
 If you want to construct the blockchain's state, you need to start with some genesis state, and then go block by block and apply the transactions to transition the state. In this way, everyone is able to reconstruct the state of the blockchain on their own.
 
@@ -124,15 +124,15 @@ Blockchain nodes need to keep track of multiple possible versions of the blockch
 
 ![Blockchain Forks](./assets/forks.svg)
 
-It could be that any one of these forks ends up being the canonical blockchain, and it is also part of your responsibility on the peer-to-peer network to share the information you are collecting about the blocks, forks, and various states of the chain.
+It could be that any one of these forks ends up being the canonical blockchain, and it is also part of your responsibility as a node on the peer-to-peer network to share the information you are collecting about the blocks, forks, and various states of the chain.
 
-Chains will always try to locally verify a block before it puts it into the consensus process.
+Blockchain nodes will always try to locally verify a block before they put it into the consensus process.
 If a block is invalid, it will immediately get rejected locally and not shared with other peers on the network.
 
 ![Invalid Forks](./assets/forks-some-invalid.svg)
 
-Invalid blocks can be considered a way to grief the network, but it should be much harder to create invalid blocks then it takes to verify a block is invalid.
-And in both Proof of Stake and Proof of Work, the creation of invalid blocks results in a net-loss of the block producer.
+Invalid blocks can be considered a way to grief the network, but it should be much harder to create invalid blocks than it takes to verify a block is invalid.
+And in both Proof of Stake and Proof of Work, the creation of invalid blocks results in a net-loss for the block producer.
 
 ### Consensus
 
@@ -142,7 +142,8 @@ There are different mechanisms used to come to consensus. We have described Proo
 
 Finalization is a term given when the network has some to consensus about the history of the blockchain. Those blocks are deemed "finalized", and there are high security guarantees around the validity and order of the transactions in the block, and that the block is included in the canonical history of the chain.
 
-If you were to use cryptocurrency to sell your car to a stranger, you would want to wait until the transaction is finalized on the network before you sign any papers or hand over the keys, not just for the transaction to be submitted.
+Just because a transaction is submitted, does not mean that it is guaranteed to get finalized. 
+If you were to use cryptocurrency to sell your car to a stranger, you would want to wait until the submitted payment transaction is finalized on the network before you sign any papers or hand over the keys. 
 
 Networks like Bitcoin have non-deterministic finalization due to the properties and rules of Proof of Work. However, because the Bitcoin network is so secure, after 5 or 6 blocks, it is nearly impossible to construct a different and longer chain. As such, you might notice that there is a "confirmation period" that takes place when you make bitcoin transfers.
 

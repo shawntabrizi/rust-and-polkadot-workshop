@@ -53,7 +53,7 @@ Learn more at: https://en.wikipedia.org/wiki/Cryptographic_hash_function
 
 Non-cryptographic hash functions provide weaker guarantees in exchange for performance. They are OK to use in specific scenarios and when you know that the input is not malicious.
 
-An example of a cryptographic hash function is XXHash. Note the performance increase for XXHash over Blake2:
+An example of a non-cryptographic hash function is XXHash. Note the performance increase for XXHash over Blake2:
 
 | Hash Name | Width | Bandwidth (GB/s) | Small Data Velocity | Quality |    Comment    |
 |:---------:|:-----:|:----------------:|:-------------------:|:-------:|:-------------:|

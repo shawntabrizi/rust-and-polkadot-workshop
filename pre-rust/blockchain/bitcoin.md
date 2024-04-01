@@ -164,6 +164,24 @@ Some parts of the network will see Alice's block first, other parts of the netwo
 
 The splitting of a blockchain is called a "fork", and this consensus process is how we can ensure that fork issues are resolved.
 
+## Game Theory
+
+Let's finally summarize the abilities and expected behaviors of actors participating in the Bitcoin network.
+
+Any actor can create and submit a new block to the Bitcoin network. This block does not **need** to be valid, as in, it could have transactions which violate the rules of the network.
+
+It is very cheap to verify whether is a block is valid or not.
+
+The cheapest way to check is to first just look at the hash of the block, and verify it meets the difficulty criteria with the correct number of leading zeros. Any trivial bad block will not pass this simple check, and thus a very minimal amount of computer time is needed to reject these blocks, and stop propagating them.
+
+If the block does have a valid hash, then we execute the block ourselves to check if all the transactions in the block are valid. We have our own trusted copy of the Bitcoin code, and thus can verify for ourselves that everything executes correctly. It could be that an invalid transaction is included in the block, but even then, it is very cheap to execute these blocks. Someone trying to do this maliciously would spend magnitudes more effort producing valid hashes versus the amount of work we need to do to check it is invalid.
+
+This ratio of "work needed to attack the network" vs "work needed to verify" is what keeps bad actors from attacking the Bitcoin network. Of course they can try, but they will ultimately waste much more of their time and money than the honest participants of the network. It would also be trivial for a node that is producing lots of bad blocks to be dropped from its peers.
+
+You could also imagine a problem where there is no guarantee that a block producer will include transactions in their valid block. However, since block producers get the fees related to bitcoin transfers, they are more incentivized to include transactions in a block rather than not include them, as long as including the transactions is a small amount of effort compared to calculating the correct nonce.
+
+Thus, with Bitcoin, we have a system which can be completely open, permissionless, decentralized, and trustless. The rules of Bitcoin do not require that everyone is a good actor, but the game theory and economics behind the decisions mean that only honest actors will benefit from the network.
+
 ## Additional Content
 
 https://andersbrownworth.com/blockchain/

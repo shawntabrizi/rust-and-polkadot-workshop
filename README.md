@@ -49,7 +49,7 @@ In the second day, we will move our focus over to the Polkadot ecosystem, and bu
 
 There are many great resources available for learning about Blockchains, Rust, and Polkadot.
 
-Many of those resources was used directly and indirectly in the creation of this site.
+Many of those resources were used directly and indirectly in creating this site.
 
 Check out these additional resources if you want to extend or reinforce what you have learned here:
 

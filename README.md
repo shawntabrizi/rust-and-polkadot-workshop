@@ -53,7 +53,7 @@ Many of those resources was used directly and indirectly in the creation of this
 
 Check out these additional resources if you want to extend or reinforce what you have learned here:
 
-- https://polkadot-blockchain-academy.github.io/pba-book/index.html
+- https://polkadot-blockchain-academy.github.io/pba-content/
 - https://substrate.io/
 - https://andersbrownworth.com/blockchain/
 - https://bitcoin.org/bitcoin.pdf

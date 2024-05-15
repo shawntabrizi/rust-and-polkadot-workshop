@@ -27,7 +27,7 @@ The first day will consist of lectures about cryptography, blockchain, and Rust,
 
 #### Workshop
 
-1. Then users will really get their hands dirty building an entire blockchain-like [state machine in Rust](rust-state-machine/1/README.md).
+1. Then users will really get their hands dirty building an entire blockchain-like [state machine in Rust](https://www.shawntabrizi.com/rust-state-machine/).
 
 ### Day 2
 

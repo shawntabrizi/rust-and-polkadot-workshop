@@ -9,8 +9,7 @@
 -   Rust State Machine
 
     -   [Install](pre-rust/install.md)
-    -   [Start (New)](https://www.shawntabrizi.com/rust-state-machine-mdbook/)
-    -   [Start (Old, Buggy)](rust-state-machine/0/README.md)
+    -   [Start ⤴](https://www.shawntabrizi.com/rust-state-machine/)
 
 -   Pre-Polkadot Content
 

@@ -27,7 +27,7 @@ let max_kitties: u32 = T::MaxKittiesOwned::get();
 let random_value = T::KittyRandomness::random(&[]).0;
 ```
 
-<!-- slide:break -->
+<!-- slide:break-40 -->
 
 <!-- tabs:start -->
 

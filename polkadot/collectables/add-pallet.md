@@ -24,7 +24,7 @@ You have successfully made your first custom Substrate blockchain!
 
 Let's try it out next!
 
-<!-- slide:break -->
+<!-- slide:break-40 -->
 
 1. Add a simple randomness generator to your `runtime/src/lib.rs`:
 

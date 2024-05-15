@@ -27,7 +27,7 @@ At the end of each step you should be able to successfully compile your project.
 
 Compiler warnings are OK.
 
-<!-- slide:break -->
+<!-- slide:break-40 -->
 
 # Empty Pallet Template
 

@@ -43,9 +43,9 @@ In blockchain systems, undefined behavior can lead to bugs which could put billi
 
 Rust has high level of support for alternative VMs and instruction sets.
 
-[Wasm](https://webassembly.org/) and [Risc-V](https://riscv.org/) are two examples of exciting technologies that Blockchain can use for well supported and performant environments to execute state transition functions.
+[Wasm](https://webassembly.org/) and [RISC-V](https://riscv.org/) are two examples of exciting technologies that Blockchain can use for well supported and performant environments to execute state transition functions.
 
-Unlike custom environments like the Ethereum Virtual Machine and other blockchain specific VMs, community adoption of Wasm and Risc-V extend far beyond blockchain.
+Unlike custom environments like the Ethereum Virtual Machine and other blockchain specific VMs, community adoption of Wasm and RISC-V extend far beyond blockchain.
 As a result evolution, tooling, and adoption of these environments are moving forward much faster.
 
 Rust is often at the center of languages that these environments support, and thus investment in learning and using the Rust language is easy to understand.

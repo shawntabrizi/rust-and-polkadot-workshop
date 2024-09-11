@@ -1,3 +1,5 @@
 # An Introduction to Polkadot
 
-<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRDi-jF8JsbKfgDBJ5NmShe_H-3wF4rb-oSozgGJfpoKO5ZQzbmEECTzVlP9ZBluqkpjFR3hf-tDdNR/embed?start=false&loop=false" frameborder="0" width="1440" height="839" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<iframe width="1024px" height="576px" src="https://www.youtube.com/embed/XefDNmmSMYo?si=j6Ohk26pcDxQ-MJW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe src="https://polkadot-blockchain-academy.github.io/pba-content/hong-kong-2024/syllabus/7-Polkadot/Polkadot_Decisions_slides.html#/" width="1024px" height="576px"></iframe>

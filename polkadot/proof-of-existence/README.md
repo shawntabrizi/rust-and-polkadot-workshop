@@ -36,13 +36,13 @@ This tutorial demonstrates how to create your own FRAME pallet to be included in
 	https://docs.substrate.io/install/
 
 
-2. Clone the [`substrate-node-template`](https://github.com/substrate-developer-hub/substrate-node-template).
+2. Clone the [`polkadot-sdk-solochain-template`](https://github.com/paritytech/polkadot-sdk-solochain-template) (Substrate has been merged into the Polkadot SDK).
 
 	```bash
-	git clone https://github.com/substrate-developer-hub/substrate-node-template
+	git clone https://github.com/paritytech/polkadot-sdk-solochain-template
 	```
 
-3. Replace the contents of `substrate-node-template/pallets/template/src/lib.rs` with:
+3. Replace the contents of `polkadot-sdk-solochain-template/pallets/template/src/lib.rs` with:
 
 	Note: This code will not compile until you complete the full tutorial. The goal is to show you the skeleton of a pallet, and fill in all the parts piece by piece.
 

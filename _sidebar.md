@@ -20,4 +20,4 @@
 -   Polkadot SDK
 
     -   [Proof of Existence](polkadot/proof-of-existence/README.md)
-    -   [Collectables](polkadot/collectables/README.md)
+    -   [NFT Marketplace ⤴](https://www.shawntabrizi.com/substrate-collectables-workshop/)

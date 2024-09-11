@@ -43,7 +43,7 @@ In the second day, we will move our focus over to the Polkadot ecosystem, and bu
 #### Workshops
 
 1. We will then use Substrate and FRAME to build our very first [Proof of Existence Blockchain](polkadot/proof-of-existence/).
-2. Then we will follow up with building an [NFT application](polkadot/collectables/) allowing you to buy and sell digital kitties.
+2. Then we will follow up with building an [NFT marketplace](https://www.shawntabrizi.com/substrate-collectables-workshop/) allowing you to buy and sell digital kitties.
 
 ## Resources
 
@@ -54,7 +54,7 @@ Many of those resources were used directly and indirectly in creating this site.
 Check out these additional resources if you want to extend or reinforce what you have learned here:
 
 - https://polkadot-blockchain-academy.github.io/pba-content/
-- https://substrate.io/
+- https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/index.html
 - https://andersbrownworth.com/blockchain/
 - https://bitcoin.org/bitcoin.pdf
 - https://cryptozombies.io/

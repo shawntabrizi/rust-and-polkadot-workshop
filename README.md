@@ -42,7 +42,7 @@ In the second day, we will move our focus over to the Polkadot ecosystem, and bu
 
 #### Workshops
 
-1. We will then use Substrate and FRAME to build our very first [Proof of Existence Blockchain](polkadot/proof-of-existence/).
+<!-- TODO FIX TUTORIAL: 1. We will then use Substrate and FRAME to build our very first [Proof of Existence Blockchain](polkadot/proof-of-existence/). -->
 2. Then we will follow up with building an [NFT marketplace](https://www.shawntabrizi.com/substrate-collectables-workshop/) allowing you to buy and sell digital kitties.
 
 ## Resources

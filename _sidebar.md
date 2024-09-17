@@ -3,13 +3,19 @@
 -   Pre-Rust Content
 
     -   [Crypto Basics](pre-rust/crypto/README.md)
+        - [Hash Functions](pre-rust/crypto/hash.md)
+        - [Hash Based Data Structures](pre-rust/crypto/hash-structures.md)
+        - [Digital Signatures](pre-rust/crypto/signatures.md)
     -   [Blockchain Basics](pre-rust/blockchain/README.md)
-    -   [Why Rust?](pre-rust/why-rust.md)
+        - [Bitcoin](pre-rust/blockchain/bitcoin.md)
+        - [Ethereum](pre-rust/blockchain/ethereum.md)
+        - [Blockchain Architecture](pre-rust/blockchain/architecture.md)
 
--   Rust State Machine
+-   Rust Content
 
-    -   [Install](pre-rust/install.md)
-    -   [Start ⤴](https://www.shawntabrizi.com/rust-state-machine/)
+    -   [Why Rust?](rust/why-rust.md)
+    -   [Install](rust/install.md)
+    -   [Rust State Machine](rust/rust-state-machine.md)
 
 -   Pre-Polkadot Content
 
@@ -18,7 +24,7 @@
     -   [Substrate Basics](pre-polkadot/substrate-basics.md)
     -   [FRAME Basics](pre-polkadot/frame-basics.md)
 
--   Polkadot SDK
+-   Polkadot Content
 
     <!-- TODO FIX TUTORIAL -   [Proof of Existence](polkadot/proof-of-existence/README.md) -->
-    -   [NFT Marketplace ⤴](https://www.shawntabrizi.com/substrate-collectables-workshop/)
+    -   [NFT Marketplace](polkadot/nft-marketplace.md)

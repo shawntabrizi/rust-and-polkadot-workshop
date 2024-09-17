@@ -13,21 +13,21 @@ The first day will consist of lectures about cryptography, blockchain, and Rust,
 
 #### Lectures
 
-1. The course starts with a very basic introduction to [cryptography](pre-rust/crypto/). This will cover:
+1. The course starts with a very basic introduction to [cryptography](pre-rust/crypto/README.md). This will cover:
 	1. [Hash Functions](pre-rust/crypto/hash.md)
 	2. [Hash Based Structures](pre-rust/crypto/hash-structures.md)
 	3. [Digital Signatures](pre-rust/crypto/signatures.md)
 
-2. Then we jump to a basic introduction of [blockchains](pre-rust/blockchain/), covering:
+2. Then we jump to a basic introduction of [blockchains](pre-rust/blockchain/README.md), covering:
 	1. [Bitcoin](pre-rust/blockchain/bitcoin.md)
 	2. [Ethereum](pre-rust/blockchain/ethereum.md)
 	3. [Blockchain Architecture](pre-rust/blockchain/architecture.md)
 
-3. Finally, we will briefly touch on key concepts in [Rust](pre-rust/why-rust.md)
+3. Finally, we will briefly touch on key concepts in [Rust](rust/why-rust.md)
 
 #### Workshop
 
-1. Then users will really get their hands dirty building an entire blockchain-like [state machine in Rust](https://www.shawntabrizi.com/rust-state-machine/).
+1. Then users will really get their hands dirty building an entire blockchain-like [state machine in Rust](rust/rust-state-machine.md).
 
 ### Day 2
 
@@ -43,7 +43,7 @@ In the second day, we will move our focus over to the Polkadot ecosystem, and bu
 #### Workshops
 
 <!-- TODO FIX TUTORIAL: 1. We will then use Substrate and FRAME to build our very first [Proof of Existence Blockchain](polkadot/proof-of-existence/). -->
-2. Then we will follow up with building an [NFT marketplace](https://www.shawntabrizi.com/substrate-collectables-workshop/) allowing you to buy and sell digital kitties.
+1. Then we will follow up with building an [NFT marketplace](polkadot/nft-marketplace.md) allowing you to buy and sell digital kitties.
 
 ## Resources
 

@@ -2,7 +2,7 @@
 
 This tutorial teaches how to develop a simple NFT marketplace using the [`polkadot-sdk`](https://github.com/paritytech/polkadot-sdk).
 
-https://www.shawntabrizi.com/rust-state-machine/
+https://www.shawntabrizi.com/substrate-collectables-workshop/
 
 ## Goal
 

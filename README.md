@@ -1,68 +1,72 @@
-# rust-and-polkadot-workshop
+# 🚀 **Rust and Polkadot Workshop**
 
- A workshop to teach new students the basics of Blockchains, Rust, and the Polkadot SDK.
+A workshop to teach new students the **basics of Blockchains, Rust, and the Polkadot SDK**.
+## 📚 **Structure**
 
-## Structure
+This workshop is designed to take place **over 2 days**.
+The content is detailed enough for self-study, but the experience is **much better with an expert** to guide students and answer questions.
 
-This workshop is designed to take place over 2 days.
-The content in this workshop should be detailed enough that users could complete it on their own, but of course the experience is enhanced if there is an expert to help guide students and answer questions as they come.
+---
 
-### Day 1
+## 📅 **Day 1**
 
-The first day will consist of lectures about cryptography, blockchain, and Rust, and will end with a Rust workshop.
+👉 The first day will consist of **lectures about cryptography, blockchain, and Rust**, and will end with a **Rust workshop**.
 
-#### Lectures
+### 🎤 **Lectures**
 
-1. The course starts with a very basic introduction to [cryptography](pre-rust/crypto/README.md). This will cover:
-	1. [Hash Functions](pre-rust/crypto/hash.md)
-	2. [Hash Based Structures](pre-rust/crypto/hash-structures.md)
-	3. [Digital Signatures](pre-rust/crypto/signatures.md)
+1. **Introduction to [Cryptography](pre-rust/crypto/README.md)** 🔐 covering:
 
-2. Then we jump to a basic introduction of [blockchains](pre-rust/blockchain/README.md), covering:
-	1. [Bitcoin](pre-rust/blockchain/bitcoin.md)
-	2. [Ethereum](pre-rust/blockchain/ethereum.md)
-	3. [Blockchain Architecture](pre-rust/blockchain/architecture.md)
+   * [Hash Functions](pre-rust/crypto/hash.md)
+   * [Hash Based Structures](pre-rust/crypto/hash-structures.md)
+   * [Digital Signatures](pre-rust/crypto/signatures.md)
 
-3. Finally, we will briefly touch on key concepts in [Rust](rust/why-rust.md)
+2. **Introduction to [Blockchains](pre-rust/blockchain/README.md)** ⛓️ covering:
 
-#### Workshop
+   * [Bitcoin](pre-rust/blockchain/bitcoin.md)
+   * [Ethereum](pre-rust/blockchain/ethereum.md)
+   * [Blockchain Architecture](pre-rust/blockchain/architecture.md)
 
-1. Then users will really get their hands dirty building an entire blockchain-like [state machine in Rust](rust/rust-state-machine.md).
+3. **Key concepts in [Rust](rust/why-rust.md)** 🦀
 
-### Day 2
+### 🛠️ **Workshop**
 
-In the second day, we will move our focus over to the Polkadot ecosystem, and build fully working blockchains using the Polkadot SDK.
+* Get hands-on by building a **blockchain-like [state machine in Rust](rust/rust-state-machine.md)**.
 
-#### Lectures
+---
 
-1. The day starts with an [introduction to Polkadot](pre-polkadot/polkadot-basics.md).
-2. Then a look into the concept of [shared security](pre-polkadot/shared-security.md).
-3. Next we learn about [Substrate](pre-polkadot/substrate-basics.md), the blockchain development framework provided by the Polkadot SDK.
-4. Finally, we will briefly go over [FRAME](pre-polkadot/frame-basics.md), which is a framework for building state machines for Substrate, very similar to what we designed in the workshop on day 1.
+## 📅 **Day 2**
 
-#### Workshops
+👉 On the second day, we’ll dive into the **Polkadot ecosystem** 🌐 and build **fully working blockchains using the Polkadot SDK**.
 
-<!-- TODO FIX TUTORIAL: 1. We will then use Substrate and FRAME to build our very first [Proof of Existence Blockchain](polkadot/proof-of-existence/). -->
-1. Then we will follow up with building an [NFT marketplace](polkadot/nft-marketplace.md) allowing you to buy and sell digital kitties.
+### 🎤 **Lectures**
 
-## Resources
+1. **[Introduction to Polkadot](pre-polkadot/polkadot-basics.md)** 🎯
+2. **Concept of [Shared Security](pre-polkadot/shared-security.md)** 🛡️
+3. **Learning [Substrate](pre-polkadot/substrate-basics.md)** ⚙️ – the blockchain framework of Polkadot SDK.
+4. **Overview of [FRAME](pre-polkadot/frame-basics.md)** 🧩 – a framework for building state machines for Substrate (similar to Day 1’s workshop).
 
-There are many great resources available for learning about Blockchains, Rust, and Polkadot.
+### 🛠️ **Workshops**
 
-Many of those resources were used directly and indirectly in creating this site.
+1. Build an **[NFT Marketplace](polkadot/nft-marketplace.md)** 🎨 where you can **buy and sell digital kitties** 🐱💎.
 
-Check out these additional resources if you want to extend or reinforce what you have learned here:
+---
 
-- https://polkadot-blockchain-academy.github.io/pba-content/
-- https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/index.html
-- https://andersbrownworth.com/blockchain/
-- https://bitcoin.org/bitcoin.pdf
-- https://cryptozombies.io/
+## 📖 **Resources**
 
-## Contributing
+Here are some excellent resources to **deepen your knowledge** on Blockchains, Rust, and Polkadot:
 
-This repository is open source and open to contributions.
+* 📘 [Polkadot Blockchain Academy](https://polkadot-blockchain-academy.github.io/pba-content/)
+* 📗 [Polkadot SDK Docs](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/index.html)
+* 🌍 [Anders Brownworth Blockchain Demo](https://andersbrownworth.com/blockchain/)
+* 📄 [Bitcoin Whitepaper](https://bitcoin.org/bitcoin.pdf)
+* 🧟 [CryptoZombies](https://cryptozombies.io/)
 
-As of writing this, the content in this tutorial is very fresh, and likely can be greatly improved.
+---
 
-Hopefully in the future we can feel confident about the quality and correctness of everything here.
+## 🤝 **Contributing**
+
+This repository is **open source** and open to contributions.
+
+✨ The content is still **fresh and evolving**, so improvements are welcome!
+💡 Hopefully, in the future, this workshop will be a **solid, polished resource** for everyone.
+
